@@ -271,3 +271,4 @@ D:\workspace\C#\Razor page\Hotel_Management\obj\Debug\net8.0\ref\Hotel_Managemen
 D:\workspace\C#\Razor page\Hotel_Management\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.UI.dll
 D:\workspace\C#\Razor page\Hotel_Management\obj\Debug\net8.0\Hotel_Management.MvcApplicationPartsAssemblyInfo.cs
 D:\workspace\C#\Razor page\Hotel_Management\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\workspace\C#\Razor page\Hotel_Management\obj\Debug\net8.0\Hotel_Management.sourcelink.json

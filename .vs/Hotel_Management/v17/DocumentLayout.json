@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|d:\\workspace\\c#\\razor page\\hotel_management\\areas\\identity\\pages\\account\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|solutionrelative:areas\\identity\\pages\\account\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|d:\\workspace\\c#\\razor page\\hotel_management\\services\\hotelservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|solutionrelative:services\\hotelservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|d:\\workspace\\c#\\razor page\\hotel_management\\areas\\identity\\pages\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|solutionrelative:areas\\identity\\pages\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|d:\\workspace\\c#\\razor page\\hotel_management\\services\\interfaces\\iroomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|solutionrelative:services\\interfaces\\iroomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|d:\\workspace\\c#\\razor page\\hotel_management\\services\\interfaces\\ihotelservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B068A43E-5FE8-474D-8BFD-9ABAD36D73F0}|Hotel_Management.csproj|solutionrelative:services\\interfaces\\ihotelservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +22,49 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Register.cshtml.cs",
-              "DocumentMoniker": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
-              "ToolTip": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAswH0AAAAAAAAAAAAAAA==",
+              "Title": "HotelService.cs",
+              "DocumentMoniker": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Services\\HotelService.cs",
+              "RelativeDocumentMoniker": "Services\\HotelService.cs",
+              "ToolTip": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Services\\HotelService.cs",
+              "RelativeToolTip": "Services\\HotelService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T13:17:47.264Z",
+              "WhenOpened": "2025-05-22T05:13:31.778Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Register.cshtml",
-              "DocumentMoniker": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "ToolTip": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA8AAACLAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-21T13:17:28.354Z",
+              "Title": "IRoomService.cs",
+              "DocumentMoniker": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Services\\Interfaces\\IRoomService.cs",
+              "RelativeDocumentMoniker": "Services\\Interfaces\\IRoomService.cs",
+              "ToolTip": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Services\\Interfaces\\IRoomService.cs",
+              "RelativeToolTip": "Services\\Interfaces\\IRoomService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T05:09:11.785Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IHotelService.cs",
+              "DocumentMoniker": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Services\\Interfaces\\IHotelService.cs",
+              "RelativeDocumentMoniker": "Services\\Interfaces\\IHotelService.cs",
+              "ToolTip": "D:\\workspace\\C#\\Razor page\\Hotel_Management\\Services\\Interfaces\\IHotelService.cs",
+              "RelativeToolTip": "Services\\Interfaces\\IHotelService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T05:08:52.144Z",
               "EditorCaption": ""
             }
           ]
