@@ -1,0 +1,5106 @@
+/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project:		Vivo Admin Dashboard
+Version:		1.0
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[Table of Contents]
+
+1. Importing Sass Variables
+2. Importing Web Fonts
+	2.1 Lato Font
+	2.2 Rubik Mono One Font
+3. Body CSS
+4. Loading CSS
+5. Re Usable Styles
+	5.1 Anchor Reset
+	5.2 HR
+	5.3 Unorder List
+	5.4 Headings
+	5.5 Images
+	5.6 Background Colors
+    5.7 Border Colors
+	5.9 Text Colors
+6. Layout CSS
+	6.1 Page Wrapper
+	6.2 Sidebar Wrapper
+	6.3 Main Container
+	6.4 Page Header
+    6.5 Welcome Note
+	6.6 Search Container
+	6.7 Leads Dropdown
+    6.8 Header Ations
+	6.9 Header Profile Actions
+	6.10 Breadcrumb Container
+	6.11 Content Wrapper
+	6.12 App Footer
+7. Country Dropdown
+8. Components/Widgets
+	8.1 Button Icon
+	8.2 Custom Button Group
+	8.3 Custom Icon Group
+	8.4 Custom Badge Group
+	8.5 Chart Heights
+	8.6 Card Heights
+	8.7 Number Stats
+    8.8 Notifications Container
+	8.9 Stats Tiles
+	8.10 Reports Summary
+    8.11 Day Selection
+    8.12 Activity Container
+    8.13 Transactions Container
+    8.14 Task List
+    8.15 User Messages
+    8.16 Info Stats
+    8.17 Income Stats
+    8.18 Tickets Container
+    8.19 Task Stats
+    8.20 Meetings Container
+    8.21 Nav Tabs
+    8.21 Stacked Images
+    8.22 Orders
+    8.23 Logs
+    8.24 Global Slaes
+    8.25 Social Tile
+    8.26 Databar Container
+    8.27 Weather widget
+    8.28 Ratings
+    8.29 Product Cards
+    8.30 Product Cards
+    8.31 Product Checkout List
+    8.32 Edit Customer Status
+    8.33 Add Product
+    8.34 Create Invoice Wrapper
+    8.35 Invoice List
+    8.36 Create Invoice
+    8.37 Form Actions Footer
+    8.38 Icons Container
+    8.39 Sales Stats
+    8.40 Monthly Stats
+    8.41 Chart Notify
+    8.42 Vertical line
+9. Plugins
+	9.1 Overlay Scroll
+	9.2 DropZone
+	9.3 Credit Card
+	9.4 jVector Maps
+	9.5 Apex Graphs
+10. Pages
+	10.1 Login
+	10.2 Maintenance Screen
+	10.3 Contacts
+    10.4 Pricing Plan
+    10.5 Account Settings
+    10.6 Error Page
+11. Bootstrap Overwrite CSS
+	11.1 Badge
+	11.2 Placeholder
+	11.3 Accordion
+	11.4 Alerts
+	11.5 Tabs
+	11.6 Cards
+	11.7 Buttons
+    11.8 Button Primary
+    11.9 Button Secondary
+    11.10 Button Info
+    11.11 Button Danger
+    11.12 Button Warning
+    11.13 Button Success
+    11.14 Button Light
+    11.15 Button Dark
+    11.16 Button White
+    11.17 Dropdown Menu
+    11.18 List Group
+    11.19 Carousel
+    11.20 Form Controls
+    11.21 File Upload
+    11.22 Checkbox and Radio
+    11.23 Modal
+    11.24 Tables
+    11.25 Pagination
+    11.26 Progress
+    11.27 Spinners
+    11.28 Off Canvas
+    11.29 Off Canvas
+    11.30 Row Gutters
+
+
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+[Typography]
+
+# Lato - Main Font
+# Rubik Mono One Font - Additional Font
+-------------------------------------------------------------------*/
+
+/************************************************
+	************************************************
+				1. Importing Sass Variables
+	************************************************
+************************************************/
+@import "variables.scss";
+
+// Import Bootstrap
+@import "bootstrap/bootstrap.scss";
+
+/************************************************
+	************************************************
+				2. Importing Web Fonts
+	************************************************
+************************************************/
+// 2.2 Rubik Mono One Font
+@font-face {
+	font-family: "Rubik Mono One";
+	src: url("../fonts/rubik-mono/RubikMonoOne-Regular.ttf") format("truetype");
+	font-style: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+/************************************************
+	************************************************
+					3. Body CSS
+	************************************************
+************************************************/
+html,
+body {
+	height: 100%;
+	font-size: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: $font-color;
+	min-height: 100%;
+	position: relative;
+	background: $body-bg;
+	&:before {
+		content: "";
+		position: absolute;
+		left: -25%;
+		top: 0;
+		bottom: 0;
+		opacity: 0.6;
+		width: 70%;
+		background: url(../images/circle.svg);
+		background-position: center 50%;
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+}
+@media screen and (max-width: 768px) {
+	body {
+		&:before {
+			background: none;
+		}
+	}
+}
+
+/************************************************
+	************************************************
+					4. Loading CSS
+	************************************************
+************************************************/
+#loading-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 5000;
+	background: rgba(0, 0, 0, 0.9);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	.spinner {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -40px;
+		margin-top: -30px;
+		width: 80px;
+		height: 60px;
+		> div {
+			background-color: #1395ba;
+			height: 100%;
+			width: 9px;
+			@include roundedCorners(10);
+			display: inline-block;
+			-moz-animation: linedelay 1.1s infinite ease-in-out;
+			-webkit-animation: linedelay 1.1s infinite ease-in-out;
+			animation: linedelay 1.1s infinite ease-in-out;
+		}
+		.line2 {
+			background-color: #5ca793;
+			-moz-animation-delay: -1s;
+			-webkit-animation-delay: -1s;
+			animation-delay: -1s;
+		}
+		.line3 {
+			background-color: #a2b86c;
+			-moz-animation-delay: -0.9s;
+			-webkit-animation-delay: -0.9s;
+			animation-delay: -0.9s;
+		}
+		.line4 {
+			background-color: #ebc844;
+			-moz-animation-delay: -0.8s;
+			-webkit-animation-delay: -0.8s;
+			animation-delay: -0.8s;
+		}
+		.line5 {
+			background-color: #ecaa38;
+			-moz-animation-delay: -0.7s;
+			-webkit-animation-delay: -0.7s;
+			animation-delay: -0.7s;
+		}
+		.line6 {
+			background-color: #ef8b2c;
+			-moz-animation-delay: -0.6s;
+			-webkit-animation-delay: -0.6s;
+			animation-delay: -0.6s;
+		}
+		@-moz-keyframes linedelay {
+			0%,
+			50%,
+			100% {
+				-moz-transform: scaleY(0.4);
+			}
+			30% {
+				-moz-transform: scaleY(1);
+			}
+		}
+		@-webkit-keyframes linedelay {
+			0%,
+			50%,
+			100% {
+				-webkit-transform: scaleY(0.4);
+			}
+			30% {
+				-webkit-transform: scaleY(1);
+			}
+		}
+		@keyframes linedelay {
+			0%,
+			50%,
+			100% {
+				transform: scaleY(0.4);
+				-webkit-transform: scaleY(0.4);
+			}
+			30% {
+				transform: scaleY(1);
+				-webkit-transform: scaleY(1);
+			}
+		}
+	}
+}
+
+/************************************************
+	************************************************
+				5. Re Usable Styles
+	************************************************
+************************************************/
+
+/************* 5.1 Anchor Reset *************/
+a {
+	color: $font-color;
+	text-decoration: none;
+	&:hover {
+		text-decoration: none;
+		color: inherit;
+	}
+}
+
+/************* 5.2 HR *************/
+hr {
+	background: $border-bg;
+	opacity: 1;
+}
+
+/************* 5.3 Unorder List *************/
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	&.custom {
+		margin: 20px 0 0 20px;
+		li {
+			line-height: 180%;
+		}
+	}
+}
+
+/************* 5.4 Headings *************/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 700;
+}
+h1 {
+	font-size: 3rem;
+	margin-bottom: 0.8rem;
+}
+h2 {
+	font-size: 2.5rem;
+	margin-bottom: 0.5rem;
+}
+h3 {
+	font-size: 2rem;
+	margin-bottom: 0.5rem;
+}
+h4 {
+	font-size: 1.5rem;
+	margin-bottom: 0.4rem;
+}
+h5 {
+	font-size: 1rem;
+	margin-bottom: 0.3rem;
+}
+h6 {
+	font-size: 0.925rem;
+	margin-bottom: 0.2rem;
+}
+p {
+	margin-bottom: 0.2rem;
+	font-size: 0.875rem;
+	line-height: 180%;
+}
+
+/************* 5.5 Images *************/
+img {
+	@include roundedCorners(3);
+}
+
+/************* 5.6 Background Colors *************/
+.shade-white {
+	background: $white;
+}
+.shade-primary {
+	background: $primary;
+}
+.shade-secondary {
+	background: $secondary;
+}
+.shade-yellow {
+	background: $yellow;
+}
+.shade-red {
+	background: $red;
+}
+.shade-green {
+	background: $green;
+}
+.shade-blue {
+	background: $blue;
+}
+.shade-light {
+	background: $light-color;
+}
+.shade-dark {
+	background: $dark-color;
+}
+
+/************* 5.7 Border Colors *************/
+.shade-bdr-white {
+	border: 1px solid $white;
+	color: $white;
+}
+.shade-bdr-primary {
+	border: 1px solid $primary;
+	color: $primary;
+}
+.shade-bdr-secondary {
+	border: 1px solid $secondary;
+	color: $secondary;
+}
+.shade-bdr-yellow {
+	border: 1px solid $yellow;
+	color: $yellow;
+}
+.shade-bdr-red {
+	border: 1px solid $red;
+	color: $red;
+}
+.shade-bdr-green {
+	border: 1px solid $green;
+	color: $green;
+}
+.shade-bdr-blue {
+	border: 1px solid $blue;
+	color: $blue;
+}
+.shade-bdr-light {
+	border: 1px solid $light-color;
+	color: $light-color;
+}
+.shade-bdr-dark {
+	border: 1px solid $dark-color;
+	color: $dark-color;
+}
+
+/************* 5.8 Text Colors *************/
+.text-primary {
+	color: $primary !important;
+}
+.text-secondary {
+	color: $secondary !important;
+}
+.text-light {
+	color: $light-color !important;
+}
+.text-dark {
+	color: $dark-color !important;
+}
+.text-red {
+	color: $red !important;
+}
+.text-green {
+	color: $green !important;
+}
+.text-yellow {
+	color: $yellow !important;
+}
+.text-blue {
+	color: $blue !important;
+}
+.text-white {
+	color: $white !important;
+}
+.text-black {
+	color: $black !important;
+}
+.text-muted {
+	color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/************************************************
+	************************************************
+					6. Layout CSS
+	************************************************
+************************************************/
+
+/************* 6.1 Page Wrapper *************/
+.page-wrapper {
+	padding: 10px;
+	position: relative;
+	&.fullscreen {
+		.sidebar-wrapper {
+			left: -280px;
+		}
+		.main-container {
+			padding-left: 0px;
+		}
+	}
+	&.togglescreen {
+		.sidebar-wrapper {
+			left: -280px;
+		}
+		.main-container {
+			padding-left: 0px;
+		}
+	}
+}
+@media (max-width: 576px) {
+	.page-wrapper {
+		padding: 0;
+	}
+}
+
+/************* 6.2 Sidebar Wrapper *************/
+.sidebar-wrapper {
+	width: 210px;
+	padding: 0;
+	height: calc(100vh - 20px);
+	@include roundedCornersAll(10px, 90px, 90px, 10px);
+	background: $white;
+	position: fixed;
+	top: 10px;
+	left: 20px;
+	z-index: 999;
+	-webkit-transition: left 0.3s ease, width 0.3s ease;
+	transition: left 0.3s ease, width 0.3s ease;
+
+	/************* Sidebar Brand *************/
+	.sidebar-brand {
+		margin: 0;
+		.logo {
+			padding: 2rem 1.5rem 0rem 1.5rem;
+			min-height: 60px;
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			img {
+				max-width: 150px;
+				max-height: 50px;
+			}
+		}
+	}
+
+	/************* Sidebar Icon Animation *************/
+	@keyframes iconUpDown {
+		0%,
+		100% {
+			transform: translateY(3px);
+		}
+		50% {
+			transform: translateY(-3px);
+		}
+	}
+
+	/************* Sidebar Menu *************/
+	.sidebar-menu {
+		padding: 20px 0;
+		height: calc(100vh - 120px);
+		ul {
+			li {
+				a {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					flex-direction: column;
+					position: relative;
+					padding: 20px 15px 20px 15px;
+					color: $sidebar-text-color;
+					font-size: 0.925rem;
+					-webkit-transition: all 0.5s ease-in-out;
+					-moz-transition: all 0.5s ease-in-out;
+					-ms-transition: all 0.5s ease-in-out;
+					-o-transition: all 0.5s ease-in-out;
+					transition: all 0.5s ease-in-out;
+					position: relative;
+					i {
+						margin-bottom: 7px;
+						font-size: 1.7rem;
+						text-shadow: none;
+						color: $font-color;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						-ms-flex-negative: 0;
+						flex-shrink: 0;
+						@include roundedCorners(50);
+					}
+					.menu-text {
+						-webkit-box-flex: 1;
+						-ms-flex-positive: 1;
+						flex-grow: 1;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						-ms-flex-negative: 1;
+						flex-shrink: 1;
+						overflow: hidden;
+					}
+					&:hover {
+						color: $sidebar-text-hover;
+						background-color: rgba(0, 0, 0, 0.02%);
+						i {
+							animation: iconUpDown 1s linear infinite;
+						}
+					}
+				}
+				&.active-page-link {
+					position: relative;
+					a {
+						color: $blue;
+						i {
+							color: $blue;
+							@include roundedCorners(50);
+						}
+					}
+				}
+				&.active {
+					a {
+						i {
+							color: $blue;
+							@include roundedCorners(50);
+						}
+						&.current-page {
+							position: relative;
+							color: $blue;
+							&:hover {
+								background-color: rgba(0, 0, 0, 0.02%);
+								color: $blue !important;
+							}
+						}
+					}
+					.sidebar-submenu {
+						display: block;
+					}
+				}
+			}
+		}
+		.sidebar-dropdown {
+			> a:after {
+				font-family: "bootstrap-icons" !important;
+				font-weight: 700;
+				font-size: 1rem;
+				content: "\f282";
+				display: inline-block;
+				position: absolute;
+				right: 65px;
+				top: 28px;
+				-webkit-transition: -webkit-transform 0.3s ease;
+				transition: -webkit-transform 0.3s ease;
+				transition: transform 0.3s ease;
+				transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+			}
+			.sidebar-submenu {
+				display: none;
+				ul {
+					padding: 0;
+					li {
+						a {
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							padding: 10px 7px 10px 7px;
+							margin: 0 8px;
+							@include roundedCorners(5);
+							&:hover {
+								color: $sidebar-text-hover;
+							}
+						}
+					}
+				}
+			}
+			&.active > a:after {
+				-webkit-transform: rotate(-180deg);
+				transform: rotate(-180deg);
+				right: 65px;
+			}
+		}
+	}
+	&.dark {
+		background-color: $dark-sidebar-bg;
+		.sidebar-menu {
+			ul {
+				li {
+					a {
+						color: $white;
+						i {
+							color: $white;
+						}
+						&:hover {
+							background-color: lighten($dark-sidebar-bg, 5%);
+							color: $white;
+							i {
+								color: $white;
+							}
+						}
+					}
+					&.active {
+						a.current-page {
+							background-color: lighten($dark-sidebar-bg, 5%);
+							color: $white;
+						}
+					}
+				}
+			}
+			.sidebar-dropdown {
+				.sidebar-submenu {
+					ul {
+						padding: 0;
+						li {
+							a {
+								&:hover {
+									color: $white;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: 576px) {
+	.sidebar-wrapper {
+		background-color: $sidebar-bg;
+		@include roundedCornersAll(10px, 90px, 90px, 10px);
+	}
+}
+
+/************* 6.3 Main Container *************/
+.main-container {
+	@include roundedCorners(10);
+	-webkit-transition: padding-left 0.3s ease;
+	transition: padding-left 0.3s ease;
+	padding: 0 0 0 230px;
+	height: calc(100vh - 20px);
+}
+
+@media screen and (max-width: 1024px) {
+	/************* Page Wrapper *************/
+	.page-wrapper {
+		.sidebar-wrapper {
+			left: -280px;
+		}
+		&.toggled {
+			.sidebar-wrapper {
+				left: 10px;
+			}
+		}
+		/************* Main Container *************/
+		.main-container {
+			padding-left: 0px;
+		}
+	}
+}
+@media screen and (min-width: 1024px) {
+	/************* Page Wrapper fullscreen *************/
+	.page-wrapper.toggled-fullscreen {
+		.sidebar-wrapper {
+			left: 10px;
+		}
+		.main-container {
+			padding-left: 230px;
+		}
+	}
+}
+@media screen and (min-width: 1024px) {
+	/************* Page Wrapper fullscreen *************/
+	.page-wrapper.toggled-togglescreen {
+		.sidebar-wrapper {
+			left: 10px;
+		}
+		.main-container {
+			padding-left: 0;
+		}
+	}
+}
+
+@media (max-width: 576px) {
+	.main-container {
+		height: calc(100vh);
+	}
+}
+
+/************* 6.4 Page Header *************/
+.page-header {
+	padding: 10px 14px 20px 14px;
+	margin: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	.toggle-sidebar {
+		@extend .shade-green;
+		@include roundedCorners(30);
+		cursor: pointer;
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		min-width: 40px;
+		height: 40px;
+		z-index: 1000;
+		transition: all 0.5s ease;
+		i {
+			color: $white;
+			font-size: 1.4rem;
+		}
+		&:hover {
+			@extend .shade-red;
+		}
+	}
+	.toggle-sidebar-fullscreen {
+		@extend .shade-green;
+		@include roundedCorners(30);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		min-width: 40px;
+		margin: 0 10px 0 0;
+		height: 40px;
+		z-index: 1000;
+		transition: all 0.5s ease;
+		i {
+			color: $white;
+			font-size: 1.4rem;
+		}
+		&:hover {
+			@extend .shade-red;
+		}
+	}
+	.sidebar-togglescreen {
+		@extend .shade-green;
+		@include roundedCorners(30);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		min-width: 40px;
+		margin: 0 10px 0 0;
+		height: 40px;
+		z-index: 1000;
+		transition: all 0.5s ease;
+		i {
+			color: $white;
+			font-size: 1.4rem;
+		}
+		&:hover {
+			@extend .shade-red;
+		}
+	}
+}
+@media screen and (max-width: 1024px) {
+	.page-header {
+		.toggle-sidebar {
+			display: flex;
+		}
+		.toggle-sidebar-fullscreen {
+			display: none;
+		}
+		.sidebar-togglescreen {
+			display: none;
+		}
+	}
+}
+
+/************* 6.5 Welcome Note *************/
+.welcome-note {
+	font-size: 1.5rem;
+	font-weight: 300;
+	margin: 0;
+	span {
+		color: $blue;
+	}
+}
+
+/************* 6.6 Search Container *************/
+.search-container {
+	margin: 0;
+	padding: 0;
+	.input-group {
+		position: relative;
+		.form-control {
+			background: $white;
+			border: 0;
+			border-radius: 30px !important;
+			min-width: 240px;
+			box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1%);
+			&:focus {
+				outline: none !important;
+				border: 0;
+				box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15%);
+				.btn {
+					i {
+						color: $red;
+					}
+				}
+			}
+		}
+		.btn {
+			position: absolute;
+			right: 5px;
+			top: 5px;
+			background: transparent;
+			border: 0;
+			padding: 4px 6px;
+			z-index: 10;
+			i {
+				color: $font-color;
+			}
+			&:hover {
+				i {
+					color: $red;
+				}
+			}
+		}
+	}
+}
+@media screen and (max-width: 767px) {
+	.search-container {
+		.input-group {
+			.form-control {
+				min-width: 180px;
+			}
+		}
+	}
+}
+
+/************* 6.7 Leads Dropdown *************/
+.leads {
+	margin: 0 0 0 1.5rem;
+	background-color: $white;
+	@include roundedCorners(30);
+	padding: 0.375rem 1.25rem;
+	position: relative;
+	min-height: 40px;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	.lead-details {
+		.count {
+			color: $green;
+			font-weight: 700;
+			margin: 0 2px;
+		}
+	}
+	span.lead-icon {
+		position: relative;
+		i {
+			color: $yellow;
+			display: flex;
+			font-size: 1.4rem;
+			margin: 0 0 0 5px;
+		}
+		.dot {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			width: 7px;
+			height: 7px;
+			@include roundedCorners(30);
+			background: $green;
+		}
+	}
+	&:hover {
+		outline: none !important;
+		border: 0;
+		box-shadow: 0 10px 10px rgba(0, 10, 10, 0.15);
+	}
+}
+@media screen and (max-width: 1280px) {
+	.leads {
+		padding: 0.375rem 1rem;
+		.lead-details {
+			display: none;
+		}
+		.lead-icon {
+			i {
+				margin: 0;
+			}
+		}
+	}
+}
+
+/************* 6.8 Header Ations *************/
+.header-actions-container {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: flex-end;
+	margin-left: auto;
+}
+.header-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin-left: 0.725rem;
+	> li {
+		> a {
+			padding: 1rem 0.725rem;
+			display: flex;
+			position: relative;
+			align-items: center;
+			justify-content: center;
+			> i {
+				font-size: 1.5rem;
+				color: $font-color;
+			}
+			img.flag-img {
+				width: 24px;
+				height: 24px;
+				@include roundedCorners(50);
+			}
+		}
+		.user-settings {
+			padding: 0 0 0 0.725rem;
+			color: $font-color;
+			.avatar {
+				position: relative;
+				margin: 0;
+				width: 48px;
+				height: 48px;
+				> img {
+					width: 48px;
+					height: 48px;
+					@include roundedCorners(50);
+				}
+				.status {
+					position: absolute;
+					top: -1px;
+					right: -1px;
+					width: 14px;
+					height: 14px;
+					@include roundedCorners(10);
+					&.busy {
+						@extend .shade-red;
+					}
+					&.online {
+						@extend .shade-green;
+					}
+					&.away {
+						@extend .shade-yellow;
+					}
+				}
+			}
+			span.user-name {
+				margin-right: 8px;
+				vertical-align: middle;
+				display: inline-block;
+				max-width: 100px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+		&:hover,
+		&:focus {
+			> a {
+				i {
+					color: $font-color;
+				}
+			}
+			.dropdown-menu {
+				margin-top: 0;
+				display: block;
+			}
+		}
+	}
+}
+@media (max-width: 576px) {
+	.header-actions {
+		margin-left: 0;
+		> li {
+			> a {
+				&.user-settings {
+					span.user-name {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+/************* 6.9 Header Profile Actions *************/
+.header-profile-actions {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	a {
+		padding: 8px 15px;
+		display: flex;
+		font-size: 0.925rem;
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.02%);
+			color: $blue;
+		}
+	}
+}
+
+/************* 6.10 Breadcrumb Container *************/
+.breadcrumb {
+	background: transparent;
+	padding: 0;
+	margin: 0;
+	.breadcrumb-item {
+		color: $font-color;
+		font-weight: 400;
+		display: flex;
+		align-items: center;
+		i {
+			font-size: 2rem;
+			margin-right: 15px;
+			color: $blue;
+		}
+		& + .breadcrumb-item::before {
+			color: $font-color;
+			font-family: "bootstrap-icons" !important;
+			content: "\f285";
+			font-size: 1.3rem;
+			line-height: 1;
+			vertical-align: middle;
+		}
+		a {
+			color: $font-color;
+		}
+	}
+	.breadcrumb-active {
+		color: $font-color;
+	}
+}
+@media screen and (max-width: 1024px) {
+	.breadcrumb {
+		margin-left: 15px;
+		.breadcrumb-item {
+			i {
+				font-size: 1.4rem;
+				margin-right: 5px;
+			}
+			& + .breadcrumb-item::before {
+				font-size: 1.5rem;
+			}
+		}
+	}
+}
+@media screen and (max-width: 768px) {
+	.breadcrumb {
+		margin-right: auto;
+	}
+}
+
+/************* 6.11 Content Wrapper *************/
+.content-wrapper-scroll {
+	padding: 0;
+}
+.content-wrapper {
+	padding: 0 14px 0 14px;
+	height: calc(100vh - 150px);
+	overflow: auto;
+}
+@media (max-width: 576px) {
+	.content-wrapper {
+		height: calc(100vh - 180px);
+		padding: 0 15px 0 15px;
+	}
+}
+
+/************* 6.12 App Footer *************/
+.app-footer {
+	font-size: 0.7rem;
+	margin: 0;
+	padding: 15px 14px 0 24px;
+	display: flex;
+	justify-content: flex-end;
+	span {
+		background-color: $white;
+		padding: 8px 30px;
+		@include roundedCornersAll(100px, 100px, 30px, 30px);
+	}
+}
+@media (max-width: 576px) {
+	.app-footer {
+		padding: 15px 15px 0 15px;
+	}
+}
+
+/************************************************
+	************************************************
+				7. Country Dropdown
+	************************************************
+************************************************/
+.country-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	a {
+		margin: 10px 0 10px 0;
+		img {
+			width: 20px;
+			height: 20px;
+			@include roundedCorners(100);
+			transition: all 1s ease-out;
+		}
+		&:hover {
+			img {
+				opacity: 0.6;
+			}
+		}
+	}
+}
+
+/************************************************
+	************************************************
+				8. Components/Widgets
+	************************************************
+************************************************/
+
+/************* 8.1 Button Icon *************/
+.btn-icon {
+	padding: 0.5rem 0.5rem !important;
+	i {
+		margin: 0 !important;
+	}
+}
+
+/************* 8.2 Custom Button Group *************/
+.custom-btn-group {
+	display: flex;
+	flex-wrap: wrap;
+	&.flex-end {
+		justify-content: flex-end;
+		.btn {
+			margin: 0.25rem 0 0.25rem 0.25rem;
+		}
+	}
+	.btn {
+		margin: 0.25rem;
+	}
+}
+
+/************* 8.3 Custom Icon Group *************/
+.custom-icon-group {
+	display: flex;
+	flex-wrap: wrap;
+	&.flex-end {
+		justify-content: flex-end;
+	}
+	.btn {
+		margin: 0.2rem;
+		i {
+			margin: 0;
+		}
+	}
+}
+
+/************* 8.4 Custom Icon Group *************/
+.custom-link-group {
+	a {
+		margin: 0 1rem;
+	}
+}
+
+/************* 8.4 Custom Badge Group *************/
+.custom-badge-group {
+	display: flex;
+	flex-wrap: wrap;
+	&.flex-end {
+		justify-content: flex-end;
+	}
+	.badge {
+		margin: 0.25rem;
+	}
+}
+
+/************* 8.5 Chart Heights *************/
+.chart-height {
+	position: relative;
+	height: 250px;
+}
+.chart-height-md {
+	position: relative;
+	height: 220px;
+}
+.chart-height-sm {
+	position: relative;
+	height: 180px;
+}
+.chart-height-xl {
+	position: relative;
+	height: 300px;
+}
+.chart-height-xxl {
+	position: relative;
+	height: 420px;
+}
+.auto-align-graph {
+	.apexcharts-canvas {
+		margin: 0 auto;
+	}
+}
+
+/************* 8.6 Card Heights *************/
+.card-183 {
+	min-height: 183px;
+}
+.card-320 {
+	min-height: 320px;
+}
+.card-370 {
+	min-height: 370px;
+}
+.card-390 {
+	min-height: 390px;
+}
+.card-420 {
+	min-height: 420px;
+}
+.card-450 {
+	min-height: 450px;
+}
+.card-500 {
+	min-height: 500px;
+}
+
+/************* 8.7 Number Stats *************/
+.num-stats {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	h3 {
+		margin: 0 0 5px 0;
+		font-weight: 700;
+		line-height: 100%;
+		color: $blue;
+	}
+	h6 {
+		font-size: 0.85rem;
+		opacity: 0.7;
+		line-height: 100%;
+		font-weight: 400;
+	}
+}
+
+/************* 8.8 Notifications Container *************/
+.num-stats2 {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	.num-icon {
+		height: 75px;
+		width: 75px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 0 7px 0;
+		@include roundedCorners(50);
+		i {
+			color: $white;
+			font-size: 1.8rem;
+		}
+	}
+	.num-details {
+		h5 {
+			margin: 0 0 5px 0;
+			font-weight: normal;
+		}
+		h3 {
+			margin: 0;
+		}
+	}
+}
+
+/************* 8.9 Stats Tiles *************/
+.stats-tile {
+	padding: 1.5rem 1.5rem;
+	margin: 0 0 24px 0;
+	@include roundedCorners(8);
+	background: $white;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	position: relative;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	.sale-icon {
+		height: 60px;
+		width: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 15px;
+		text-align: center;
+		@include roundedCorners(50);
+		i {
+			font-size: 1.8rem;
+			color: $white;
+		}
+	}
+	.sale-icon-bdr {
+		height: 60px;
+		width: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 15px;
+		text-align: center;
+		@include roundedCorners(50);
+		border: 2px solid $blue;
+		i {
+			font-size: 1.8rem;
+			color: $blue;
+		}
+		&.green {
+			border: 2px solid $green;
+			i {
+				color: $green;
+			}
+		}
+	}
+	.sale-details {
+		h3 {
+			margin: 0;
+		}
+		h5 {
+			margin: 0 0 10px 0;
+		}
+		p {
+			margin: 0;
+		}
+		p.growth {
+			margin: 5px 0 0 0;
+		}
+	}
+	.sale-graph {
+		position: absolute;
+		top: 50%;
+		right: 20px;
+		margin-top: -15px;
+	}
+	&.justify-center {
+		flex-direction: column;
+		text-align: center;
+		.sale-icon {
+			margin: 0 0 20px 0;
+		}
+	}
+}
+
+.stats-tile2-container {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+.stats-tile2 {
+	padding: 1rem 0.5rem;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	.sale-icon {
+		margin-right: 15px;
+		i {
+			font-size: 2rem;
+		}
+	}
+	.sale-details {
+		h5 {
+			margin: 0 0 3px 0;
+			color: $font-color-light;
+			font-weight: 400;
+		}
+		p {
+			margin: 0;
+			font-weight: 600;
+		}
+	}
+}
+
+/******** 8.10 Reports Summary ********/
+.reports-summary {
+	position: relative;
+	padding: 1.25rem 1rem;
+	.reports-summary-block {
+		display: flex;
+		flex-direction: column;
+		margin: 0 0 1.5rem 0;
+		h5 {
+			margin: 0;
+		}
+		h6 {
+			margin: 0 0 10px 0;
+			font-weight: 400;
+			color: $font-color-light;
+		}
+	}
+}
+
+/******** 8.11 Day Selection ********/
+.graph-day-selection {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	.btn {
+		font-size: 0.875rem;
+		padding: 0.2rem 0.8rem;
+		border: 0;
+		background: transparent;
+		@include roundedCorners(30);
+		&.active {
+			background: $green;
+			color: $white;
+		}
+	}
+	a {
+		display: flex;
+		align-items: center;
+		color: $blue;
+		font-size: 0.825rem;
+		font-weight: 600;
+		padding: 0.2rem 0.8rem;
+		line-height: 1.5;
+		background: $green;
+		@include roundedCorners(30);
+		&:hover {
+			color: $blue;
+		}
+		&.reportrange {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			color: $blue;
+			font-weight: 600;
+			span.range-text {
+				margin: 0 5px 0 5px;
+			}
+		}
+	}
+}
+
+/************* 8.12 Activity Container *************/
+.activity-container {
+	margin: 30px 0 0 0;
+	.activity-block {
+		margin: 0 0 30px 0;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		position: relative;
+		&:before {
+			content: "";
+			border-left: 1px solid rgba(0, 0, 0, 0.1);
+			position: absolute;
+			left: 29px;
+			top: 0;
+			bottom: 0;
+			z-index: 0;
+		}
+		.activity-user {
+			margin: 0 20px 0 0;
+			z-index: 1;
+			img {
+				@include roundedCorners(100);
+				width: 60px;
+				height: 60px;
+				flex-shrink: 0;
+			}
+		}
+		.activity-details {
+			h4 {
+				margin: 0 0 5px 0;
+				font-weight: bold;
+				color: $black;
+				font-size: 1rem;
+			}
+			h5 {
+				margin: 0 0 3px 0;
+				font-weight: normal;
+			}
+			p {
+				margin: 0 0 5px 0;
+				color: $font-color-light;
+			}
+			span.badge {
+				margin: 0;
+				padding: 7px 10px;
+				min-width: 80px;
+			}
+		}
+		&:last-child {
+			margin: 0;
+		}
+	}
+}
+
+/************* 8.13 Transactions Container *************/
+.transactions-container {
+	margin: 30px 0 0 0;
+	.transaction-block {
+		margin: 0 0 30px 0;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		position: relative;
+		.transaction-icon {
+			margin: 0 20px 0 0;
+			z-index: 1;
+			@include roundedCorners(8);
+			width: 60px;
+			height: 60px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			i {
+				font-size: 1.8rem;
+				color: $white;
+			}
+		}
+		.transaction-details {
+			h4 {
+				margin: 0 0 5px 0;
+				font-weight: bold;
+				color: $black;
+				font-size: 1rem;
+			}
+			p {
+				margin: 0;
+				line-height: 100%;
+				color: $font-color-light;
+			}
+		}
+		.transaction-amount {
+			margin-left: auto;
+			font-size: 1.2rem;
+			font-weight: 700;
+		}
+		&:last-child {
+			margin: 0;
+		}
+	}
+}
+
+/************* 8.14 Task List *************/
+.task-list-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	padding: 0;
+	margin: 20px 0 10px 0;
+	.task-list-item {
+		display: flex;
+		align-items: center;
+		margin: 0;
+		.task-icon {
+			@include roundedCorners(50);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			height: 60px;
+			width: 60px;
+			margin-right: 10px;
+			i {
+				font-size: 1.8rem;
+				color: $white;
+			}
+		}
+		.task-info {
+			flex-direction: row;
+			h5.task-title {
+				margin: 0;
+				font-weight: 700;
+			}
+			p.amount-spend {
+				font-size: 0.925rem;
+				margin: 0;
+				color: $font-color-light;
+			}
+		}
+	}
+}
+
+/************* 8.15 User Messages *************/
+ul.user-messages {
+	margin: 30px 0 0 0;
+	li {
+		margin-bottom: 30px;
+		display: flex;
+		align-items: center;
+		.customer {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 60px;
+			height: 60px;
+			flex-shrink: 0;
+			color: $white;
+			font-size: 1rem;
+			@include roundedCorners(30);
+		}
+		.delivery-details {
+			margin-left: 20px;
+			.badge {
+				margin: 0 0 15px 0;
+			}
+			h5 {
+				margin: 0 0 5px 0;
+			}
+			p {
+				margin: 0;
+				line-height: 160%;
+				color: $font-color-light;
+			}
+		}
+	}
+}
+
+/************* 8.16 Info Stats *************/
+.info-stats {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	margin: 1rem 0 1rem 0;
+	i {
+		margin: 0 0 0.7rem 0;
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
+	img.stats-icon {
+		width: 30px;
+		height: 30px;
+		@include roundedCorners(50);
+		margin: 0 0 0.7rem 0;
+	}
+	h5 {
+		color: $font-color-light;
+		font-weight: 400;
+	}
+	h3 {
+		margin: 0;
+		font-weight: 700;
+		color: $blue;
+	}
+}
+
+/************* 8.17 Income Stats *************/
+.income-stats-container {
+	margin: 30px 0 0 0;
+	.income-stats {
+		margin: 0 0 10px 0;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		.income-graph {
+			width: 100px;
+			height: 100px;
+			margin: 0 0.5rem 0 0;
+			.circliful {
+				margin: 0;
+			}
+		}
+		.income-info {
+			h3 {
+				margin: 0;
+				font-weight: 600;
+				padding: 0;
+				display: flex;
+				align-items: center;
+				i {
+					font-size: 1.3rem;
+					margin-left: 0.3rem;
+				}
+			}
+			p {
+				color: $font-color-light;
+				margin: 0;
+			}
+		}
+		.income-high-low {
+			margin: 0 0 0 auto;
+			color: $font-color-light;
+			font-weight: 700;
+			.bi {
+				font-size: 1.2rem;
+			}
+		}
+	}
+}
+
+/************* 8.18 Tickets Container *************/
+.tickets-container {
+	margin: 30px 0 0 0;
+	li {
+		margin: 0 0 20px 0;
+		padding-bottom: 0.5rem;
+		display: flex;
+		align-items: center;
+		img.avatar {
+			@include roundedCorners(30);
+			width: 60px;
+			height: 60px;
+			margin: 0 20px 0 0;
+			flex-shrink: 0;
+		}
+		.ticket-details {
+			flex-direction: column;
+			flex: 1;
+			h4 {
+				margin: 0 0 7px 0;
+				font-weight: 700;
+				color: $black;
+				font-size: 1rem;
+			}
+			h5 {
+				margin: 0 0 7px 0;
+				font-weight: normal;
+				color: $font-color-light;
+				line-height: 150%;
+			}
+			p.ticket-time {
+				margin: 0;
+				font-weight: normal;
+				color: $font-color-light;
+			}
+		}
+		.ticket-status {
+			margin-left: auto;
+			.badge {
+				min-width: 80px;
+			}
+		}
+	}
+}
+
+/************* 8.19 Task Stats *************/
+.task-stats-container {
+	@include roundedCorners(8);
+	background: $white;
+	padding: 25px 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	.task-stats {
+		.task-title {
+			font-size: 1.2rem;
+			margin: 3px 0;
+			font-weight: 400;
+			color: $font-color-light;
+			line-height: 150%;
+		}
+		.task-count {
+			font-size: 1.8rem;
+			font-weight: 700;
+			color: $font-color;
+		}
+	}
+	.task-stats-graph {
+		height: 80px;
+		display: flex;
+		align-items: center;
+	}
+}
+
+/************* 8.20 Meetings Container *************/
+.meetings-container {
+	margin: 0;
+	li {
+		margin: 0 0 15px 0;
+		display: flex;
+		align-items: center;
+		padding: 10px 15px;
+		@include roundedCorners(6);
+		background-color: $body-bg;
+		img.avatar {
+			@include roundedCorners(30);
+			width: 60px;
+			height: 60px;
+			margin: 0 15px 0 0;
+			flex-shrink: 0;
+		}
+		.meeting-details {
+			flex-direction: column;
+			flex: 1;
+			h6 {
+				margin: 0 0 0.5rem 0;
+				font-size: 1rem;
+			}
+			.meeting-time {
+				font-size: 0.875rem;
+				color: $font-color-light;
+			}
+		}
+		.meeting-more {
+			margin-left: auto;
+			i {
+				font-size: 1.8rem;
+			}
+		}
+		&:last-child {
+			margin: 0;
+		}
+	}
+}
+
+/************* 8.21 Nav Tabs *************/
+.custom-tabs-container {
+	.nav-tabs {
+		margin: 0 -20px;
+		border-bottom: 1px solid $border-bg;
+		.nav-link {
+			padding: 0.8rem 1.2rem;
+			@include roundedCornersAll(5px, 5px, 0, 0);
+			color: $font-color-light;
+			&.active {
+				border-color: transparent $border-bg $white;
+				box-shadow: 0 -3px 0 0 $border-bg;
+				color: $font-color;
+				background: $white;
+			}
+			.badge {
+				@include roundedCorners(30);
+				margin-left: 5px;
+				height: 22px;
+				line-height: 22px;
+				padding: 0 12px;
+			}
+			i {
+				font-size: 1.3rem;
+				margin-right: 7px;
+				vertical-align: middle;
+			}
+		}
+		.nav-item:first-child {
+			margin-left: 20px;
+		}
+	}
+	.tab-content {
+		padding: 1.5rem 0 0 0;
+	}
+}
+
+/************* 8.21 Stacked Images *************/
+.stacked-images {
+	display: flex;
+	img {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		@include roundedCorners(30);
+		overflow: hidden;
+		margin-right: -10px;
+		margin-right: -10px;
+		border: 2px solid $white;
+		letter-spacing: 0.03rem;
+		flex-shrink: 0;
+		&.sm {
+			width: 36px;
+			height: 36px;
+		}
+	}
+	.plus {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		@include roundedCorners(30);
+		overflow: hidden;
+		margin-right: -10px;
+		margin-right: -10px;
+		border: 2px solid $white;
+		background: $blue;
+		letter-spacing: 0.03rem;
+		font-weight: 700;
+		font-size: 0.9rem;
+		flex-shrink: 0;
+		&.sm {
+			width: 36px;
+			height: 36px;
+			color: $white;
+		}
+	}
+}
+
+/************* 8.22 Orders *************/
+ul.recent-orders {
+	margin-top: 20px;
+	li {
+		margin-bottom: 25px;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		.order-img {
+			position: relative;
+			img {
+				height: 90px;
+				@include roundedCorners(8);
+			}
+			.badge {
+				position: absolute;
+				bottom: 10px;
+				left: 0px;
+			}
+		}
+		.order-details {
+			margin-left: 15px;
+			h5.order-title {
+				margin: 0 0 7px 0;
+			}
+			p.order-desc {
+				line-height: 150%;
+				color: $font-color-light;
+			}
+			p.order-revenue {
+				color: $font-color-light;
+				span {
+					color: $blue;
+				}
+			}
+		}
+	}
+}
+
+/************* 8.23 Logs *************/
+.logs {
+	margin: 0;
+	.log-list {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row;
+		padding: 12px 0;
+		.log-dot {
+			width: 18px;
+			height: 18px;
+			background: $blue;
+			@include roundedCorners(30);
+			margin: 0 12px 0 0;
+			flex-shrink: 0;
+			&.green {
+				background: $green;
+			}
+			&.red {
+				background: $red;
+			}
+			&.yellow {
+				background: $yellow;
+			}
+		}
+		.log-title {
+			font-size: 1rem;
+		}
+		.log-time {
+			margin: 0 0 0 auto;
+			color: $font-color-light;
+		}
+	}
+}
+
+/************* 8.24 Global Slaes *************/
+.global-sales {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+	justify-content: center;
+	h3 {
+		margin: 0 0 15px 0;
+		.icon {
+			font-size: 3.5rem;
+			color: $green;
+			margin: 0 10px 0 0;
+		}
+	}
+	p {
+		font-size: 1rem;
+	}
+}
+
+/************* 8.25 Social Tile *************/
+.social-tile {
+	padding: 3rem 1rem;
+	margin: 0 0 24px 0;
+	@include roundedCorners(8);
+	background: $white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	position: relative;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	.social-icon {
+		height: 140px;
+		width: 140px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 15px;
+		text-align: center;
+		@include roundedCorners(100);
+		background-color: $light-blue;
+		i {
+			font-size: 2.5rem;
+			color: $blue;
+		}
+	}
+	.social-details {
+		h1 {
+			margin: 15px 0 15px 0;
+			font-weight: 300;
+			color: $font-color-light;
+		}
+		h5 {
+			margin: 0 0 20px 0;
+		}
+		p.growth {
+			margin: 0;
+			padding: 3px 15px;
+			@include roundedCorners(30);
+			&.high {
+				background-color: #edfff9;
+				color: $green;
+			}
+			&.low {
+				background-color: lighten($red, 40%);
+				color: $red;
+			}
+		}
+	}
+}
+
+/************* 8.26 Databar Container *************/
+.databar-container {
+	margin: 0;
+	.databar-header {
+		margin: 10px 0 10px 0;
+		img {
+			width: 30px;
+			height: 30px;
+			margin: 0 0 15px 0;
+		}
+		h4 {
+			font-weight: 400;
+		}
+	}
+	.databar-body {
+		margin: 0;
+	}
+}
+
+/************* 8.27 Weather widget *************/
+.weather-widget {
+	margin-bottom: 24px;
+	background-position: bottom center;
+	color: $white;
+	@include roundedCorners(8);
+	padding: 1.5rem 2rem;
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+	text-align: right;
+	&.rainy {
+		background: url("../images/vivo-rainy.jpg") no-repeat;
+		background-size: cover;
+	}
+	&.sunny {
+		background: url("../images/vivo-sunny.jpg") no-repeat;
+		background-size: cover;
+	}
+	&.cloudy {
+		background: url("../images/vivo-cloudy.jpg") no-repeat;
+		background-size: cover;
+	}
+	h2 {
+		margin: 0 0 10px 0;
+	}
+	h4 {
+		margin: 0 0 10px 0;
+	}
+	h6 {
+		margin: 0 0 10px 0;
+	}
+}
+@media screen and (max-width: 1280px) {
+	.weather-widget {
+		padding: 1.5rem 1rem;
+	}
+}
+
+/******** 8.28 Ratings ********/
+.rating-block {
+	width: 70px !important;
+	line-height: 100%;
+	img {
+		width: 17px;
+		height: 17px;
+	}
+}
+
+/******** 8.29 Product Cards ********/
+.product-card {
+	background: $white;
+	border: 0;
+	box-shadow: none;
+	@include roundedCorners(4);
+	margin-bottom: 24px;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	.product-card-body {
+		padding: 1rem 1rem;
+		position: relative;
+		.product-title {
+			margin-bottom: 0.7rem;
+			font-size: 1rem;
+			font-weight: 700;
+			line-height: 100%;
+		}
+		.product-price {
+			display: flex;
+			flex-direction: row;
+			font-size: 0.9rem;
+			.disount-price {
+				color: $font-color;
+				margin-right: 7px;
+			}
+			.actucal-price {
+				color: $font-color-light;
+				margin-right: 7px;
+				text-decoration: line-through;
+			}
+			.off-price {
+				color: $green;
+			}
+		}
+		.product-rating {
+			margin: 8px 0;
+			display: flex;
+			align-items: center;
+			flex-direction: row;
+			.rating-stars {
+				width: 120px !important;
+				line-height: 100%;
+				img {
+					width: 18px;
+					height: 18px;
+				}
+			}
+			.total-ratings {
+				font-size: 0.9rem;
+				color: $font-color-light;
+			}
+		}
+		.product-description {
+			min-height: 50px;
+			font-size: 0.9rem;
+			margin: 0 0 10px 0;
+			color: $font-color-light;
+			line-height: 150%;
+		}
+		.product-actions {
+			display: flex;
+			flex-direction: row;
+			.btn {
+				margin-right: 5px;
+			}
+		}
+	}
+	.product-card-img-top {
+		border-top-right-radius: 4px;
+		border-top-left-radius: 4px;
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+		flex-shrink: 0;
+		width: 100%;
+	}
+}
+
+/******** 8.30 Product Cards ********/
+.product-added-card {
+	border: 1px solid $border-bg;
+	@include roundedCorners(8);
+	margin-bottom: 24px;
+	padding: 1rem;
+	display: flex;
+	flex-direction: row;
+	.product-added-card-body {
+		padding: 1rem;
+		position: relative;
+		.product-added-title {
+			margin-bottom: 15px;
+			font-size: 1rem;
+			line-height: 100%;
+		}
+		.product-added-price {
+			display: flex;
+			flex-direction: row;
+			font-size: 1.5rem;
+			margin: 0 0 10px 0;
+			font-weight: 700;
+			color: $green;
+		}
+		.product-added-description {
+			font-size: 0.9rem;
+			margin: 0 0 20px 0;
+			color: $font-color-light;
+			line-height: 150%;
+		}
+		.product-added-actions {
+			display: flex;
+			flex-direction: row;
+			.btn {
+				margin-right: 5px;
+			}
+		}
+	}
+	.product-added-img {
+		@include roundedCorners(5);
+		max-height: 200px;
+		margin: 0 10px 0 0;
+	}
+}
+.sub-total-container {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	flex-direction: column;
+	border-top: 1px solid $border-bg;
+	margin-top: 10px;
+	padding-top: 20px;
+	.total {
+		margin: 0 0 20px 0;
+		font-size: 1.2rem;
+		font-weight: 700;
+	}
+}
+
+/******** 8.31 Product Checkout List ********/
+.product-list-card {
+	border: 1px solid $border-bg;
+	@include roundedCorners(8);
+	margin-bottom: 24px;
+	padding: 1rem;
+	h5 {
+		margin: 0 0 20px 0;
+	}
+	.product-list-block {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 20px;
+		.product-list-img {
+			@include roundedCorners(5);
+			max-height: 70px;
+			margin: 0 10px 0 0;
+		}
+		.product-list-details {
+			.product-list-title {
+				margin-bottom: 10px;
+				font-size: 0.9rem;
+				line-height: 100%;
+			}
+			.product-list-price {
+				display: flex;
+				flex-direction: row;
+				font-size: 1.2rem;
+				line-height: 100%;
+				margin: 0;
+				font-weight: 700;
+				color: $green;
+			}
+		}
+		&:last-child {
+			margin: 0;
+		}
+	}
+}
+
+/******** 8.32 Edit Customer Status ********/
+.customer-card {
+	padding: 15px;
+	border: 1px solid $border-bg;
+	@include roundedCorners(8);
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	h6 {
+		font-size: 0.85rem;
+		margin: 0 0 8px 0;
+		font-weight: normal;
+	}
+	h5 {
+		font-size: 0.9rem;
+		margin: 0;
+		color: $font-color-light;
+	}
+}
+
+/******** 8.33 Add Product ********/
+.card-border {
+	border: 1px solid $border-bg;
+	@include roundedCorners(8);
+	padding: 1rem;
+	margin: 0 0 24px 0;
+	.card-border-title {
+		font-size: 1.1rem;
+		margin: 0 0 30px 0;
+		font-weight: bold;
+		color: $font-color;
+	}
+	.card-border-body {
+		padding: 0;
+	}
+}
+
+/******** 8.34 Create Invoice Wrapper ********/
+.create-invoice-wrapper {
+	background: #fdf1e3;
+	padding: 15px;
+	margin: 0 0 15px 0;
+	@include roundedCorners(8);
+}
+
+/******** 8.35 Invoice List ********/
+.invoice-table {
+	td {
+		vertical-align: middle;
+	}
+	.customer {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		img.user-avatar {
+			width: 60px;
+			height: 60px;
+			margin-right: 15px;
+			@include roundedCorners(100);
+		}
+		.name {
+			font-size: 0.9rem;
+			margin: 0 0 5px 0;
+		}
+	}
+	.details {
+		display: flex;
+		flex-direction: column;
+		h5 {
+			margin: 0 0 5px 0;
+			font-weight: 300;
+		}
+		h6 {
+			font-weight: 300;
+		}
+	}
+	.badge {
+		padding: 10px 10px;
+		@include roundedCorners(20);
+		min-width: 80px;
+	}
+}
+
+/******** 8.36 Create Invoice ********/
+.invoice-container {
+	padding: 0;
+	.invoice-header {
+		.invoice-logo {
+			margin: 0.8rem 0 1rem 0;
+			display: inline-block;
+			img {
+				width: 50px;
+				height: 50px;
+			}
+		}
+		address {
+			font-size: 0.9rem;
+			color: $font-color;
+			margin: 0;
+			text-align: right;
+			line-height: 180%;
+		}
+	}
+	.invoice-details {
+		display: flex;
+		margin: 1rem 0 0.5rem 0;
+		padding: 1rem;
+		line-height: 180%;
+		background: #fdf1e3;
+		.invoice-num {
+			text-align: right;
+			margin-left: auto;
+			font-size: 0.8rem;
+		}
+	}
+	.invoice-body {
+		padding: 3rem 0;
+	}
+	.invoice-footer {
+		text-align: center;
+		font-size: 0.7rem;
+		span {
+			display: inline-block;
+			background: $white;
+			padding: 3px 10px;
+			@include roundedCorners(30);
+		}
+	}
+}
+
+/******** 8.37 Form Actions Footer ********/
+.form-actions-footer {
+	background: #edf0f5;
+	@include roundedCorners(5);
+	padding: 15px;
+	margin: 0;
+	display: flex;
+	justify-content: end;
+	.btn {
+		margin: 0 0 0 10px;
+	}
+}
+.form-section-title {
+	background: #edf0f5;
+	@include roundedCorners(5);
+	padding: 15px;
+	margin: 10px 0 15px 0;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+/******** 8.38 Icons Container ********/
+.icons-container {
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	grid-auto-rows: 100px;
+	column-gap: 15px;
+	row-gap: 1em;
+	text-align: center;
+	.icon {
+		@include roundedCorners(5);
+		background: $body-bg;
+		padding: 10px;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		i {
+			font-size: 2rem;
+		}
+		&:hover {
+			background: $body-bg-dark;
+		}
+	}
+}
+
+/******** 8.39 Sales Stats ********/
+.sales-stats-container {
+	border: 1px solid $border-bg;
+	@include roundedCorners(8);
+	padding: 1rem;
+}
+ul.sales-stats {
+	li {
+		margin-bottom: 15px;
+		p {
+			margin: 0;
+			display: flex;
+			justify-content: space-between;
+			span {
+				display: flex;
+				align-items: center;
+				i {
+					font-size: 16px;
+					margin-right: 10px;
+				}
+				small {
+					margin-left: 10px;
+				}
+			}
+		}
+	}
+}
+
+/******** 8.40 Monthly Stats ********/
+.monthly-stats {
+	text-align: center;
+	h5 {
+		margin: 15px 20px 35px 20px;
+		line-height: 150%;
+		font-weight: 400;
+	}
+	.avg-block {
+		margin-bottom: 35px;
+		h3.avg-total {
+			margin: 0;
+		}
+		h6.avg-label {
+			font-weight: 400;
+			margin: 0;
+			color: $font-color-light;
+		}
+	}
+}
+
+/******** 8.41 Chart Notify ********/
+.chart-notify {
+	position: absolute;
+	z-index: 100;
+	&.tr {
+		top: 20px;
+		right: 20px;
+	}
+	&.tl {
+		top: 20px;
+		left: 20px;
+	}
+	&.bl {
+		bottom: 20px;
+		left: 20px;
+	}
+	&.br {
+		bottom: 20px;
+		right: 20px;
+	}
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		@include roundedCorners(50);
+		width: 40px;
+		height: 40px;
+		i {
+			font-size: 1.2rem;
+			color: $white;
+		}
+	}
+}
+
+/******** 8.42 Vertical line ********/
+.vs,
+.or {
+	margin: auto;
+	width: 0;
+	text-align: center;
+	position: relative;
+	&:before {
+		position: absolute;
+		background: $border-bg;
+		width: 1px;
+		height: 150px;
+		content: "";
+		top: 50%;
+		left: 0;
+		margin-top: -75px;
+	}
+	&:after {
+		position: absolute;
+		content: "vs";
+		border-radius: 100px;
+		width: 36px;
+		height: 36px;
+		background: $blue;
+		top: 50%;
+		left: 0;
+		margin-left: -18px;
+		margin-top: -18px;
+		color: $white;
+		line-height: 36px;
+		text-align: center;
+	}
+}
+.or {
+	&:after {
+		content: "or";
+	}
+}
+
+/************************************************
+	************************************************
+					9. Plugins
+	************************************************
+************************************************/
+
+/******** 9.1 Overlay Scroll ********/
+.sidebarMenuScroll {
+	height: 100%;
+}
+.scroll370 {
+	height: 370px;
+}
+.scroll300 {
+	height: 300px;
+}
+.scroll250 {
+	height: 250px;
+}
+.scroll240 {
+	height: 240px;
+}
+.scroll206 {
+	height: 206px;
+}
+
+/******** 9.2 DropZone ********/
+#dropzone {
+	margin: 0;
+	min-width: 240px;
+}
+.dropzone {
+	border: 2px dashed $form-border !important;
+	@include roundedCorners(6);
+	background: $white !important;
+	min-height: 250px !important;
+	display: flex;
+	align-items: center;
+	.dz-message {
+		font-weight: 700;
+		text-align: center;
+		margin: 0 auto !important;
+		.note {
+			font-size: 0.9rem;
+			display: block;
+			margin-top: 1rem;
+			color: $font-color !important;
+		}
+		.dz-button {
+			background: transparent;
+			color: $font-color !important;
+			font-size: 1.5rem !important;
+			border: 0;
+		}
+	}
+}
+#dropzone-sm {
+	.dropzone {
+		min-height: 120px !important;
+		.dz-button {
+			font-size: 1rem !important;
+		}
+	}
+}
+
+/******** 9.3 Credit Card ********/
+#creditCardType {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	.credit-card {
+		margin: 5px 5px 0 0;
+		display: inline-block;
+		img {
+			max-width: 36px;
+			filter: grayscale(100%);
+		}
+		&.highlight {
+			img {
+				filter: grayscale(10%);
+			}
+		}
+	}
+}
+
+/******** 9.4 jVector Maps ********/
+.jvectormap-container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.jvectormap-tip {
+	position: absolute;
+	display: none;
+	border-radius: 0px;
+	background: #000000;
+	color: #ffffff;
+	font-size: 0.75rem;
+	padding: 6px 12px;
+}
+@-webkit-keyframes showHideDot {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	60% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes showHideDot {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	60% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+.jvectormap-marker {
+	opacity: 0;
+	-webkit-animation: showHideDot 1.5s ease-in-out infinite;
+	animation: showHideDot 1.5s ease-in-out infinite;
+}
+
+/******** 9.5 Apex Graphs ********/
+.apex-hide-lines {
+	.apexcharts-xaxis {
+		display: none;
+	}
+	.apexcharts-grid {
+		display: none;
+	}
+}
+.apex-dark-legend {
+	.apexcharts-legend-text {
+		color: $font-color !important;
+	}
+	.apexcharts-xaxis-label {
+		fill: $font-color !important;
+	}
+}
+
+/************************************************
+	************************************************
+						10. Pages
+	************************************************
+************************************************/
+
+/************* 10.1 Login *************/
+.login-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+.login-box {
+	padding: 30px 20px 30px 20px;
+	margin: auto;
+	width: 420px;
+	min-height: 320px;
+	@include roundedCorners(6);
+	position: relative;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	background: $white;
+	.login-form {
+		.login-logo {
+			margin: 0 0 10px 0;
+			display: inline-flex;
+			img {
+				width: 70px;
+				height: 70px;
+			}
+		}
+		.login-welcome {
+			font-size: 1rem;
+			line-height: 24px;
+			margin: 0 0 30px 0;
+		}
+		.login-form-actions {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			flex-wrap: wrap;
+			margin: 0 0 15px 0;
+		}
+		.btn {
+			@include roundedCorners(50);
+			background: $white;
+			box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+			border: 1px solid $border-bg;
+			padding: 3px 15px 3px 3px;
+			line-height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.875rem;
+			margin-left: 10px;
+			.icon {
+				@include roundedCorners(50);
+				width: 30px;
+				height: 30px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				@extend .shade-blue;
+				margin: 0 7px 0 0;
+				i {
+					margin: 0;
+					font-size: 1rem;
+					color: $white;
+				}
+			}
+			img.login-icon {
+				width: 30px;
+				height: 30px;
+				margin: 0 5px 0 0;
+			}
+		}
+		a.btn-link {
+			font-size: 0.875rem;
+			color: $blue;
+			text-decoration: none;
+			border: 0;
+			background: transparent;
+			padding: 4px 3px 4px 3px;
+		}
+		.additional-link {
+			font-size: 0.875rem;
+			display: flex;
+			align-items: center;
+			color: $font-color-light;
+			a {
+				color: $blue;
+				border-bottom: 1px dashed;
+				text-transform: uppercase;
+				margin-left: 10px;
+			}
+		}
+		.login-form-footer {
+			border-top: 1px solid rgba(0, 0, 0, 0.1);
+			margin: 20px 0 0 0;
+			padding: 20px 0 0 0;
+		}
+	}
+}
+@media (max-width: 576px) {
+	.login-box {
+		padding: 30px 20px 30px 20px;
+		width: auto;
+	}
+}
+
+/******** 10.2 Maintenance Screen ********/
+.maintenance-page {
+	display: flex;
+	align-items: center;
+	background: $white;
+	&::before {
+		content: "";
+		background: none;
+	}
+}
+.maintenance-message {
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
+	height: 100%;
+	text-align: center;
+	color: $blue;
+	position: relative;
+	z-index: 100;
+	.message-title-block {
+		padding: 20px;
+		border: 3px solid $blue;
+		margin-bottom: 20px;
+		@include roundedCorners(10);
+	}
+	h1 {
+		font-size: 3rem;
+		margin: 0 0 1rem 0;
+		line-height: 100%;
+		font-weight: 700;
+	}
+	h4 {
+		font-size: 1.8rem;
+		margin: 0;
+		font-weight: 400;
+	}
+	p {
+		font-size: 0.85rem;
+		margin: 0;
+		line-height: 160%;
+	}
+	.btn {
+		padding: 0.7rem 1.8rem;
+	}
+}
+@media screen and (max-width: 768px) {
+	.maintenance-message {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		p {
+			text-align: center;
+		}
+	}
+}
+
+/************* 10.3 Contacts *************/
+.contact-card {
+	padding: 2rem 1rem;
+	position: relative;
+	text-align: center;
+	a.edit-contact-card {
+		position: absolute;
+		right: 25px;
+		top: 25px;
+		width: 40px;
+		height: 40px;
+		background: $bg-shade1;
+		@include roundedCorners(50);
+		transition: all 1s ease-out;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		i {
+			font-size: 1.2rem;
+			color: $blue;
+		}
+		&:hover {
+			width: 50px;
+			height: 50px;
+			transition: all 0.5s ease-out;
+		}
+	}
+	.contact-avatar {
+		@include roundedCorners(50);
+		max-width: 90px;
+		margin-bottom: 10px;
+	}
+	h5 {
+		margin-bottom: 10px;
+	}
+}
+
+/************* 10.4 Pricing Plan *************/
+.pricing-plan {
+	margin: 0 0 1.5rem 0;
+	width: 100%;
+	position: relative;
+	@include roundedCorners(10);
+	color: $white;
+	text-align: center;
+	.pricing-header {
+		padding: 20px 0 0 0;
+		.pricing-title {
+			font-size: 1.2rem;
+			padding: 1rem 0 0 0;
+			text-transform: uppercase;
+			font-weight: 100;
+			margin: 0;
+			text-shadow: 0 30px 10px rgba(0, 0, 0, 0.15);
+		}
+		.pricing-cost {
+			padding: 1rem 0 0 0;
+			font-size: 3rem;
+			font-weight: bold;
+			text-shadow: 0 30px 10px rgba(0, 0, 0, 0.15);
+		}
+		.pricing-save {
+			padding: 0.8rem 0;
+			font-size: 1rem;
+			font-weight: 400;
+		}
+	}
+	.pricing-features {
+		padding: 20px 0;
+		margin: 0;
+		li {
+			padding: 12px 15px 12px 15px;
+			font-size: 0.9rem;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			position: relative;
+			line-height: 100%;
+		}
+	}
+	.pricing-footer {
+		@include roundedCornersAll(0, 0, 3px, 3px);
+		text-align: center;
+		padding: 1rem 0 2rem 0;
+	}
+}
+@media (max-width: 767px) {
+	.pricing-plan-container {
+		height: auto;
+	}
+	.pricing-plan {
+		.pricing-header {
+			text-align: center;
+			i {
+				display: block;
+				float: none;
+				margin-bottom: 1.5rem;
+			}
+		}
+	}
+}
+
+/************* 10.5 Account Settings *************/
+.change-img-avatar {
+	display: flex;
+	margin: 0 20px 15px 0;
+	@include roundedCorners(6);
+	max-height: 120px;
+}
+.account-settings-block {
+	border-left: 1px solid $border-bg;
+	margin-bottom: 20px;
+	height: 100%;
+	padding: 0 0 0 1rem;
+	.settings-block {
+		margin-bottom: 1rem;
+		.settings-block-title {
+			margin: 0 0 0.7rem 0;
+			font-size: 1rem;
+			font-weight: 400;
+		}
+		.settings-block-body {
+			padding: 0;
+			.form-check {
+				margin: 0;
+				min-height: 1.1rem;
+			}
+		}
+	}
+}
+@media (max-width: 992px) {
+	.account-settings-block {
+		border-left: 0;
+		padding: 0;
+	}
+}
+.pricing-change-plan {
+	margin: 0 0 1rem 0;
+	padding: 0;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	a {
+		padding: 4rem 1rem 1rem 1rem;
+		@include roundedCorners(6);
+		min-width: 90px;
+		max-width: 90px;
+		min-height: 100px;
+		margin: 0 10px 10px 0;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		color: $white;
+		> h5 {
+			font-size: 1.4rem;
+			margin: 0 0 5px 0;
+			font-weight: 600;
+		}
+		> h6 {
+			font-size: 0.9rem;
+			margin: 0;
+			font-weight: 400;
+		}
+		&.active-plan {
+			&:after {
+				font-family: "bootstrap-icons" !important;
+				font-weight: bold;
+				content: "\f26b";
+				background: url();
+				position: absolute;
+				top: 20px;
+				left: 50%;
+				margin-left: -15px;
+				font-size: 2rem;
+			}
+		}
+	}
+}
+
+/************* 10.6 Error Page *************/
+.error-page {
+	background: $red;
+	&::before {
+		background: none;
+	}
+}
+.error-screen {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	color: $white;
+	height: 100%;
+	h1 {
+		font-family: Rubik Mono One;
+		font-size: 15rem;
+		margin: 0;
+		line-height: 100%;
+	}
+	h5 {
+		margin-bottom: 2rem;
+		line-height: 180%;
+		font-weight: 300;
+	}
+	.btn {
+		padding: 0.7rem 1.8rem;
+		@include roundedCorners(50);
+		color: $white;
+		background: transparent;
+		border: 2px solid $white;
+		&:hover {
+			color: $black;
+			background: $white;
+			border: 2px solid $white;
+		}
+	}
+}
+@media screen and (max-width: 768px) {
+	.error-screen {
+		h1 {
+			font-size: 8rem;
+		}
+	}
+}
+
+/************* 10.7 Profile Page *************/
+.profile-header {
+	position: relative;
+	padding: 0;
+	margin-bottom: 20px;
+	// Welcome Title
+	h1 {
+		font-weight: 300;
+		color: $primary;
+		font-size: 1.8rem;
+		margin: 0 auto 1rem auto;
+	}
+	.profile-header-content {
+		@include roundedCorners(4);
+		background: $dark-color;
+		background-image: linear-gradient(
+			45deg,
+			rgba(255, 255, 255, 0.15) 25%,
+			transparent 25%,
+			transparent 50%,
+			rgba(255, 255, 255, 0.15) 50%,
+			rgba(255, 255, 255, 0.15) 75%,
+			transparent 75%,
+			transparent
+		);
+		background-size: 1.5rem 1.5rem;
+		padding: 1rem 1.5rem 1rem 1.5rem;
+		display: flex;
+		align-items: center;
+		position: relative;
+		.profile-header-tiles {
+			width: 100%;
+			margin-right: 1rem;
+			z-index: 100;
+			// Profile Tiles
+			.profile-tile {
+				background-color: $white;
+				@include roundedCorners(4);
+				padding: 0.6rem;
+				margin: 0.2rem 0;
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				> .icon {
+					width: 36px;
+					height: 36px;
+					@include roundedCorners(50);
+					margin: 0 0.6rem 0 0;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					background: $blue;
+					i {
+						font-size: 1rem;
+						color: $white;
+						text-shadow: none;
+					}
+				}
+				h6 {
+					margin: 0;
+					line-height: 150%;
+					font-weight: 400;
+					font-size: 0.8rem;
+					color: $font-color-light;
+					span {
+						font-weight: 600;
+						color: $font-color;
+					}
+				}
+			}
+		}
+		.profile-avatar-tile {
+			background-color: $white;
+			@include roundedCorners(4);
+			padding: 0.7rem;
+			margin: -60px 0 0 auto;
+			z-index: 100;
+			img {
+				@include roundedCorners(4);
+				width: 180px;
+			}
+		}
+	}
+}
+@media screen and (max-width: 768px) {
+	.profile-header {
+		.profile-header-content {
+			flex-direction: column-reverse;
+			.profile-header-tiles {
+				margin-right: 0;
+			}
+			.profile-avatar-tile {
+				margin: 20px 0;
+			}
+		}
+	}
+}
+
+/******** 10.8 Create Offer ********/
+.create-offer-container {
+	.form-control {
+		margin: 0 0 0.3rem 0;
+		max-height: 69px;
+	}
+	.share-thoughts-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.btn {
+			max-height: 32px;
+			padding: 0.35rem 0.75rem;
+		}
+		.share-icons {
+			display: flex;
+			a {
+				width: 32px;
+				height: 32px;
+				margin: 0 0.3rem 0 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: $light-color;
+				@include roundedCorners(3);
+				i {
+					color: $font-color;
+					font-size: 0.9rem;
+				}
+			}
+		}
+	}
+}
+
+/******** 10.9 Award Tile ********/
+.award-tile {
+	padding: 1.5rem 1rem 1rem 1rem;
+	margin: 0 0 20px 0;
+	@include roundedCorners(4);
+	min-height: 182px;
+	color: $white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	background-image: linear-gradient(
+		45deg,
+		rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%,
+		transparent 50%,
+		rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%,
+		transparent 75%,
+		transparent
+	);
+	background-size: 1.5rem 1.5rem;
+	.award-icon {
+		margin: 0 0 1rem 0;
+		display: flex;
+		i {
+			font-size: 1.2rem;
+			color: $white;
+			text-shadow: none;
+			background: rgba(255, 255, 255, 0.1);
+			@include roundedCorners(50);
+			padding: 15px;
+		}
+	}
+	h3 {
+		margin: 0 0 0.5rem 0;
+		line-height: 100%;
+		font-size: 1.6rem;
+	}
+	h4 {
+		margin: 0;
+		font-size: 0.75rem;
+	}
+}
+
+/******** 10.10 Top Rated Items ********/
+.top-items-container {
+	.top-item-img {
+		max-height: 180px;
+		margin: auto;
+		display: flex;
+	}
+	.top-item-details {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		h6 {
+			margin: 15px 0 10px 0;
+			color: $font-color-light;
+		}
+		.rating-block {
+			margin: 0 auto 10px auto;
+			width: 124px !important;
+			display: flex;
+			align-items: center;
+			img {
+				width: 16px;
+				height: 16px;
+			}
+			.rating-count {
+				font-size: 14px;
+				margin: 0 0 0 3px;
+				font-weight: 300;
+				color: $font-color-light;
+			}
+		}
+	}
+}
+
+/******** 10.11 Polls ********/
+.polls-container {
+	p {
+		color: $font-color-light;
+		font-size: 0.75rem;
+		margin: 0 0 1rem 0;
+	}
+	.poll-block {
+		margin: 0 0 1.5rem 0;
+		.poll-block-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin: 0;
+			.score {
+				font-size: 0.65rem;
+			}
+		}
+		.progress {
+			.progress-bar {
+				font-size: 0.65rem;
+			}
+		}
+	}
+}
+
+/******** 10.12 Timeline Activity ********/
+.timeline-activity {
+	margin: 0;
+	.activity-log {
+		padding-left: 1.8rem;
+		padding-bottom: 1.5rem;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		&:before {
+			content: "";
+			position: absolute;
+			top: 5px;
+			left: 0px;
+			background: $primary;
+			border: 3px solid $light-color;
+			width: 15px;
+			height: 15px;
+			@include roundedCorners(50);
+			z-index: 1;
+		}
+		&:after {
+			content: "";
+			position: absolute;
+			left: 7px;
+			top: 10px;
+			border-left: 1px dashed $border-bg;
+			height: 100%;
+			width: 1px;
+		}
+		.log-name {
+			font-weight: 600;
+		}
+		.log-details {
+			font-size: 0.875rem;
+			color: $font-color-light;
+		}
+		.log-time {
+			color: $font-color-light;
+			margin-left: 0.5rem;
+		}
+		&:last-child {
+			padding-bottom: 0;
+		}
+	}
+}
+
+/******** 10.13 Chat Widget ********/
+.chats {
+	position: relative;
+	padding: 0;
+	li {
+		margin-bottom: 25px;
+		&.chats-left,
+		&.chats-right {
+			position: relative;
+		}
+		img {
+			width: 50px;
+			height: 50px;
+			@include roundedCorners(50);
+		}
+		.chats-avatar {
+			float: left;
+		}
+		&.chats-right {
+			> .chats-avatar {
+				float: right;
+			}
+		}
+		.chats-name {
+			font-size: 0.875rem;
+			text-align: center;
+			margin-top: 5px;
+			color: $font-color-light;
+		}
+		.chats-hour {
+			margin: 0 0 0 70px;
+			padding: 2px;
+			margin-bottom: 20px;
+			font-size: 0.65rem;
+			> span {
+				font-size: 0.825rem;
+				color: $green;
+			}
+		}
+		.chats-text {
+			margin: 0 0 0 70px;
+			padding: 15px;
+			@include roundedCorners(20);
+			background-color: $light-color;
+			left: 15px;
+			line-height: 170%;
+			&:before {
+				content: "";
+				position: absolute;
+				width: 0;
+				height: 0;
+				top: 28px;
+				left: 52px;
+				border: 10px solid;
+				border-color: transparent $light-color transparent transparent;
+			}
+		}
+		&.chats-right {
+			> .chats-text {
+				text-align: right;
+				right: 16px;
+				margin: 0 70px 0 0;
+				background-color: $light-color;
+				&:before {
+					left: auto;
+					right: 52px;
+					border-color: transparent transparent transparent $light-color;
+				}
+			}
+			> .chats-hour {
+				text-align: right;
+				margin: 0 70px 0 0;
+			}
+		}
+	}
+}
+
+/******** 10.14 Customer Rating ********/
+ul.customer-rating {
+	li {
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: flex-start;
+		.customer {
+			margin-right: 10px;
+			img {
+				width: 48px;
+				height: 48px;
+				@include roundedCorners(30);
+			}
+		}
+		.customer-review {
+			.stars {
+				margin: 10px 0 15px 0;
+				width: 100%;
+				img {
+					width: 12px;
+					height: 12px;
+				}
+			}
+			h5 {
+				margin: 0 0 9px 0;
+				font-size: 0.875rem;
+			}
+			h6.by {
+				margin: 0 0 10px 0;
+				font-size: 0.8rem;
+				font-weight: 400;
+				a {
+					color: $font-color-light;
+				}
+			}
+			p {
+				margin: 0 0 5px 0;
+				line-height: 150%;
+				color: $font-color-light;
+			}
+		}
+		&:last-child {
+			margin-bottom: 0px;
+		}
+	}
+}
+
+/************************************************
+	************************************************
+				11. Bootstrap Overwrite CSS
+	************************************************
+************************************************/
+
+/************* 11.1 Badge *************/
+.badge {
+	font-weight: 400;
+	font-size: 0.75rem;
+	@include roundedCorners(2);
+}
+
+/************* 11.2 Placeholder *************/
+.placeholder {
+	background-color: rgba(0, 0, 0, 0.3);
+	&.light {
+		background-color: rgba(255, 255, 255, 0.4);
+	}
+}
+
+/************* 11.3 Accordion *************/
+.accordion {
+	background: $white;
+	.accordion-item {
+		background-color: $white;
+	}
+	.accordion-button {
+		background-color: transparent;
+		&::after {
+			background-image: none;
+			font-family: "bootstrap-icons" !important;
+			font-weight: bold;
+			font-size: 1rem;
+			content: "\f282";
+		}
+		&:not(.collapsed)::after {
+			background-image: none;
+			font-family: "bootstrap-icons" !important;
+			font-weight: bold;
+			font-size: 1rem;
+			content: "\f286";
+		}
+		&:not(.collapsed) {
+			background-color: $blue;
+			color: $white;
+		}
+	}
+	.accordion-body {
+		line-height: 150%;
+	}
+}
+
+/************* 11.4 Alerts *************/
+.alert {
+	.alert-icon {
+		font-size: 1.2rem;
+		margin: 0 10px 0 0;
+		line-height: 100%;
+		vertical-align: middle;
+	}
+	&.alert-dismissible {
+		.btn-close {
+			padding: 1.1rem 1rem;
+		}
+	}
+	&.alert-primary {
+		color: $primary;
+		background: $light-primary;
+		border-color: $light-primary-border;
+	}
+	&.alert-secondary {
+		color: $secondary;
+		background: $light-secondary;
+		border-color: $light-secondary-border;
+	}
+	&.alert-success {
+		color: $green;
+		background: $light-green;
+		border-color: $light-green-border;
+	}
+	&.alert-warning {
+		color: $yellow;
+		background: $light-yellow;
+		border-color: $light-yellow-border;
+	}
+	&.alert-danger {
+		color: $red;
+		background: $light-red;
+		border-color: $light-red-border;
+	}
+	&.alert-info {
+		color: $blue;
+		background: $light-blue;
+		border-color: $light-blue-border;
+	}
+	&.alert-light {
+		color: $font-color;
+		background: $light-color;
+		border-color: $light-color-border;
+	}
+	&.alert-dark {
+		color: $white;
+		background: $dark-color;
+		border-color: $dark-color-border;
+	}
+}
+.alert-fixed {
+	position: fixed;
+	right: 45px;
+	top: 80px;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	i {
+		font-size: 3rem;
+		margin: 0 10px 0 0;
+	}
+}
+
+/************* 11.5 Tabs *************/
+.nav-tabs {
+	.nav-link {
+		margin-bottom: -2px;
+	}
+}
+
+/************* 11.6 Cards *************/
+.card {
+	border: 0;
+	@include roundedCorners(8);
+	position: relative;
+	margin-bottom: 24px;
+	background: $white;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	.card-header {
+		padding: 1rem 1.25rem 0 1.25rem;
+		background: transparent;
+		border: 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.card-title {
+			font-size: 1.2rem;
+			margin: 0;
+			color: $font-color;
+			font-weight: 600;
+			line-height: 150%;
+		}
+	}
+	.card-body {
+		padding: 1rem 1.25rem;
+		.card-title {
+			margin: 0;
+			font-size: 1.2rem;
+			font-weight: 600;
+			line-height: 150%;
+			color: $font-color;
+		}
+		&.h-170 {
+			min-height: 170px;
+		}
+		&.h-250 {
+			min-height: 250px;
+		}
+		&.h-300 {
+			min-height: 300px;
+		}
+	}
+	.card-loading {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		top: 0;
+		@include roundedCorners(8);
+		cursor: wait;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(255, 255, 255, 0.3);
+	}
+	.card-footer {
+		padding: 1rem 1.25rem 1rem 1.25rem;
+		background: transparent;
+		border-top: 1px solid $border-bg;
+	}
+	&.border-primary {
+		border: 1px solid $primary;
+	}
+	&.border-secondary {
+		border: 1px solid $secondary;
+	}
+	&.border-red {
+		border: 1px solid $red;
+	}
+	&.border-green {
+		border: 1px solid $green;
+	}
+	&.border-blue {
+		border: 1px solid $blue;
+	}
+	&.border-yellow {
+		border: 1px solid $yellow;
+	}
+}
+.card-img,
+.card-img-top {
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+.card-img,
+.card-img-bottom {
+	border-bottom-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+/************* 11.7 Buttons *************/
+button {
+	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+	&:focus:not(:focus-visible) {
+		outline: none;
+		box-shadow: none;
+	}
+}
+.btn {
+	@include roundedCorners(4);
+	border: 0;
+	font-size: 0.9rem;
+	font-weight: 400;
+	padding: 0.5rem 1.25rem;
+	i {
+		font-size: 1.3rem;
+		margin: 0 3px 0 0;
+		line-height: 100%;
+		vertical-align: middle;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		outline: 0;
+		box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25%);
+	}
+	&.btn-rounded {
+		@include roundedCorners(50);
+	}
+}
+.btn-lg {
+	padding: 0.9rem 1.75rem;
+	font-size: 1rem;
+}
+
+/************* 11.8 Button Primary *************/
+.btn-primary {
+	color: $white;
+	background: $primary;
+	border: 1px solid $primary;
+	&:hover {
+		color: $white;
+		background: $dark-primary;
+		border: 1px solid $dark-primary;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-primary;
+		border: 1px solid $dark-primary;
+		box-shadow: 0 0 0 0.2rem rgba(5, 69, 165, 0.2%);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-primary;
+		border: 1px solid $dark-primary;
+		box-shadow: 0 0 0 0.2rem rgba(5, 69, 165, 0.2%);
+		&:focus {
+			color: $white;
+
+			background: $dark-primary;
+			border: 1px solid $dark-primary;
+			box-shadow: 0 0 0 0.2rem rgba(5, 69, 165, 0.2%);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($primary, 10%);
+		background: lighten($primary, 15%);
+	}
+}
+.btn-outline-primary {
+	color: $primary;
+	border: 1px solid $primary;
+	&:hover {
+		color: $white;
+		background: $dark-primary;
+		border: 1px solid $dark-primary;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-primary;
+		border: 1px solid $dark-primary;
+		box-shadow: 0 0 0 0.2rem rgba(5, 69, 165, 0.2%);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-primary;
+		border: 1px solid $dark-primary;
+		box-shadow: 0 0 0 0.2rem rgba(5, 69, 165, 0.2%);
+		&:focus {
+			color: $white;
+
+			background: $dark-primary;
+			border: 1px solid $dark-primary;
+			box-shadow: 0 0 0 0.2rem rgba(5, 69, 165, 0.2%);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($primary, 10%);
+		background: lighten($primary, 15%);
+	}
+}
+
+/************* 11.9 Button Secondary *************/
+.btn-secondary {
+	color: $white;
+	background: $secondary;
+	border: 1px solid $secondary;
+	&:hover {
+		color: $white;
+		background: $dark-secondary;
+		border: 1px solid $dark-secondary;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-secondary;
+		border: 1px solid $dark-secondary;
+		box-shadow: 0 0 0 0.2rem rgba(40, 43, 46, 0.2%);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-secondary;
+		border: 1px solid $dark-secondary;
+		box-shadow: 0 0 0 0.2rem rgba(40, 43, 46, 0.2%);
+		&:focus {
+			color: $white;
+
+			background: $dark-secondary;
+			border: 1px solid $dark-secondary;
+			box-shadow: 0 0 0 0.2rem rgba(40, 43, 46, 0.2%);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($secondary, 10%);
+		background: lighten($secondary, 15%);
+	}
+}
+.btn-outline-secondary {
+	color: $secondary;
+	border: 1px solid $secondary;
+	&:hover {
+		color: $white;
+		background: $dark-secondary;
+		border: 1px solid $dark-secondary;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-secondary;
+		border: 1px solid $dark-secondary;
+		box-shadow: 0 0 0 0.2rem rgba(40, 43, 46, 0.2%);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-secondary;
+		border: 1px solid $dark-secondary;
+		box-shadow: 0 0 0 0.2rem rgba(40, 43, 46, 0.2%);
+		&:focus {
+			color: $white;
+
+			background: $dark-secondary;
+			border: 1px solid $dark-secondary;
+			box-shadow: 0 0 0 0.2rem rgba(40, 43, 46, 0.2%);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($secondary, 10%);
+		background: lighten($secondary, 15%);
+	}
+}
+
+/************* 11.10 Button Info *************/
+.btn-info {
+	color: $white;
+	background: $blue;
+	border: 1px solid $blue;
+	&:hover {
+		color: $white;
+		background: $dark-blue;
+		border: 1px solid $dark-blue;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-blue;
+		border: 1px solid $dark-blue;
+		box-shadow: 0 0 0 0.2rem rgba(45, 74, 237, 0.25%);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-blue;
+		border: 1px solid $dark-blue;
+		box-shadow: 0 0 0 0.2rem rgba(45, 74, 237, 0.25%);
+		&:focus {
+			color: $white;
+
+			background: $dark-blue;
+			border: 1px solid $dark-blue;
+			box-shadow: 0 0 0 0.2rem rgba(45, 74, 237, 0.25%);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($blue, 10%);
+		background: lighten($blue, 15%);
+	}
+}
+.btn-outline-info {
+	color: $blue;
+	border: 1px solid $blue;
+	&:hover {
+		color: $white;
+		background: $dark-blue;
+		border: 1px solid $dark-blue;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-blue;
+		border: 1px solid $dark-blue;
+		box-shadow: 0 0 0 0.2rem rgba(45, 74, 237, 0.25%);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-blue;
+		border: 1px solid $dark-blue;
+		box-shadow: 0 0 0 0.2rem rgba(45, 74, 237, 0.25%);
+		&:focus {
+			color: $white;
+
+			background: $dark-blue;
+			border: 1px solid $dark-blue;
+			box-shadow: 0 0 0 0.2rem rgba(45, 74, 237, 0.25%);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($blue, 10%);
+		background: lighten($blue, 15%);
+	}
+}
+
+/************* 11.11 Button Danger *************/
+.btn-danger {
+	color: $white;
+	background: $red;
+	border: 1px solid $red;
+	&:hover {
+		color: $white;
+		background: $dark-red;
+		border: 1px solid $dark-red;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-red;
+		border: 1px solid $dark-red;
+		box-shadow: 0 0 0 0.2rem rgba(218, 8, 0, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-red;
+		border: 1px solid $dark-red;
+		box-shadow: 0 0 0 0.2rem rgba(218, 8, 0, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-red;
+			border: 1px solid $dark-red;
+			box-shadow: 0 0 0 0.2rem rgba(218, 8, 0, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($red, 10%);
+		background: lighten($red, 15%);
+	}
+}
+.btn-outline-danger {
+	color: $red;
+	border: 1px solid $red;
+	&:hover {
+		color: $white;
+		background: $dark-red;
+		border: 1px solid $dark-red;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-red;
+		border: 1px solid $dark-red;
+		box-shadow: 0 0 0 0.2rem rgba(218, 8, 0, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-red;
+		border: 1px solid $dark-red;
+		box-shadow: 0 0 0 0.2rem rgba(218, 8, 0, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-red;
+			border: 1px solid $dark-red;
+			box-shadow: 0 0 0 0.2rem rgba(218, 8, 0, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($red, 10%);
+		background: lighten($red, 15%);
+	}
+}
+
+/************* 11.12 Button Warning *************/
+.btn-warning {
+	color: $white;
+	background: $yellow;
+	border: 1px solid $yellow;
+	&:hover {
+		color: $white;
+		background: $dark-yellow;
+		border: 1px solid $dark-yellow;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-yellow;
+		border: 1px solid $dark-yellow;
+		box-shadow: 0 0 0 0.2rem rgba(197, 147, 11, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-yellow;
+		border: 1px solid $dark-yellow;
+		box-shadow: 0 0 0 0.2rem rgba(197, 147, 11, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-yellow;
+			border: 1px solid $dark-yellow;
+			box-shadow: 0 0 0 0.2rem rgba(197, 147, 11, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($yellow, 10%);
+		background: lighten($yellow, 15%);
+	}
+}
+.btn-outline-warning {
+	color: $yellow;
+	border: 1px solid $yellow;
+	&:hover {
+		color: $white;
+		background: $dark-yellow;
+		border: 1px solid $dark-yellow;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-yellow;
+		border: 1px solid $dark-yellow;
+		box-shadow: 0 0 0 0.2rem rgba(197, 147, 11, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-yellow;
+		border: 1px solid $dark-yellow;
+		box-shadow: 0 0 0 0.2rem rgba(197, 147, 11, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-yellow;
+			border: 1px solid $dark-yellow;
+			box-shadow: 0 0 0 0.2rem rgba(197, 147, 11, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($yellow, 10%);
+		background: lighten($yellow, 15%);
+	}
+}
+
+/************* 11.13 Button Success *************/
+.btn-success {
+	color: $white;
+	background: $green;
+	border: 1px solid $green;
+	&:hover {
+		color: $white;
+		background: $dark-green;
+		border: 1px solid $dark-green;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-green;
+		border: 1px solid $dark-green;
+		box-shadow: 0 0 0 0.2rem rgba(18, 129, 86, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-green;
+		border: 1px solid $dark-green;
+		box-shadow: 0 0 0 0.2rem rgba(18, 129, 86, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-green;
+			border: 1px solid $dark-green;
+			box-shadow: 0 0 0 0.2rem rgba(18, 129, 86, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($green, 10%);
+		background: lighten($green, 15%);
+	}
+}
+.btn-outline-success {
+	color: $green;
+	border: 1px solid $green;
+	&:hover {
+		color: $white;
+		background: $dark-green;
+		border: 1px solid $dark-green;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-green;
+		border: 1px solid $dark-green;
+		box-shadow: 0 0 0 0.2rem rgba(18, 129, 86, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-green;
+		border: 1px solid $dark-green;
+		box-shadow: 0 0 0 0.2rem rgba(18, 129, 86, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-green;
+			border: 1px solid $dark-green;
+			box-shadow: 0 0 0 0.2rem rgba(18, 129, 86, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($green, 10%);
+		background: lighten($green, 15%);
+	}
+}
+
+/************* 11.14 Button Light *************/
+.btn-light {
+	color: $black;
+	background: $light-color;
+	border: 1px solid $light-color;
+	&:hover {
+		color: $black;
+		background: $light-color-dark;
+		border: 1px solid $light-color-dark;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $black;
+		background: $light-color-dark;
+		border: 1px solid $light-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(204, 212, 223, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $black;
+		background: $light-color-dark;
+		border: 1px solid $light-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(204, 212, 223, 0.3);
+		&:focus {
+			color: $black;
+			background: $light-color-dark;
+			border: 1px solid $light-color-dark;
+			box-shadow: 0 0 0 0.2rem rgba(204, 212, 223, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $black;
+		border: 1px solid $light-color-dark;
+		background: lighten($light-color, 10%);
+	}
+}
+.btn-outline-light {
+	color: $black;
+	border: 1px solid $light-color;
+	&:hover {
+		color: $white;
+		background: $light-color-dark;
+		border: 1px solid $light-color-dark;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $black;
+		background: $light-color-dark;
+		border: 1px solid $light-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(204, 212, 223, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $black;
+		background: $light-color-dark;
+		border: 1px solid $light-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(204, 212, 223, 0.3);
+		&:focus {
+			color: $black;
+			background: $light-color-dark;
+			border: 1px solid $light-color-dark;
+			box-shadow: 0 0 0 0.2rem rgba(204, 212, 223, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $black;
+		border: 1px solid lighten($light-color, 5%);
+		background: lighten($light-color, 10%);
+	}
+}
+
+/************* 11.15 Button Dark *************/
+.btn-dark {
+	color: $white;
+	background: $dark-color;
+	border: 1px solid $dark-color;
+	&:hover {
+		color: $white;
+		background: $dark-color-dark;
+		border: 1px solid $dark-color-dark;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-color-dark;
+		border: 1px solid $dark-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(140, 149, 159, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-color-dark;
+		border: 1px solid $dark-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(140, 149, 159, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-color-dark;
+			border: 1px solid $dark-color-dark;
+			box-shadow: 0 0 0 0.2rem rgba(140, 149, 159, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($dark-color, 10%);
+		background: lighten($dark-color, 15%);
+	}
+}
+.btn-outline-dark {
+	color: $black;
+	border: 1px solid $dark-color;
+	&:hover {
+		color: $white;
+		background: $dark-color-dark;
+		border: 1px solid $dark-color-dark;
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $white;
+		background: $dark-color-dark;
+		border: 1px solid $dark-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(140, 149, 159, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $white;
+		background: $dark-color-dark;
+		border: 1px solid $dark-color-dark;
+		box-shadow: 0 0 0 0.2rem rgba(140, 149, 159, 0.3);
+		&:focus {
+			color: $white;
+			background: $dark-color-dark;
+			border: 1px solid $dark-color-dark;
+			box-shadow: 0 0 0 0.2rem rgba(140, 149, 159, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $white;
+		border: 1px solid lighten($dark-color, 10%);
+		background: lighten($dark-color, 15%);
+	}
+}
+
+/************* 11.16 Button White *************/
+.btn-white {
+	color: $black;
+	background: $white;
+	&:hover {
+		color: $black;
+		border: 1px solid darken($white, 10%);
+		background: darken($white, 5%);
+	}
+	.btn-check:focus + &,
+	&:focus {
+		color: $black;
+		background: darken($white, 5%);
+		border: 1px solid darken($white, 10%);
+		box-shadow: 0 0 0 0.2rem rgba(138, 157, 177, 0.3);
+	}
+	&.dropdown-toggle.show,
+	.btn-check:checked + &,
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		color: $black;
+		background: darken($white, 5%);
+		border: 1px solid darken($white, 10%);
+		box-shadow: 0 0 0 0.2rem rgba(138, 157, 177, 0.3);
+		&:focus {
+			color: $black;
+			background: darken($white, 5%);
+			border: 1px solid darken($white, 10%);
+			box-shadow: 0 0 0 0.2rem rgba(138, 157, 177, 0.3);
+		}
+	}
+	&:disabled,
+	&.disabled,
+	fieldset:disabled & {
+		pointer-events: none;
+		color: $black;
+		border: 1px solid darken($white, 10%);
+		background: darken($white, 5%);
+	}
+}
+
+/************* 11.17 Dropdown Menu *************/
+.dropdown-menu {
+	background-color: $white;
+	border: 0;
+	@include roundedCorners(8);
+	width: 12rem;
+	box-shadow: 0 10px 10px rgba(0, 10, 10, 0.1);
+	&:before {
+		position: absolute;
+		top: -9px;
+		left: 12px;
+		content: "";
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-bottom: 9px solid $white;
+	}
+	&.dropdown-menu-end {
+		right: 0;
+		&:before {
+			right: 15px;
+			left: auto;
+			top: -9px;
+		}
+	}
+	&.mini {
+		width: 46px;
+		min-width: auto;
+	}
+	&.sm {
+		width: 15rem;
+		min-width: auto;
+	}
+	&.md {
+		width: 20rem;
+	}
+	&.lrg {
+		width: 24rem;
+	}
+	.dropdown-item {
+		padding: 0.5rem 1rem 0.5rem 1rem;
+		line-height: 100%;
+		position: relative;
+		color: $font-color;
+		&:hover {
+			background: $bg-shade2;
+		}
+		&:first-child {
+			@include roundedCorners(0);
+		}
+		&:last-child {
+			@include roundedCorners(0);
+		}
+		&.active-page {
+			background: $bg-shade3;
+			pointer-events: none;
+			cursor: not-allowed;
+		}
+	}
+	.dropdown-divider {
+		border-top: 1px solid $bg-shade2;
+	}
+	.dropdown-menu-header {
+		padding: 0.7rem 1rem;
+		margin-bottom: 0.5rem;
+		background: $bg-shade2;
+		color: $font-color;
+		font-size: 0.925rem;
+		font-weight: bold;
+	}
+	&.white-dropdown {
+		background-color: $white;
+		&:before {
+			border-bottom: 9px solid $white;
+		}
+	}
+}
+.dropdown-toggle {
+	&::after {
+		vertical-align: middle;
+	}
+	&.sub-nav-link {
+		&::after {
+			float: right;
+			margin: 0.15rem 0 0 0;
+			border-right: 0;
+			border-left: 5px solid;
+			border-top: 4px solid transparent;
+			border-bottom: 4px solid transparent;
+		}
+	}
+}
+
+/************* 11.18 List Group *************/
+.list-group {
+	.list-group-item {
+		padding: 0.75rem 1rem;
+		background-color: rgba(0, 0, 0, 0.01);
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		+ .list-group-item {
+			border-top-width: 0;
+		}
+	}
+}
+
+/************* 11.19 Carousel *************/
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+	width: 4rem;
+	height: 4rem;
+}
+
+/******** 11.20 Form Controls ********/
+.form-label {
+	margin-bottom: 0.5rem;
+	font-size: 0.9rem;
+	color: $label-color;
+}
+.form-control {
+	border: 1px solid $form-border;
+	@include roundedCorners(4);
+	color: $input-color;
+	font-size: 0.9rem;
+	min-height: 40px;
+	background-color: $form-bg;
+	&:hover {
+		border: 1px solid $form-hover-border;
+	}
+	&:focus {
+		border-color: $form-hover-border;
+		box-shadow: none;
+		@include roundedCorners(2);
+		outline: 0 !important;
+		outline-color: $form-hover-border !important;
+	}
+	&:disabled {
+		opacity: 0.7;
+	}
+}
+.form-select {
+	border: 1px solid $form-border;
+	@include roundedCorners(4);
+	color: $input-color;
+	font-size: 0.9rem;
+	min-height: 40px;
+	background-color: $form-bg;
+	&:hover {
+		border: 1px solid $form-hover-border;
+	}
+	&:focus {
+		border-color: $form-hover-border;
+		box-shadow: none;
+		@include roundedCorners(2);
+		outline: auto !important;
+		outline-color: $form-hover-border !important;
+	}
+	&:disabled {
+		opacity: 0.7;
+	}
+}
+.col-form-label {
+	padding-top: calc(0.595rem + 1px);
+	padding-bottom: calc(0.595rem + 1px);
+	min-height: 40px;
+}
+.input-group-text {
+	border: 1px solid $form-border;
+	background: $white;
+	@include roundedCorners(4);
+	font-size: 1rem;
+	min-height: 40px;
+	margin: 0;
+	i {
+		color: $input-color;
+	}
+}
+.input-group {
+	.btn {
+		@include roundedCorners(4);
+	}
+}
+.form-control[type="file"]:not(:disabled):not([readonly]) {
+	font-size: 1rem;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	border: 1px solid $green;
+	-webkit-text-fill-color: $input-color;
+	box-shadow: 0 0 0px 100px rgba(0, 0, 0, 0.8) inset;
+}
+
+/******** 11.21 File Upload ********/
+.form-control::-webkit-file-upload-button {
+	background: $white;
+	font-size: 1rem;
+	min-height: 40px;
+	margin: -1rem 1rem -1rem -0.75rem;
+	color: $font-color;
+	line-height: 40px;
+}
+
+/******** 11.22 Checkbox and Radio ********/
+.form-check {
+	margin: 0 1rem 0 0;
+	min-height: 2rem;
+	.form-check-label {
+		font-weight: 400;
+		font-size: 0.9rem;
+		margin: 5px 0 0 10px;
+		color: $input-color;
+	}
+	.form-check-input {
+		border-color: $form-border;
+		background-color: $form-bg;
+		&:checked {
+			background-color: $blue;
+			border-color: $blue;
+		}
+		&:disabled ~ .form-check-label,
+		[disabled] ~ .form-check-label {
+			opacity: 0.7;
+		}
+	}
+	.form-check-input[type="checkbox"] {
+		@include roundedCorners(2);
+		width: 1.5rem !important;
+		height: 1.5rem !important;
+		margin-top: 0.15em;
+		min-height: auto;
+		padding: 0;
+	}
+	.form-check-input[type="radio"] {
+		@include roundedCorners(50);
+		width: 1.5rem !important;
+		height: 1.5rem !important;
+		margin-top: 0.15em;
+		min-height: auto;
+		padding: 0;
+	}
+	&.form-switch {
+		min-height: 1.5rem;
+		margin: 0 0 10px 0;
+		.form-check-label {
+			margin: 0;
+		}
+		.form-check-input {
+			@include roundedCorners(30);
+			width: 2em !important;
+			height: 1em !important;
+		}
+	}
+}
+
+/******** 11.23 Modal ********/
+.modal {
+	.modal-content {
+		@include roundedCorners(10);
+		border: 0;
+		@extend .shade-white;
+	}
+	.modal-header {
+		color: $black;
+		border: 0;
+		padding: 1rem 1.2rem;
+		@include roundedCornersAll(10px, 10px, 0, 0);
+		.btn-close {
+			background: url(../img/cancel.svg) center/1em auto no-repeat;
+		}
+	}
+	.modal-body {
+		padding: 1.2rem;
+	}
+	.modal-footer {
+		border-top: 1px solid $modal-border;
+		padding: 0.5rem 1.2rem;
+	}
+}
+.modal-backdrop {
+	&.show {
+		opacity: 0.7;
+	}
+}
+
+/******** 11.24 Tables ********/
+.table {
+	color: $table-color;
+	font-size: 0.85rem;
+	.flag-img {
+		width: 18px;
+		height: 18px;
+		margin: 0 10px 0 0;
+	}
+	.flag-img-lg {
+		width: 24px;
+		height: 24px;
+		margin: 0 7px 0 0;
+	}
+	> thead {
+		td,
+		th {
+			font-weight: bold;
+			font-size: 0.925rem;
+		}
+	}
+	&.v-middle {
+		vertical-align: middle;
+	}
+	.user-details {
+		display: flex;
+		align-items: center;
+		img {
+			width: 60px;
+			height: 60px;
+			margin: 0 10px 0 0;
+			@include roundedCorners(50);
+		}
+	}
+	.badge.min-70 {
+		min-width: 70px;
+	}
+	.badge.min-90 {
+		min-width: 90px;
+	}
+	.td-status {
+		i {
+			font-size: 1.5rem;
+			vertical-align: middle;
+			margin: 0 5px 0 0;
+		}
+	}
+	.actions {
+		display: flex;
+		align-items: center;
+		a {
+			width: 36px;
+			height: 36px;
+			font-size: 1rem;
+			margin: 3px;
+			border: 1px solid $table-border;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			-webkit-transition: 0.3s ease;
+			transition: 0.3s ease;
+		}
+	}
+	.media-box {
+		display: flex;
+		align-items: center;
+		img.media-avatar {
+			height: 60px;
+			margin: 0 15px 0 0;
+		}
+		img.media-avatar-lg {
+			height: 90px;
+			margin: 0 15px 0 0;
+		}
+		.media-box-body {
+			flex: 1;
+			p {
+				color: $font-color;
+				padding: 5px 0;
+			}
+		}
+	}
+}
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+	color: $table-color;
+}
+.table > :not(:first-child) {
+	border-top: 3px solid $table-border;
+}
+
+/******** 11.25 Pagination ********/
+.page-item {
+	&.disabled .page-link {
+		background-color: rgba(255, 255, 255, 0.02%);
+		border: 1px solid $border-bg;
+		color: $font-color;
+	}
+	.page-link {
+		padding: 0.594rem 1.25rem;
+		font-size: 0.9rem;
+		&:focus {
+			box-shadow: none;
+		}
+	}
+	&:first-child .page-link {
+		border-top-left-radius: 20px;
+		border-bottom-left-radius: 20px;
+	}
+	&:last-child .page-link {
+		border-top-right-radius: 20px;
+		border-bottom-right-radius: 20px;
+	}
+	&.active .page-link {
+		@extend .shade-blue;
+		border: 1px solid $blue;
+	}
+}
+.page-link {
+	background-color: rgba(255, 255, 255, 0.05%);
+	border: 1px solid $border-bg;
+	color: $font-color;
+	&:hover,
+	&:focus {
+		background-color: rgba(0, 0, 0, 0.05%);
+		border: 1px solid 1px solid $border-bg;
+		color: $font-color;
+	}
+}
+
+/******** 11.26 Progress ********/
+.progress {
+	background-color: rgba(0, 0, 0, 0.1);
+	@include roundedCorners(2);
+	&.thin {
+		height: 3px;
+	}
+	&.small {
+		height: 5px;
+	}
+	&.medium {
+		height: 8px;
+	}
+	&.lg {
+		height: 10px;
+	}
+}
+
+/******** 11.27 Spinners ********/
+.spinner-w1 {
+	width: 1rem;
+	height: 1rem;
+}
+.spinner-w2 {
+	width: 2rem;
+	height: 2rem;
+}
+.spinner-w3 {
+	width: 3rem;
+	height: 3rem;
+}
+.spinner-w5 {
+	width: 5rem;
+	height: 5rem;
+}
+
+/******** 11.28 Off Canvas ********/
+.offcanvas-start {
+	border-right: 0;
+}
+.offcanvas-end {
+	border-left: 0;
+}
+.offcanvas-bottom {
+	border-top: 0;
+}
+.offcanvas-top {
+	border-bottom: 0;
+}
+
+/******** 11.29 Off Canvas ********/
+.popover {
+	border: 1px solid $border-bg;
+}
+.popover-header {
+	background: $body-bg;
+	border-bottom: 1px solid $border-bg;
+	padding: 10px 15px;
+	font-weight: 600;
+}
+
+/************* 11.30 Row Gutters *************/
+.gutters {
+	margin-right: -10px;
+	margin-left: -10px;
+}
+.gutters > .col,
+.gutters > [class*="col-"] {
+	padding-right: 10px;
+	padding-left: 10px;
+}

@@ -17,18 +17,66 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="MimeKit" Version="4.12.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\" />
+    <Folder Include="wwwroot\js\admin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\admin\.DS_Store" />
+    <None Include="wwwroot\css\admin\bootstrap\.DS_Store" />
+    <None Include="wwwroot\css\admin\bootstrap\tests\.DS_Store" />
+    <None Include="wwwroot\fonts\admin\.DS_Store" />
+    <None Include="wwwroot\fonts\admin\bootstrap\.DS_Store" />
+    <None Include="wwwroot\images\admin\.DS_Store" />
+    <None Include="wwwroot\images\admin\cards\.DS_Store" />
+    <None Include="wwwroot\images\admin\flags\.DS_Store" />
+    <None Include="wwwroot\images\admin\food\.DS_Store" />
+    <None Include="wwwroot\vendor\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\custom\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\custom\analytics\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\custom\crm\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\custom\ecommerce\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\custom\sales\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\custom\tasks\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\examples\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\examples\area\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\examples\candlestick\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\examples\column\.DS_Store" />
+    <None Include="wwwroot\vendor\apex\examples\pie\.DS_Store" />
+    <None Include="wwwroot\vendor\bs-select\.DS_Store" />
+    <None Include="wwwroot\vendor\calendar\.DS_Store" />
+    <None Include="wwwroot\vendor\calendar\css\.DS_Store" />
+    <None Include="wwwroot\vendor\circliful\.DS_Store" />
+    <None Include="wwwroot\vendor\datatables\.DS_Store" />
+    <None Include="wwwroot\vendor\datatables\custom\.DS_Store" />
+    <None Include="wwwroot\vendor\jvectormap\.DS_Store" />
+    <None Include="wwwroot\vendor\jvectormap\custom\.DS_Store" />
+    <None Include="wwwroot\vendor\megamenu\.DS_Store" />
+    <None Include="wwwroot\vendor\megamenu\js\.DS_Store" />
+    <None Include="wwwroot\vendor\morris\.DS_Store" />
+    <None Include="wwwroot\vendor\morris\custom\.DS_Store" />
+    <None Include="wwwroot\vendor\overlay-scroll\.DS_Store" />
+    <None Include="wwwroot\vendor\particles\.DS_Store" />
+    <None Include="wwwroot\vendor\summernote\.DS_Store" />
   </ItemGroup>
 
 </Project>

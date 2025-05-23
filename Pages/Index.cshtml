@@ -1,10 +1,418 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Section Begin -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="hero-text">
+                    <h1>Sona Hotel</h1>
+                    <p>
+                        Trải nghiệm sự kết hợp hoàn hảo giữa sang trọng, thoải mái và sự hiếu khách. Đặt phòng ngay
+                        hôm nay và khám phá lý do tại sao Sona Hotel là điểm đến tối ưu cho những du khách
+                        đang tìm kiếm trải nghiệm khó quên.
+                    </p>
+                    <a href="./rooms.html" class="primary-btn">Khám phá ngay</a>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
+                <div class="booking-form">
+                    <h3>Đặt phòng ngay</h3>
+                    <form action="./rooms.html">
+                        <div class="check-date">
+                            <label for="date-in">Nhận phòng:</label>
+                            <input type="text" class="date-input" id="date-in">
+                            <i class="icon_calendar"></i>
+                        </div>
+                        <div class="check-date">
+                            <label for="date-out">Trả phòng:</label>
+                            <input type="text" class="date-input" id="date-out">
+                            <i class="icon_calendar"></i>
+                        </div>
+                        <div class="select-option">
+                            <label for="guest">Số lượng khách:</label>
+                            <select id="guest">
+                                <option value="">1 Người lớn</option>
+                                <option value="">2 Người lớn</option>
+                                <option value="">3 Người lớn</option>
+                            </select>
+                        </div>
+                        <div class="select-option">
+                            <label for="room">Phòng:</label>
+                            <select id="room">
+                                <option value="">1 Phòng</option>
+                                <option value="">2 Phòng</option>
+                                <option value="">3 Phòng</option>
+                            </select>
+                        </div>
+                        <button type="submit">Đặt phòng</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-slider owl-carousel">
+        <div class="hs-item set-bg" data-setbg="@Url.Content("~/images/client/hero/hero-1.jpg")"></div>
+        <div class="hs-item set-bg" data-setbg="@Url.Content("~/images/client/hero/hero-2.jpg")"></div>
+        <div class="hs-item set-bg" data-setbg="@Url.Content("~/images/client/hero/hero-3.jpg")"></div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- About Us Section Begin -->
+<section class="aboutus-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="about-text">
+                    <div class="section-title">
+                        <span>Về chúng tôi</span>
+                        <h2>Tầm Nhìn và Sứ Mệnh <br />Sona Hotel</h2>
+                    </div>
+                    <p class="f-para">
+                        Tại Sona A Luxury Hotel, chúng tôi tin rằng mỗi khách hàng đều xứng đáng nhận
+                        được những điều tốt đẹp nhất. Sự hài lòng của bạn là động lực thúc đẩy chúng tôi không ngừng
+                        cải tiến và nâng cao chất lượng dịch vụ. Chúng tôi cam kết cung cấp những trải nghiệm độc
+                        đáo, không chỉ đáp ứng mà còn vượt qua mong đợi của bạn.
+                    </p>
+                    <p class="s-para"></p>
+                    <a href="#" class="primary-btn about-btn">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-pic">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <img src="~/images/client/about/about-1.jpg" alt="">
+                        </div>
+                        <div class="col-sm-6">
+                            <img src="~/images/client/about/about-2.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About Us Section End -->
+<!-- Services Section End -->
+<section class="services-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <span>Chúng tôi làm gì</span>
+                    <h2>Khám phá dịch vụ của chúng tôi</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="service-item">
+                    <i class="fa-solid fa-route fa-3x"></i>
+                    <h4>Kế hoạch du lịch</h4>
+                    <p>
+                        Tại Sona Hotel, chúng tôi cung cấp dịch vụ Kế hoạch du lịch cá nhân hóa để giúp bạn
+                        tối ưu hóa thời gian và tận hưởng chuyến đi của mình.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="service-item">
+                    <i class="fa-solid fa-utensils fa-3x"></i>
+                    <h4>Dịch vụ ăn uống</h4>
+                    <p>
+                        Tại Sona Hotel, chúng tôi mang đến trải nghiệm ẩm thực tuyệt vời
+                        với nhà hàng sang trọng phục vụ thực đơn đa dạng từ món địa phương đến quốc tế.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="service-item">
+                    <i class="fa-solid fa-bed fa-3x"></i>
+                    <h4>Dọn phòng</h4>
+                    <p>
+                        Tại Sona Hotel, dịch vụ dọn phòng của chúng tôi nhanh chóng và chuyên nghiệp, giúp
+                        phòng ốc của bạn luôn sạch để bạn thoải mái tận hưởng kỳ nghỉ.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="service-item">
+                    <i class="fa-solid fa-shirt fa-3x"></i>
+                    <h4>Giặt ủi</h4>
+                    <p>
+                        Tại Sona Hotel, dịch vụ giặt ủi của chúng tôi nhanh chóng và chuyên nghiệp, giúp
+                        quần áo của bạn luôn sạch sẽ và thơm tho để bạn thoải mái tận hưởng kỳ nghỉ.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="service-item">
+                    <i class="fa-solid fa-car fa-3x"></i>
+                    <h4>Thuê tài xế</h4>
+                    <p>
+                        Tại Sona Hotel, dịch vụ thuê tài xế của chúng tôi cung cấp phương tiện di chuyển an
+                        toàn và tiện lợi, giúp bạn khám phá thành phố một cách thoải mái và dễ dàng.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="service-item">
+                    <i class="fa-solid fa-martini-glass-citrus fa-3x"></i>
+                    <h4>Quầy bar & Đồ uống</h4>
+                    <p>
+                        Tại Sona Hotel, quầy bar cung cấp đa dạng đồ uống từ cocktail đến đồ
+                        uống địa phương, mang đến cho bạn không gian thư giãn lý tưởng sau một ngày khám phá.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Services Section End -->
+<!-- Home Room Section Begin -->
+<section class="hp-room-section">
+    <div class="container-fluid">
+        <div class="hp-room-items">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="hp-room-item set-bg" data-setbg="@Url.Content("~/images/client/room/room-b1.jpg")">
+                        <div class="hr-text">
+                            <h3>Phòng Đơn</h3>
+                            <h2>129$<span>/Đêm</span></h2>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="r-o">Size:</td>
+                                        <td>30 ft</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Dung tích:</td>
+                                        <td>Tối đa 5 người</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Giường:</td>
+                                        <td>King Beds</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Tiện ích:</td>
+                                        <td>Wifi, Tivi, Phòng tắm,...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href="./room-details.html" class="primary-btn">Tìm hiểu thêm</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="hp-room-item set-bg" data-setbg="@Url.Content("~/images/client/room/room-b2.jpg")">
+                        <div class="hr-text">
+                            <h3>Phòng Đôi</h3>
+                            <h2>159$<span>/Đêm</span></h2>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="r-o">Size:</td>
+                                        <td>30 ft</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Dung tích:</td>
+                                        <td>Tối đa 5 người</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Giường:</td>
+                                        <td>King Beds</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Tiện ích:</td>
+                                        <td>Wifi, Tivi, Phòng tắm,...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href="./room-details.html" class="primary-btn">Tìm hiểu thêm</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="hp-room-item set-bg" data-setbg="@Url.Content("~/images/client/room/room-b3.jpg")">
+                        <div class="hr-text">
+                            <h3>Phòng Cao Cấp</h3>
+                            <h2>198$<span>/Đêm</span></h2>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="r-o">Size:</td>
+                                        <td>30 ft</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Dung tích:</td>
+                                        <td>Tối đa 5 người</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Giường:</td>
+                                        <td>King Beds</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Tiện ích:</td>
+                                        <td>Wifi, Tivi, Phòng tắm,...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href="./room-details.html" class="primary-btn">Tìm hiểu thêm</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="hp-room-item set-bg" data-setbg="@Url.Content("~/images/client/room/room-b4.jpg")">
+                        <div class="hr-text">
+                            <h3>Phòng Gia Đình</h3>
+                            <h2>299$<span>/Đêm</span></h2>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="r-o">Size:</td>
+                                        <td>30 ft</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Dung tích:</td>
+                                        <td>Tối đa 5 người</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Giường:</td>
+                                        <td>King Beds</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Tiện ích:</td>
+                                        <td>Wifi, Tivi, Phòng tắm,...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href="#" class="primary-btn">Tìm hiểu thêm</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Home Room Section End -->
+<!-- Testimonial Section Begin -->
+<section class="testimonial-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <span>Lời chứng thực</span>
+                    <h2>Khách hàng nói gì ?</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="testimonial-slider owl-carousel">
+                    <div class="ts-item">
+                        <p>
+                            Dịch vụ ăn uống tại Sona Hotel thật tuyệt vời. Bữa sáng phong phú và ngon miệng, với nhiều
+                            món ăn địa phương và quốc tế. Mỗi bữa đều là một trải nghiệm ẩm thực đáng nhớ!
+                        </p>
+                        <div class="ti-author">
+                            <div class="rating">
+                                <i class="icon_star"></i>
+                                <i class="icon_star"></i>
+                                <i class="icon_star"></i>
+                                <i class="icon_star"></i>
+                                <i class="icon_star-half_alt"></i>
+                            </div>
+                            <h5> - Đào Trọng Thùy</h5>
+                        </div>
+                        <img src="~/images/client/testimonial-logo.png" alt="">
+                    </div>
+                    <div class="ts-item">
+                        <p>
+                            Phòng tại Sona Hotel thật sự xuất sắc! Rất rộng rãi, sạch sẽ và được trang trí đẹp mắt.
+                            Cảm giác như tôi đang sống trong một không gian sang trọng!
+                        </p>
+                        <div class="ti-author">
+                            <div class="rating">
+                                <i class="icon_star"></i>
+                                <i class="icon_star"></i>
+                                <i class="icon_star"></i>
+                                <i class="icon_star"></i>
+                                <i class="icon_star-half_alt"></i>
+                            </div>
+                            <h5> - Huỳnh Nhất Nguyên</h5>
+                        </div>
+                        <img src="~/images/client/testimonial-logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Testimonial Section End -->
+<!-- Blog Section Begin -->
+<section class="blog-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <span>Tin tức</span>
+                    <h2>Sự kiện & Khuyến mãi</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="blog-item set-bg" data-setbg="@Url.Content("~/images/client/blog/blog-1.jpg")">
+                    <div class="bi-text">
+                        <span class="b-tag">Khuyến mãi</span>
+                        <h4><a href="#">Du Lịch Quy Nhơn</a></h4>
+                        <div class="b-time"><i class="icon_clock_alt"></i> 03/ 11/ 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog-item set-bg" data-setbg="@Url.Content("~/images/client/blog/blog-2.jpg")">
+                    <div class="bi-text">
+                        <span class="b-tag">Sự kiện</span>
+                        <h4><a href="#">Tiệc Tri Ân Khách Hàng</a></h4>
+                        <div class="b-time"><i class="icon_clock_alt"></i> 22/ 10/ 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog-item set-bg" data-setbg="@Url.Content("~/images/client/blog/blog-3.jpg")">
+                    <div class="bi-text">
+                        <span class="b-tag">Sự kiện</span>
+                        <h4><a href="#">Đào Tạo Siêu Sao</a></h4>
+                        <div class="b-time"><i class="icon_clock_alt"></i> 09/ 11/ 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="blog-item small-size set-bg" data-setbg="@Url.Content("~/images/client/blog/blog-wide.jpg")">
+                    <div class="bi-text">
+                        <span class="b-tag">Khuyến mãi</span>
+                        <h4><a href="#">Giảm Giá Cực Sốc Phòng Gia Đình Tri Ân Khách Hàng Cũ</a></h4>
+                        <div class="b-time"><i class="icon_clock_alt"></i> 14/ 11/ 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog-item small-size set-bg" data-setbg="@Url.Content("~/images/client/blog/blog-10.jpg")">
+                    <div class="bi-text">
+                        <span class="b-tag">Sự kiện</span>
+                        <h4><a href="#">Du Lịch Haiwaii</a></h4>
+                        <div class="b-time"><i class="icon_clock_alt"></i> 04/ 12/ 2024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
