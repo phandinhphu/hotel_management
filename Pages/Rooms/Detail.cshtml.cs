@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Hotel_Management.Pages
+namespace Hotel_Management.Rooms.Pages
 {
-    public class RoomDetailModel : PageModel
+    public class DetailModel : PageModel
     {
         public void OnGet()
         {
