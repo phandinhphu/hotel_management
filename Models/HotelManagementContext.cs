@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace Hotel_Management.Models;
 
-public partial class HotelManagementContext : IdentityDbContext<
-    ApplicationUser>
+public partial class HotelManagementContext : IdentityDbContext<ApplicationUser>
 {
     public HotelManagementContext()
     {
@@ -68,10 +66,6 @@ public partial class HotelManagementContext : IdentityDbContext<
 
             entity.ToTable("bookings");
 
-            entity.HasIndex(e => e.BookingServices, "BookingServices");
-
-            entity.HasIndex(e => e.BookingRooms, "RoomId");
-
             entity.HasIndex(e => e.StaffId, "Staff_Id");
 
             entity.HasIndex(e => e.UserId, "User_Id");
@@ -86,16 +80,6 @@ public partial class HotelManagementContext : IdentityDbContext<
             entity.Property(e => e.UserId)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("User_Id");
-
-            entity.HasOne(d => d.BookingRoomsNavigation).WithMany(p => p.Bookings)
-                .HasForeignKey(d => d.BookingRooms)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_bookings_bookings_room_detail");
-
-            entity.HasOne(d => d.BookingServicesNavigation).WithMany(p => p.Bookings)
-                .HasForeignKey(d => d.BookingServices)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_bookings_bookings_service_detail");
 
             entity.HasOne(d => d.Staff).WithMany(p => p.BookingStaffs)
                 .HasForeignKey(d => d.StaffId)
@@ -114,12 +98,19 @@ public partial class HotelManagementContext : IdentityDbContext<
 
             entity.ToTable("bookings_room_detail");
 
+            entity.HasIndex(e => e.BookingId, "Booking_Id");
+
             entity.HasIndex(e => e.RoomId, "Room_Id");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.BookingId).HasColumnName("Booking_Id");
             entity.Property(e => e.Price).HasPrecision(20, 6);
             entity.Property(e => e.RoomId).HasColumnName("Room_Id");
-            entity.Property(e => e.Status).HasMaxLength(50);
+
+            entity.HasOne(d => d.Booking).WithMany(p => p.BookingsRoomDetails)
+                .HasForeignKey(d => d.BookingId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_bookings_room_detail_bookings");
 
             entity.HasOne(d => d.Room).WithMany(p => p.BookingsRoomDetails)
                 .HasForeignKey(d => d.RoomId)
@@ -133,12 +124,19 @@ public partial class HotelManagementContext : IdentityDbContext<
 
             entity.ToTable("bookings_service_detail");
 
+            entity.HasIndex(e => e.BookingId, "Booking_Id");
+
             entity.HasIndex(e => e.ServiceId, "Service_Id");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.BookingId).HasColumnName("Booking_Id");
             entity.Property(e => e.Price).HasPrecision(18, 2);
             entity.Property(e => e.ServiceId).HasColumnName("Service_Id");
+
+            entity.HasOne(d => d.Booking).WithMany(p => p.BookingsServiceDetails)
+                .HasForeignKey(d => d.BookingId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_bookings_service_detail_bookings");
 
             entity.HasOne(d => d.Service).WithMany(p => p.BookingsServiceDetails)
                 .HasForeignKey(d => d.ServiceId)

@@ -1,0 +1,64 @@
+﻿@page "/Bookings/WishList"
+@model Hotel_Management.Pages.Bookings.WishListModel
+@using Hotel_Management.Models
+@using Hotel_Management.Services.Interfaces
+@inject IHotelservicesService HotelService
+@{
+	ViewData["Title"] = "Danh sách phòng yêu thích";
+	var listServices = HotelService.GetAllHotelServicesAsync().Result;
+}
+
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Danh sách phòng bạn muốn đặt</h2>
+
+    <form method="post" class="text-center mt-5">
+        <div class="row g-4">
+            @for (int i = 0; i < Model.BookingItems.Count; i++)
+            {
+                var item = Model.BookingItems[i];
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <input type="hidden" name="BookingItems[@i].RoomId" value="@item.RoomId" />
+                            <input type="hidden" name="BookingItems[@i].RoomNumber" value="@item.RoomNumber" />
+                            <input type="hidden" name="BookingItems[@i].RoomImage" value="@item.RoomImage" />
+                            <input type="hidden" name="BookingItems[@i].RoomType" value="@item.RoomType" />
+							<input type="hidden" name="BookingItems[@i].CheckInDate" value="@item.CheckInDate.ToString("yyyy-MM-dd")" />
+                            <input type="hidden" name="BookingItems[@i].CheckOutDate" value="@item.CheckOutDate.ToString("yyyy-MM-dd")" />
+							<input type="hidden" name="BookingItems[@i].Price" value="@item.Price" />
+
+                            <h5 class="card-title">Phòng @item.RoomNumber</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@item.RoomType</h6>
+                            <p class="card-text mb-1">
+                                <strong>Thời gian:</strong> @item.CheckInDate - @item.CheckOutDate
+                            </p>
+                            <p class="card-text">
+                                <strong>Giá mỗi đêm:</strong> <span class="text-danger">@item.Price.ToString("N0") VNĐ</span>
+                            </p>
+                            <h4 class="mb-3">Chọn dịch vụ đi kèm</h4>
+                            <div class="row">
+                                @foreach (var service in listServices)
+                                {
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check form-switch d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox"
+                                                   name="BookingItems[@i].ServicesSelected"
+                                                   value="@service.Id"
+                                                   id="service_@item.RoomId-@service.Id"
+                                            @(item.ServicesSelected.Contains(service.Id) ? "checked" : "") />
+                                            <label class="form-check-label ms-2" for="service_@item.RoomId-@service.Id">
+                                                <span class="fw-semibold">@service.Name</span>
+                                                <span class="text-muted small">(@service.Price?.ToString("N0") VNĐ)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <button type="submit" class="btn btn-success btn-lg px-5 mt-2">Đặt phòng</button>
+    </form>
+</div>

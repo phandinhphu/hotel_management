@@ -1,8 +1,10 @@
-﻿@page "/danh-sach-phong/chi-tiet-phong"
+﻿@page "/danh-sach-phong/chi-tiet-phong/{id:int}"
 @model Hotel_Management.Rooms.Pages.DetailModel
 @{
     ViewData["Title"] = "Room Detail";
 }
+
+<partial name="_StatusMessage" model="@TempData["StatusMessage"]" />
 
 <!-- Room Details Section Begin -->
 <section class="room-details-section spad">
@@ -13,41 +15,27 @@
                     <img src="~/images/client/room/room-details.jpg" alt="">
                     <div class="rd-text">
                         <div class="rd-title">
-                            <h3>Phòng Deluxe</h3>
+                            <h3>@Model.room.RoomNumber</h3>
                         </div>
-                        <h2>350.000<span>/Đêm</span></h2>
+                        <h2>@Model.room.Price<span>/Đêm</span></h2>
                         <table>
                             <tbody>
                                 <tr>
-                                    <td class="r-o">Size:</td>
-                                    <td>30 ft</td>
+                                    <td class="r-o">Type:</td>
+                                    <td>@Model.room.Type</td>
                                 </tr>
                                 <tr>
                                     <td class="r-o">Dung tích:</td>
-                                    <td>Tối đa 2 người</td>
+                                    <td>Tối đa @Model.room.Capacity người</td>
                                 </tr>
                                 <tr>
-                                    <td class="r-o">Giường:</td>
-                                    <td>King Bed</td>
-                                </tr>
-                                <tr>
-                                    <td class="r-o">Tiện ích:</td>
-                                    <td>Wifi, Tivi, Phòng tắm,...</td>
+                                    <td class="r-o">Status:</td>
+                                    <td>@Model.room.Status</td>
                                 </tr>
                             </tbody>
                         </table>
                         <p class="f-para">
-                            Phòng Premium King tại khách sạn Sona khiến người ta không khỏi ngỡ ngàng bởi sự sang
-                            trọng và tinh tế từ những chi tiết nhỏ nhất. Bước vào phòng, bạn sẽ bị cuốn hút ngay lập
-                            tức bởi không gian rộng rãi, ánh sáng dịu nhẹ cùng với mùi hương thơm ngát từ hoa tươi
-                            được bày trí khắp nơi. Nội thất trong phòng mang phong cách hiện đại, với giường
-                            king-size êm ái, bộ ga giường trắng tinh mềm mại và chiếc sofa da cao cấp.
-                        </p>
-                        <p>
-                            Điểm nhấn của căn phòng chính là cửa sổ lớn với tầm nhìn tuyệt đẹp ra thành phố về đêm,
-                            mang đến cảm giác thư thái và yên bình sau một ngày dài bận rộn. Phòng tắm được thiết kế
-                            riêng biệt, với bồn tắm lớn, vòi sen đứng và đầy đủ các vật dụng cá nhân cần thiết. Tất
-                            cả tạo nên một không gian nghỉ ngơi thoải mái và đẳng cấp.
+                            @Model.room.Description
                         </p>
                     </div>
                 </div>
@@ -55,34 +43,23 @@
             <div class="col-lg-4" id="booking-form">
                 <div class="room-booking">
                     <h3>Đặt chỗ của bạn</h3>
-                    <form action="@Url.Page("/Payment")">
+                    <form method="post" asp-page-handler="AddWishList">
+                        <input type="hidden" name="RoomId" value="@Model.room.Id" />
+                        <input type="hidden" name="RoomNumber" value="@Model.room.RoomNumber" />
+                        <input type="hidden" name="RoomType" value="@Model.room.Type" />
+                        <input type="hidden" name="RoomImage" value="@Model.room.Image" />
+						<input type="hidden" name="Price" value="@Model.room.Price" />
                         <div class="check-date">
                             <label for="date-in">Nhận phòng:</label>
-                            <input type="text" class="date-input" id="date-in">
+                            <input type="datetime" class="date-input" id="date-in" name="CheckInDate" required>
                             <i class="icon_calendar"></i>
                         </div>
                         <div class="check-date">
                             <label for="date-out">Trả phòng:</label>
-                            <input type="text" class="date-input" id="date-out">
+                            <input type="datetime" class="date-input" id="date-out" name="CheckOutDate" required>
                             <i class="icon_calendar"></i>
                         </div>
-                        <div class="select-option">
-                            <label for="guest">Số lượng khách:</label>
-                            <select id="guest">
-                                <option value="">1 Người lớn</option>
-                                <option value="">2 Người lớn</option>
-                                <option value="">3 Người lớn</option>
-                            </select>
-                        </div>
-                        <div class="select-option">
-                            <label for="room">Số phòng:</label>
-                            <select id="room">
-                                <option value="">1 Phòng</option>
-                                <option value="">2 Phòng</option>
-                                <option value="">3 Phòng</option>
-                            </select>
-                        </div>
-                        <button type="submit">Đặt phòng</button>
+                        <button type="submit">Thêm vào wishlist</button>
                     </form>
                 </div>
             </div>
