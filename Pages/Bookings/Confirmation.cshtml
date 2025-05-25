@@ -1,0 +1,90 @@
+﻿@page
+@model Hotel_Management.Pages.Bookings.ConfirmationModel
+@using Hotel_Management.Models
+@using Hotel_Management.Services.Interfaces
+@inject IHotelservicesService HotelService
+@{
+    ViewData["Title"] = "Xác nhận thông tin đặt phòng";
+    decimal totalRoomPrice = 0;
+    decimal totalServicePrice = 0;
+}
+
+<div class="container my-5">
+    <h2 class="mb-4 text-center text-primary">Xác nhận thông tin đặt phòng</h2>
+    <form method="post">
+        <div class="row g-4">
+            @for (int i = 0; i < Model.BookingItems.Count; i++)
+            {
+                var item = Model.BookingItems[i];
+                int nights = (item.CheckOutDate - item.CheckInDate).Days;
+                if (nights < 1) { nights = 1; }
+                decimal roomTotal = item.Price * nights;
+                decimal serviceTotal = 0;
+                if (item.ServicesSelected != null && item.ServicesSelected.Any())
+                {
+                    foreach (var serviceId in item.ServicesSelected)
+                    {
+                        var serviceDetails = HotelService.GetHotelServiceByIdAsync(serviceId).Result;
+                        serviceTotal += serviceDetails?.Price ?? 0;
+                    }
+                }
+                totalRoomPrice += roomTotal;
+                totalServicePrice += serviceTotal;
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-2">Phòng @item.RoomNumber - <span class="text-muted">@item.RoomType</span></h5>
+                        <p class="mb-1"><strong>Thời gian:</strong> @item.CheckInDate.ToString("dd/MM/yyyy") - @item.CheckOutDate.ToString("dd/MM/yyyy")</p>
+                        <p class="mb-1"><strong>Giá mỗi đêm:</strong> <span class="text-danger">@item.Price.ToString("N0") VNĐ</span></p>
+                        <div>
+                            <strong>Dịch vụ đi kèm:</strong>
+                            @if (item.ServicesSelected != null && item.ServicesSelected.Any())
+                            {
+                                <ul class="mb-0">
+                                    @foreach (var serviceId in item.ServicesSelected)
+                                    {
+                                        var serviceDetails = HotelService.GetHotelServiceByIdAsync(serviceId).Result;
+                                        <li>@serviceDetails.Name <span class="text-muted small">(@serviceDetails.Price?.ToString("N0") VNĐ)</span></li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Không có</span>
+                            }
+                        </div>
+                        <hr />
+                        <div>
+                            <strong>Tổng tiền phòng:</strong>
+                            <span class="fw-bold text-primary">@roomTotal.ToString("N0") VNĐ</span>
+                        </div>
+                        <div>
+                            <strong>Tổng tiền dịch vụ:</strong>
+                            <span class="fw-bold text-warning">@serviceTotal.ToString("N0") VNĐ</span>
+                        </div>
+                        <div>
+                            <strong>Tổng cộng phòng này:</strong>
+                            <span class="fw-bold text-success">@((roomTotal + serviceTotal).ToString("N0")) VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body text-end">
+                        <h5 class="mb-2">Tổng tiền phòng: <span class="fw-bold text-primary">@totalRoomPrice.ToString("N0") VNĐ</span></h5>
+                        <h5 class="mb-2">Tổng tiền dịch vụ: <span class="fw-bold text-warning">@totalServicePrice.ToString("N0") VNĐ</span></h5>
+                        <h4 class="mb-0">Tổng thanh toán: <span class="fw-bold text-success">@((totalRoomPrice + totalServicePrice).ToString("N0")) VNĐ</span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/Bookings/WishList" class="btn btn-outline-secondary px-4 me-2">Quay lại chỉnh sửa</a>
+            <button type="submit" class="btn btn-success btn-lg px-5">Xác nhận đặt phòng</button>
+        </div>
+    </form>
+</div>

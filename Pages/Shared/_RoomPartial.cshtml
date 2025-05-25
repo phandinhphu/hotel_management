@@ -1,28 +1,27 @@
-﻿<div class="room-item">
+﻿@using Hotel_Management.Models
+@model Room
+
+<div class="room-item">
     <img src="~/images/client/room/room-2.jpg" alt="">
     <div class="ri-text">
-        <h4>Phòng King</h4>
-        <h3>500.000<span>/Đêm</span></h3>
+        <h4>@Model.RoomNumber</h4>
+        <h3>@Model.Price<span>/Đêm</span></h3>
         <table>
             <tbody>
                 <tr>
-                    <td class="r-o">Size:</td>
-                    <td>30 ft</td>
+                    <td class="r-o">Type:</td>
+                    <td>@Model.Type</td>
                 </tr>
                 <tr>
                     <td class="r-o">Dung tích:</td>
-                    <td>Tối đa 5 người</td>
+                    <td>Tối đa @Model.Capacity người</td>
                 </tr>
                 <tr>
-                    <td class="r-o">Giường:</td>
-                    <td>King Bed</td>
-                </tr>
-                <tr>
-                    <td class="r-o">Tiện ích:</td>
-                    <td>Wifi, Tivi, Phòng tắm,...</td>
+                    <td class="r-o">Status:</td>
+                    <td>@Model.Status</td>
                 </tr>
             </tbody>
         </table>
-        <a asp-page="/Rooms/Detail" class="primary-btn">Tìm hiểu thêm</a>
+        <a asp-page="/Rooms/Detail" asp-route-id="@Model.Id" class="primary-btn">Tìm hiểu thêm</a>
     </div>
 </div>

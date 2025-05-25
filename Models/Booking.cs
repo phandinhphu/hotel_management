@@ -11,10 +11,6 @@ public partial class Booking
 
     public string StaffId { get; set; } = null!;
 
-    public int BookingRooms { get; set; }
-
-    public int BookingServices { get; set; }
-
     public decimal? TotalPriceRooms { get; set; }
 
     public decimal? TotalPriceServices { get; set; }
@@ -23,9 +19,9 @@ public partial class Booking
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual BookingsRoomDetail BookingRoomsNavigation { get; set; } = null!;
+    public virtual ICollection<BookingsRoomDetail> BookingsRoomDetails { get; set; } = new List<BookingsRoomDetail>();
 
-    public virtual BookingsServiceDetail BookingServicesNavigation { get; set; } = null!;
+    public virtual ICollection<BookingsServiceDetail> BookingsServiceDetails { get; set; } = new List<BookingsServiceDetail>();
 
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
 
