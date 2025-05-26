@@ -1,0 +1,57 @@
+﻿<!-- Page header starts -->
+<div class="page-header">
+
+    <div class="toggle-sidebar" id="toggle-sidebar"><i class="bi bi-list"></i></div>
+
+    <!-- Breadcrumb start -->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <i class="bi bi-house"></i>
+            <a href="@Url.Page("/Admin")">Trang chủ</a>
+        </li>
+    </ol>
+    <!-- Breadcrumb end -->
+    <!-- Header actions ccontainer start -->
+    <div class="header-actions-container">
+
+        <!-- Search container start -->
+        <div class="search-container">
+
+            <!-- Search input group start -->
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Nhập từ khóa">
+                <button class="btn" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            <!-- Search input group end -->
+
+        </div>
+        <!-- Search container end -->
+
+        <!-- Header actions start -->
+        <ul class="header-actions">
+            <li class="dropdown">
+                <a href="#" id="userSettings" class="user-settings" data-toggle="dropdown"
+                   aria-haspopup="true">
+                    <span class="user-name d-none d-md-block">Admin</span>
+                    <span class="avatar">
+                        <img src="~/images/admin/user.png" alt="Admin Templates">
+                        <span class="status online"></span>
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userSettings">
+                    <div class="header-profile-actions">
+                        <a href="#">Cài đặt</a>
+                        <a href="#">Đăng xuất</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- Header actions end -->
+
+    </div>
+    <!-- Header actions ccontainer end -->
+
+</div>
+<!-- Page header ends -->

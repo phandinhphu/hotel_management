@@ -1,0 +1,307 @@
+﻿@{
+	ViewData["Title"] = "Home";
+}
+
+@section Scripts {
+    <script src="~/vendor/apex/custom/crm/visitors.js"></script>
+}
+
+<!-- Row info start -->
+<div class="row gutters">
+    <div class="col-sm-12 col-12">
+
+        <div class="profile-header">
+            <h1>Welcome, Admin</h1>
+            <div class="profile-header-content">
+                <div class="profile-header-tiles">
+                    <div class="row gutters">
+                        <div class="col-sm-4 col-12">
+                            <div class="profile-tile">
+                                <span class="icon">
+                                    <i class="bi bi-pentagon"></i>
+                                </span>
+                                <h6>Tên - <span>Admin</span></h6>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <div class="profile-tile">
+                                <span class="icon">
+                                    <i class="bi bi-pin-angle"></i>
+                                </span>
+                                <h6>Email - <span>info@example.com</span></h6>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <div class="profile-tile">
+                                <span class="icon">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+                                <h6>SĐT - <span>0123456789</span></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-avatar-tile">
+                    <img src="~/images/admin/user.png" class="img-fluid"
+                         alt="Bootstrap Gallery" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Row info end -->
+
+<!-- Row start -->
+<div class="row gutters">
+    <div class="col-lg-8 col-sm-12 col-12">
+        <!-- Row report start -->
+        <div class="row gutters">
+
+            <div class="col-sm-12 col-12">
+                <!-- Card start -->
+                <div class="card h-320">
+                    <div class="card-header">
+                        <div class="card-title">Hiệu suất làm việc</div>
+                    </div>
+                    <div class="card-body">
+                        <div id="visitorsGraph"></div>
+                    </div>
+                </div>
+                <!-- Card end -->
+            </div>
+
+            <div class="col-sm-12 col-12">
+                <!-- Card start -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Lịch làm việc</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="scroll400">
+                            <div class="timeline-activity">
+                                <div class="activity-log">
+                                    <p class="log-name">Check-in<small class="log-time">- 8h-9h 14/11/2024</small></p>
+                                    <div class="log-details">
+                                        Kiểm tra email và thông báo từ các bộ phận<span class="text-success ml-1"> #Hiện tại</span>
+                                    </div>
+                                </div>
+                                <div class="activity-log">
+                                    <p class="log-name">Họp đầu tuần<small class="log-time">- 9h-10h 14/11/2024</small></p>
+                                    <div class="log-details">
+                                        Họp đầu tuần cùng các trưởng bộ phận để bàn về kế hoạch làm việc tuần này.
+                                        <div class="stacked-images mt-1">
+                                            <img class="sm" src="~/images/admin/user6.png"
+                                                 alt="Admin Dashboards">
+                                            <img class="sm" src="~/images/admin/user2.png"
+                                                 alt="Admin Dashboards">
+                                            <img class="sm" src="~/images/admin/user3.png"
+                                                 alt="Admin Dashboards">
+                                            <img class="sm" src="~/images/admin/user7.png"
+                                                 alt="Admin Dashboards">
+                                            <span class="plus sm">+5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-log">
+                                    <p class="log-name">Họp với đội ngũ quản lý cấp cao<small class="log-time">- 14h-15h20 14/11/2024</small></p>
+                                    <div class="log-details">Họp với đội ngũ bàn về các vấn đề liên quan đến cách quản lý khách sạn.</div>
+                                </div>
+                                <div class="activity-log">
+                                    <p class="log-name">Xử lý công việc hành chính<small class="log-time">- 15h30-16h30 14/11/2024</small></p>
+                                    <div class="log-details">Xử lý các công việc hành chính và tài chính</div>
+                                </div>
+                                <div class="activity-log">
+                                    <p class="log-name">Check-in<small class="log-time">- 8h-9h 14/11/2024</small></p>
+                                    <div class="log-details">
+                                        Kiểm tra email và thông báo từ các bộ phận<span class="text-success ml-1"> #Hiện tại</span>
+                                    </div>
+                                </div>
+                                <div class="activity-log">
+                                    <p class="log-name">Họp đầu tuần<small class="log-time">- 9h-10h 14/11/2024</small></p>
+                                    <div class="log-details">
+                                        Họp đầu tuần cùng các trưởng bộ phận để bàn về kế hoạch làm việc tuần này.
+                                        <div class="stacked-images mt-1">
+                                            <img class="sm" src="~/images/admin/user6.png"
+                                                 alt="Admin Dashboards">
+                                            <img class="sm" src="~/images/admin/user2.png"
+                                                 alt="Admin Dashboards">
+                                            <img class="sm" src="~/images/admin/user3.png"
+                                                 alt="Admin Dashboards">
+                                            <img class="sm" src="~/images/admin/user7.png"
+                                                 alt="Admin Dashboards">
+                                            <span class="plus sm">+5</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="activity-log">
+                                    <p class="log-name">Họp với nhà cung cấp vật tư<small class="log-time">- 14h-15h20 14/11/2024</small></p>
+                                    <div class="log-details">Họp với đối tác bàn về các vấn đề liên quan đến vật tư khách sạn.</div>
+                                </div>
+                                <div class="activity-log">
+                                    <p class="log-name">Xử lý công việc hành chính<small class="log-time">- 15h30-16h30 14/11/2024</small></p>
+                                    <div class="log-details">Xử lý các công việc hành chính và tài chính</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card end -->
+            </div>
+        </div>
+        <!-- Row report end -->
+    </div>
+    <div class="col-lg-4 col-sm-12 col-12">
+        <!-- Row edit start -->
+        <div class="row gutters">
+            <div class="col-sm-12 col-12">
+                <!-- Card start -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Thay đổi thông tin cá nhân</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="scroll450">
+                            <div class="row">
+                                <div class="col-xxl-6 col-sm-12 col-12">
+                                    <div id="dropzone-sm1" class="mb-3">
+                                        <form action="#" class="dropzone needsclick dz-clickable" id="demo-upload1">
+
+                                            <div class="dz-message needsclick">
+                                                <button type="button" class="dz-button">Tải ảnh lên.</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-sm-12 col-12">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="fullName" class="form-label">Họ và Tên</label>
+                                        <input type="text" class="form-control" id="fullName" placeholder="Nhập họ và tên">
+                                    </div>
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="birthDay" class="form-label">Ngày sinh</label>
+                                        <div class="input-group ">
+                                            <input type="text" class="form-control datepicker-opens-left" id="birthDay"
+                                                   placeholder="DD/MM/YYYY">
+                                            <span class="input-group-text"> <i class="bi bi-calendar4"></i> </span>
+                                        </div>
+                                    </div>
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Địa chỉ</label>
+                                        <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-sm-12 col-12">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="enterPassword" class="form-label">Mật khẩu mới</label>
+                                        <input type="password" class="form-control" id="enterPassword"
+                                               placeholder="Nhập mật khẩu">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-sm-12 col-12">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="emailID" class="form-label">Email ID</label>
+                                        <input type="email" class="form-control" id="emailID" placeholder="info@example.com">
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-6 col-sm-12 col-12">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                                        <input type="password" class="form-control" id="confirmPassword"
+                                               placeholder="Xác nhận mật khẩu">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-sm-12 col-12">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="phoneNo" class="form-label">Số điện thoại</label>
+                                        <input type="number" class="form-control" id="phoneNo" placeholder="012-345-6789">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-12 col-sm-12 col-12">
+                                    <!-- Form Field Start -->
+                                    <div class="d-flex justify-content-end align-items-center mb-3">
+                                        <button type="button" class="btn btn-dark me-2" data-bs-dismiss="modal">Hủy</button>
+                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Xác nhận</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card end -->
+
+                <div class="col-sm-12 col-12">
+                    <!-- Card start -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Cài đặt</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="settings-block">
+                                <div class="settings-block-body">
+                                    <div class="list-group">
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>Hiển thị báo cáo chi tiết</div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="showNotifications">
+                                                <label class="form-check-label" for="showNotifications"></label>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>Hiển thị báo cáo theo tuần</div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="showEmailNotifications" checked>
+                                                <label class="form-check-label" for="showEmailNotifications"></label>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>Thông báo cục bộ</div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="showChatNotifications" checked>
+                                                <label class="form-check-label" for="showChatNotifications"></label>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>Thông báo email</div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="showPurchaseNotifications" checked>
+                                                <label class="form-check-label" for="showPurchaseNotifications"></label>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>Xác thực tài khoản hai yếu tố (2FA)</div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="showOrders">
+                                                <label class="form-check-label" for="showOrders"></label>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>Tự động lưu mật khẩu</div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="showAlerts" checked>
+                                                <label class="form-check-label" for="showAlerts"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card end -->
+                </div>
+            </div>
+        </div>
+        <!-- Row edit end -->
+    </div>
+</div>
+<!-- Row end -->
+
+

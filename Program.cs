@@ -21,6 +21,7 @@ builder.Services.AddTransient<IEmailSender>(sp => sp.GetRequiredService<SendMail
 
 // Other services
 builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
@@ -131,5 +132,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+// Đăng ký các route cho areas Admin
+app.MapControllerRoute(
+    name: "Admin",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

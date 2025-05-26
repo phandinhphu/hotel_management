@@ -1,0 +1,49 @@
+﻿@using Hotel_Management.Areas.Admin.ViewModels
+@model PaginatedList<RoomVM>
+
+<div class="product-card">
+    <div class="image-container">
+        <img class="product-card-img-top"
+             src="assets/images/room/room-1.jpg" alt="Bootstrap Gallery">
+        <button class="menu-button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item text-warning" data-bs-toggle="modal"
+                   data-bs-target="#editRoom">
+                    <i class="fa-solid fa-pen-to-square"></i> Sửa
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item text-danger" data-bs-toggle="modal"
+                   data-bs-target="#deleteRoom">
+                    <i class="fa-solid fa-trash"></i> Xóa
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="product-card-body">
+        <h5 class="product-title">Phòng 101</h5>
+        <div class="product-price">
+            <span class="disount-price">450.000 VNĐ</span>
+            <span class="actucal-price">500.000 VNĐ</span>
+            <span class="off-price">20% Off</span>
+        </div>
+        <span class="badge rounded-pill shade-green mt-2">Còn trống</span>
+        <div class="product-rating">
+            <div class="total-ratings">Loại phòng: Phòng đơn</div>
+        </div>
+        <div class="product-description">
+            Tiện ích: Wifi, Tivi, Phòng tắm,...
+        </div>
+        <div class="product-actions">
+            <button class="btn btn-success" data-bs-toggle="modal"
+                    data-bs-target="#bookingRoom">
+                Nhận phòng
+            </button>
+        </div>
+
+    </div>
+</div>

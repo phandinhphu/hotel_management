@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Meta -->
+    <meta name="description" content="Vivo - Responsive Bootstrap 5 Dashboard Template">
+    <meta name="author" content="Bootstrap Gallery" />
+    <link rel="canonical" href="https://www.bootstrap.gallery/">
+    <meta property="og:url" content="https://www.bootstrap.gallery">
+    <meta property="og:title" content="Admin Templates - Dashboard Templates | Bootstrap Gallery">
+    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:type" content="Website">
+    <meta property="og:site_name" content="Bootstrap Gallery">
+    <link rel="shortcut icon" href="~/images/admin/favicon.svg">
+
+    <!-- Title -->
+    <title>@ViewData["Title"] - SONA Hotel Admin</title>
+
+
+    <!-- *************
+            ************ Common Css Files *************
+        ************ -->
+    <!-- Animated css -->
+    <link rel="stylesheet" href="~/css/admin/animate.css">
+
+    <!-- Bootstrap font icons css -->
+    <link rel="stylesheet" href="~/fonts/admin/bootstrap/bootstrap-icons.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/css/admin/main.min.css">
+
+
+    <!-- *************
+            ************ Vendor Css Files *************
+        ************ -->
+    <!-- Scrollbar CSS -->
+    <link rel="stylesheet" href="~/vendor/admin/overlay-scroll/OverlayScrollbars.min.css">
+
+    <!-- Date Range CSS -->
+    <link rel="stylesheet" href="~/vendor/admin/daterange/daterange.css">
+
+</head>
+
+<body>
+    <!-- Page wrapper start -->
+    <div class="page-wrapper">
+
+		<!-- Sidebar start -->
+        <partial name="_Sidebar" />
+		<!-- Sidebar end -->
+
+        <!-- *************
+                ************ Main container start *************
+            ************* -->
+        <div class="main-container">
+
+			<!-- Page header start -->
+            <partial name="_Header" />
+			<!-- Page header end -->
+
+            <!-- Content wrapper scroll start -->
+            <div class="content-wrapper-scroll">
+
+                <!-- Content wrapper start -->
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+                <!-- Content wrapper end -->
+
+                <!-- App Footer start -->
+                <div class="app-footer">
+                    <span>© SONA Hotel @DateTime.Now.Year</span>
+                </div>
+                <!-- App footer end -->
+
+            </div>
+            <!-- Content wrapper scroll end -->
+
+        </div>
+        <!-- *************
+                ************ Main container end *************
+            ************* -->
+
+    </div>
+    <!-- Page wrapper end -->
+
+    <!-- *************
+            ************ Required JavaScript Files *************
+        ************* -->
+
+    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    <script src="~/js/admin/jquery.min.js"></script>
+    <script src="~/js/admin/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin/modernizr.js"></script>
+    <script src="~/js/admin/moment.js"></script>
+
+    <!-- *************
+            ************ Vendor Js Files *************
+        ************* -->
+
+    <!-- Overlay Scroll JS -->
+    <script src="~/vendor/overlay-scroll/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/vendor/overlay-scroll/custom-scrollbar.js"></script>
+
+    <!-- Date Range JS -->
+    <script src="~/vendor/daterange/daterange.js"></script>
+    <script src="~/vendor/daterange/custom-daterange.js"></script>
+
+    <!-- Apex Charts -->
+    <script src="~/vendor/apex/apexcharts.min.js"></script>
+    
+    <!-- Main Js Required -->
+    <script src="~/js/admin/main.js"></script>
+
+    <!-- Custom Javascript -->
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
