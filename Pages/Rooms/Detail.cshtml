@@ -1,0 +1,69 @@
+﻿@page "/danh-sach-phong/chi-tiet-phong/{id:int}"
+@model Hotel_Management.Rooms.Pages.DetailModel
+@{
+    ViewData["Title"] = "Room Detail";
+}
+
+<partial name="_StatusMessage" model="@TempData["StatusMessage"]" />
+
+<!-- Room Details Section Begin -->
+<section class="room-details-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="room-details-item">
+                    <img src="~/images/client/room/room-details.jpg" alt="">
+                    <div class="rd-text">
+                        <div class="rd-title">
+                            <h3>@Model.room.RoomNumber</h3>
+                        </div>
+                        <h2>@Model.room.Price<span>/Đêm</span></h2>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="r-o">Type:</td>
+                                    <td>@Model.room.Type</td>
+                                </tr>
+                                <tr>
+                                    <td class="r-o">Dung tích:</td>
+                                    <td>Tối đa @Model.room.Capacity người</td>
+                                </tr>
+                                <tr>
+                                    <td class="r-o">Status:</td>
+                                    <td>@Model.room.Status</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="f-para">
+                            @Model.room.Description
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4" id="booking-form">
+                <div class="room-booking">
+                    <h3>Đặt chỗ của bạn</h3>
+                    <form method="post" asp-page-handler="AddWishList">
+                        <input type="hidden" name="RoomId" value="@Model.room.Id" />
+                        <input type="hidden" name="RoomNumber" value="@Model.room.RoomNumber" />
+                        <input type="hidden" name="RoomType" value="@Model.room.Type" />
+                        <input type="hidden" name="RoomImage" value="@Model.room.Image" />
+						<input type="hidden" name="Price" value="@Model.room.Price" />
+                        <div class="check-date">
+                            <label for="date-in">Nhận phòng:</label>
+                            <input type="datetime" class="date-input" id="date-in" name="CheckInDate" required>
+                            <i class="icon_calendar"></i>
+                        </div>
+                        <div class="check-date">
+                            <label for="date-out">Trả phòng:</label>
+                            <input type="datetime" class="date-input" id="date-out" name="CheckOutDate" required>
+                            <i class="icon_calendar"></i>
+                        </div>
+                        <button type="submit">Thêm vào wishlist</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Room Details Section End -->

@@ -1,4 +1,10 @@
-﻿<!-- Header Section Begin -->
+﻿@using Hotel_Management.Models
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!-- Header Section Begin -->
 <header class="header-section">
     <div class="top-nav">
         <div class="container">
@@ -17,16 +23,28 @@
                             <a href="#"><i class="fa fa-instagram"></i></a>
                         </div>
                         <a href="#" class="bk-btn">Đặt ngay</a>
-                        <div class="language-option">
-                            <img src="~/images/admin/flags/1x1/vn.svg" alt="">
-                            <span>Vie <i class="fa fa-angle-down"></i></span>
-                            <div class="flag-dropdown">
-                                <ul>
-                                    <li><a href="#">Eng</a></li>
-                                    <li><a href="#">Fr</a></li>
+
+						@if (SignInManager.IsSignedIn(User))
+						{
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Xin chào, @UserManager.GetUserName(User)
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a asp-area="Identity" asp-page="/Account/Manage" class="dropdown-item">Thông tin cá nhân</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Identity" asp-page="/Account/Logout" class="dropdown-item">Đăng xuất</a>
+                                    </li>
                                 </ul>
                             </div>
-                        </div>
+						}
+						else
+						{
+                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">Đăng nhập</a>
+                            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info">Đăng ký</a>
+						}
                     </div>
                 </div>
             </div>
@@ -47,16 +65,17 @@
                         <nav class="mainmenu">
                             <ul>
                                 <li class="@(Context.Request.Path == "/" ? "active" : "")">
-                                    <a href="@Url.Page("/Index")">Trang chủ</a>
+                                    <a asp-page="/Index">Trang chủ</a>
                                 </li>
-                                <li class="@(Context.Request.Path == "/Room" || Context.Request.Path == "/RoomDetail" ? "active" : "")">
-                                    <a href="@Url.Page("/Room")">Phòng</a>
+                                <li class="@(Context.Request.Path == "/danh-sach-phong" || 
+                                    (Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("chi-tiet-phong")) ? "active" : "")">
+                                    <a asp-page="/Rooms/Index">Phòng</a>
                                 </li>
                                 <li class="@(Context.Request.Path == "/About" ? "active" : "")">
-                                    <a href="@Url.Page("/About")">Về chúng tôi</a>
+                                    <a asp-page="/About">Về chúng tôi</a>
                                 </li>
                                 <li class="@(Context.Request.Path == "/Contact" ? "active" : "")">
-                                    <a href="@Url.Page("/Contact")">Liên hệ</a>
+                                    <a asp-page="/Contact">Liên hệ</a>
                                 </li>
                             </ul>
                         </nav>
