@@ -1,0 +1,50 @@
+﻿@using Hotel_Management.Areas.Admin.ViewModels;
+@model EditUserVM
+@{
+    ViewData["Title"] = "Sửa thông tin nhân viên";
+}
+
+<div class="container mt-5">
+    <div class="card shadow rounded-4 border-0">
+        <div class="card-header bg-success text-white rounded-top-4">
+            <h3 class="mb-0">Sửa thông tin nhân viên</h3>
+        </div>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+        <div class="card-body mt-2">
+            <form asp-area="Admin" asp-controller="Staff" asp-action="Edit" method="post">
+				<input type="hidden" asp-for="UserId" />
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Hủy
+                    </a>
+                    <button type="submit" class="btn btn-success">
+						<i class="bi bi-plus-circle"></i> Lưu thông tin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
