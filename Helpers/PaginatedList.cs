@@ -23,5 +23,12 @@ namespace Hotel_Management.Helpers
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
+
+        public static async Task<PaginatedList<T>> Create(IEnumerable<T> source, int pageIndex, int pageSize)
+        {
+            var count = source.Count();
+            var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            return await Task.FromResult(new PaginatedList<T>(items, count, pageIndex, pageSize));
+        }
     }
 }
