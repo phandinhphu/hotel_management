@@ -37,11 +37,14 @@
     <!-- *************
             ************ Vendor Css Files *************
         ************ -->
+	<!-- Customs CSS -->
+    @await RenderSectionAsync("Styles", required: false)
+
     <!-- Scrollbar CSS -->
-    <link rel="stylesheet" href="~/vendor/admin/overlay-scroll/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="~/vendor/overlay-scroll/OverlayScrollbars.min.css">
 
     <!-- Date Range CSS -->
-    <link rel="stylesheet" href="~/vendor/admin/daterange/daterange.css">
+    <link rel="stylesheet" href="~/vendor/daterange/daterange.css">
 
 </head>
 
@@ -93,8 +96,8 @@
         ************* -->
 
     <!-- Required jQuery first, then Bootstrap Bundle JS -->
-    <script src="~/js/admin/jquery.min.js"></script>
-    <script src="~/js/admin/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/admin/modernizr.js"></script>
     <script src="~/js/admin/moment.js"></script>
 
@@ -112,12 +115,15 @@
 
     <!-- Apex Charts -->
     <script src="~/vendor/apex/apexcharts.min.js"></script>
-    
-    <!-- Main Js Required -->
-    <script src="~/js/admin/main.js"></script>
+
+    <!-- Font Awesome JS -->
+    <script src="https://kit.fontawesome.com/45418f6dbd.js" crossorigin="anonymous"></script>
 
     <!-- Custom Javascript -->
     @await RenderSectionAsync("Scripts", required: false)
+    
+    <!-- Main Js Required -->
+    <script src="~/js/admin/main.js"></script>
 
 </body>
 </html>

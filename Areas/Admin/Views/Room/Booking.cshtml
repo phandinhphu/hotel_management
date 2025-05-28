@@ -1,0 +1,106 @@
+﻿@*
+    Modal Booking Room
+*@
+<div class="modal fade" id="bookingRoom" data-bs-backdrop="false" aria-labelledby="bookingLabel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookingLabel">Nhập thông tin khách hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Card start -->
+
+                <div class="card-body">
+
+                    <!-- Row start -->
+                    <div class="row">
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <label for="inputLastName" class="form-label">Họ</label>
+                                <input type="text" class="form-control" id="inputLastName"
+                                       placeholder="Nhập họ">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <label for="inputFirstName" class="form-label">Tên</label>
+                                <input type="text" class="form-control" id="inputFirstName"
+                                       placeholder="Nhập tên">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <label for="inputFirstName" class="form-label">CCCD</label>
+                                <input type="text" class="form-control" id="inputFirstName"
+                                       placeholder="Nhập căn cước công dân">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Quốc tịch</label>
+                                <input type="text" class="form-control" id="country" name="country">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label">Liên hệ*</label>
+                                <input type="tel" class="form-control" id="phoneNumber"
+                                       placeholder="Nhập số điện thoại" pattern="[0-9]*{10}"
+                                       inputmode="numeric" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="Nhập email">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <div class="m-0">
+                                    <div class="form-label">Ngày check-in</div>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-calendar4"></i>
+                                        </span>
+                                        <input type="text" class="form-control datepicker-week-numbers">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-12">
+                            <div class="mb-3">
+                                <div class="m-0">
+                                    <div class="form-label">Ngày check-out</div>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-calendar4"></i>
+                                        </span>
+                                        <input type="text" class="form-control datepicker-week-numbers">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <!-- Form Field Start -->
+                            <div class="mb-3">
+                                <label for="roomDescription" class="form-label">Ghi chú*</label>
+                                <textarea class="form-control" id="roomDescription"
+                                          placeholder="Nhập ghi chú" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row end -->
+
+                </div>
+                <!-- Card end -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
+                <a href="invoice-create.html" class="btn btn-success">Xác nhận</a>
+            </div>
+        </div>
+    </div>
+</div>

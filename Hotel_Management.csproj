@@ -39,10 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\admin\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\css\admin\.DS_Store" />
     <None Include="wwwroot\css\admin\bootstrap\.DS_Store" />
     <None Include="wwwroot\css\admin\bootstrap\tests\.DS_Store" />
@@ -52,6 +48,7 @@
     <None Include="wwwroot\images\admin\cards\.DS_Store" />
     <None Include="wwwroot\images\admin\flags\.DS_Store" />
     <None Include="wwwroot\images\admin\food\.DS_Store" />
+    <None Include="wwwroot\js\admin\.DS_Store" />
     <None Include="wwwroot\vendor\.DS_Store" />
     <None Include="wwwroot\vendor\apex\.DS_Store" />
     <None Include="wwwroot\vendor\apex\custom\.DS_Store" />

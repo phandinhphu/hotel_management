@@ -2,6 +2,61 @@
 	ViewData["Title"] = "Room";
 }
 
-@section Scripts {
-	
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin/customs/room.css" />
+    <!-- Country-select CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/css/countrySelect.min.css" />
 }
+
+@section Scripts {
+    <!-- Country-select JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/js/countrySelect.min.js"></script>
+    <script src="~/js/admin/customs/room.js"></script>
+}
+
+<!-- Row start -->
+<div class="row">
+    <div class="col-xxl-3 col-md-4 col-sm-6 col-12">
+        @await Component.InvokeAsync("RoomCard")
+    </div>
+    <div class="col-xxl-3 col-md-4 col-sm-6 col-12">
+        @await Component.InvokeAsync("RoomCard")
+    </div>
+</div>
+<!-- Row end -->
+<!-- Phân trang -->
+<div class="col-12">
+    <div class="card-body">
+        <nav aria-label="Page Navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">
+                            <i class="bi bi-arrow-left"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">
+                        1
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">
+                            <i class="bi bi-arrow-right"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- Modal Create Room -->
+@await Html.PartialAsync("Create")
+<!-- Modal Edit Room -->
+@await Html.PartialAsync("Edit")
+<!-- Modal Booking Room -->
+@await Html.PartialAsync("Booking")

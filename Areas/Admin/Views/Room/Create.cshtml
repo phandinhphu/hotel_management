@@ -1,0 +1,104 @@
+﻿@*
+    Modal Create Room
+*@
+<div class="modal fade" id="createRoom" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="createContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createContactLabel">Nhập thông tin phòng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-4 col-12">
+                        <div id="dropzone-sm1" class="mb-3">
+                            <form action="/upload" class="dropzone needsclick dz-clickable"
+                                  id="demo-upload1">
+
+                                <div class="dz-message needsclick">
+                                    <button type="button" class="dz-button">Tải ảnh lên.</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-12">
+                        <div class="row">
+                            <div class="col-6">
+
+                                <!-- Form Field Start -->
+                                <div class="mb-3">
+                                    <label for="roomNumber" class="form-label">Số phòng*</label>
+                                    <input type="number" class="form-control" id="roomNumber"
+                                           placeholder="Nhập số phòng" value="101">
+                                </div>
+
+                                <!-- Form Field Start -->
+                                <div class="mb-3">
+                                    <label for="position" class="form-label">Loại phòng*</label>
+                                    <select class="form-select" id="position">
+                                        <option value="1" selected>Phòng đơn</option>
+                                        <option value="2">Phòng đôi</option>
+                                        <option value="3">Phòng gia đình</option>
+                                        <option value="4">Phòng VIP</option>
+                                        <option value="5">Phòng Suite</option>
+                                        <option value="6">Phòng President</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+
+                                <!-- Form Field Start -->
+                                <div class="mb-3">
+                                    <label for="roomStatus" class="form-label">Trạng thái phòng*</label>
+                                    <select class="form-select" id="roomStatus">
+                                        <option value="1" selected>Còn trống</option>
+                                        <option value="2">Đã đặt</option>
+                                        <option value="3">Bảo trì</option>
+                                    </select>
+                                </div>
+
+                                <!-- Form Field Start -->
+                                <div class="mb-3">
+                                    <label for="roomStatus" class="form-label">Tầng/Dãy*</label>
+                                    <select class="form-select" id="roomStatus">
+                                        <option value="1" selected>Tầng 1</option>
+                                        <option value="2">Tầng 2</option>
+                                        <option value="3">Tầng 3</option>
+                                        <option value="4">Tầng 4</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-12">
+
+                                <!-- Form Field Start -->
+                                <div class="mb-3">
+                                    <label for="roomServices" class="form-label">Tiện ích</label>
+                                    <textarea class="form-control" id="roomServices"
+                                              placeholder="Nhập tiện ích của phòng"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="roomDescription" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control" id="roomDescription"
+                                                  placeholder="Nhập ghi chú"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
