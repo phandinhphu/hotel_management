@@ -4,7 +4,8 @@
 <div class="product-card">
     <div class="image-container">
         <img class="product-card-img-top"
-             src="~/images/admin/room/room-1.jpg" alt="Bootstrap Gallery">
+             src="~/images/room/@(string.IsNullOrEmpty(Model.Image) ? "room-default.png" : Model.Image)" alt="@Model.RoomNumber"
+        >
         <button class="menu-button" data-bs-toggle="dropdown"
                 aria-expanded="false">
             <i class="bi bi-three-dots-vertical"></i>
@@ -12,38 +13,41 @@
         <ul class="dropdown-menu">
             <li>
                 <a class="dropdown-item text-warning" data-bs-toggle="modal"
-                   data-bs-target="#editRoom">
+                   data-bs-target="#editRoom" onclick="editRoom(@Model.ID)">
                     <i class="fa-solid fa-pen-to-square"></i> Sửa
                 </a>
             </li>
             <li>
                 <a class="dropdown-item text-danger" data-bs-toggle="modal"
-                   data-bs-target="#deleteRoom">
+                   data-bs-target="#deleteRoom" onclick="deleteRoom(@Model.ID)">
                     <i class="fa-solid fa-trash"></i> Xóa
                 </a>
             </li>
         </ul>
     </div>
     <div class="product-card-body">
-        <h5 class="product-title">Phòng 101</h5>
+        <h5 class="product-title">Phòng @Model.RoomNumber</h5>
         <div class="product-price">
-            <span class="disount-price">450.000 VNĐ</span>
-            <span class="actucal-price">500.000 VNĐ</span>
-            <span class="off-price">20% Off</span>
+            <span class="disount-price">@Model.Price.ToString("N0") VNĐ</span>
+            @if (Model.Price < 500) {
+                <span class="actucal-price">@((Model.Price * 1.1m).ToString("N0")) VNĐ</span>
+                <span class="off-price">10% Off</span>
+            }
         </div>
-        <span class="badge rounded-pill shade-green mt-2">Còn trống</span>
+        <span class="badge rounded-pill @(Model.Status?.ToLower() == "available" ? "shade-green" : "shade-red") mt-2">
+            @(Model.Status?.ToLower() == "available" ? "Còn trống" : "Đã đặt")
+        </span>
         <div class="product-rating">
-            <div class="total-ratings">Loại phòng: Phòng đơn</div>
+            <div class="total-ratings">Loại phòng: @Model.Type</div>
         </div>
         <div class="product-description">
-            Tiện ích: Wifi, Tivi, Phòng tắm,...
+            @Model.Description
         </div>
         <div class="product-actions">
             <button class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#bookingRoom">
+                    data-bs-target="#bookingRoom" onclick="bookRoom(@Model.ID)">
                 Nhận phòng
             </button>
         </div>
-
     </div>
 </div>

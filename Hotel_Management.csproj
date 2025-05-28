@@ -53,7 +53,6 @@
     <None Include="wwwroot\images\admin\.DS_Store" />
     <None Include="wwwroot\images\admin\cards\.DS_Store" />
     <None Include="wwwroot\images\admin\flags\.DS_Store" />
-    <None Include="wwwroot\images\admin\food\.DS_Store" />
     <None Include="wwwroot\js\admin\.DS_Store" />
     <None Include="wwwroot\vendor\.DS_Store" />
     <None Include="wwwroot\vendor\apex\.DS_Store" />

@@ -32,6 +32,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IHotelservicesService, HotelservicesService>();
+// Đăng ký các dịch vụ cho các lớp trong Admin Area
+builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<ICustomerServices, CustomerServices>();
 builder.Services.AddScoped<IStaffServices, StaffServices>();
 builder.Services.AddScoped<IUserService, UserService>();

@@ -42,3 +42,44 @@
         width: 16px;
         text-align: center;
     }
+
+/* Search and filter styles */
+.search-filter-section {
+    margin-bottom: 2rem;
+}
+
+/* Price range input styling */
+#minPrice, #maxPrice {
+    max-width: 100px;
+}
+
+/* Filter tags styling */
+.filter-tags {
+    margin-top: 10px;
+}
+
+.filter-tag {
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.filter-tag .close {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* Responsive adjustments for filter section */
+@media (max-width: 768px) {
+    .price-range-container {
+        flex-direction: column;
+    }
+    
+    #minPrice, #maxPrice {
+        max-width: 100%;
+        margin-bottom: 5px;
+    }
+}
