@@ -1,0 +1,73 @@
+﻿@page
+@model Hotel_Management.Pages.Bookings.HistoryModel
+@{
+}
+@{
+    ViewData["Title"] = "Lịch sử đặt phòng";
+}
+
+<h2 class="mb-4">Lịch sử đặt phòng</h2>
+
+@if (Model.Bookings == null || !Model.Bookings.Any())
+{
+    <div class="alert alert-info">Bạn chưa có đơn đặt phòng nào.</div>
+}
+else
+{
+    <div class="row" style="margin-left: 0; margin-right: 0">
+        @foreach (var booking in Model.Bookings)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card mb-4 shadow-sm border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+						        <strong>Ngày đặt:</strong> @booking.CreatedAt.ToString()
+                            </div>
+                            <div>
+                                <strong>Trạng thái:</strong> <span class="badge bg-light text-dark">@booking.Status</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="text-primary">Phòng đã đặt</h5>
+                        <ul class="list-group mb-3">
+                            @foreach (var roomDetail in booking.BookingsRoomDetails)
+                            {
+                                <li class="list-group-item">
+                                    <strong>Phòng:</strong> @roomDetail.Room?.RoomNumber <br />
+                                    <strong>Thời gian:</strong> @roomDetail.CheckIn.ToString() - @roomDetail.CheckOut.ToString()<br />
+                                    <strong>Giá:</strong> @String.Format("{0:N0} VNĐ", @roomDetail.Price)
+                                </li>
+                            }
+                        </ul>
+
+                        @if (booking.BookingsServiceDetails.Any())
+                        {
+                            <h5 class="text-primary">Dịch vụ đã chọn</h5>
+                            <ul class="list-group mb-3">
+                                @foreach (var serviceDetail in booking.BookingsServiceDetails)
+                                {
+                                    <li class="list-group-item">
+                                        <strong>@serviceDetail.Service?.Name</strong> - @String.Format("{0:N0} VNĐ", @serviceDetail.Service?.Price)
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="text-end">
+                            <strong>Tổng tiền phòng: </strong> <span class="text-danger fs-5">@String.Format("{0:N0} VNĐ", booking.TotalPriceRooms)</span><br />
+                            @if (booking.BookingsServiceDetails.Any())
+                            {
+						        <strong>Tổng tiền dịch vụ: </strong> <span class="text-danger fs-5">@String.Format("{0:N0} VNĐ", booking.TotalPriceServices)</span>
+						        <br />
+                            }
+                            <strong>Tổng tiền:</strong> <span class="text-danger fs-5">@String.Format("{0:N0} VNĐ", booking.TotalPrice)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

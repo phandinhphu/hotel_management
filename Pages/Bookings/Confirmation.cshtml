@@ -5,8 +5,6 @@
 @inject IHotelservicesService HotelService
 @{
     ViewData["Title"] = "Xác nhận thông tin đặt phòng";
-    decimal totalRoomPrice = 0;
-    decimal totalServicePrice = 0;
 }
 
 <div class="container my-5">
@@ -16,7 +14,7 @@
             @for (int i = 0; i < Model.BookingItems.Count; i++)
             {
                 var item = Model.BookingItems[i];
-                int nights = (item.CheckOutDate - item.CheckInDate).Days;
+                int nights = (item.CheckOutDate.DayNumber - item.CheckInDate.DayNumber);
                 if (nights < 1) { nights = 1; }
                 decimal roomTotal = item.Price * nights;
                 decimal serviceTotal = 0;
@@ -28,8 +26,6 @@
                         serviceTotal += serviceDetails?.Price ?? 0;
                     }
                 }
-                totalRoomPrice += roomTotal;
-                totalServicePrice += serviceTotal;
             <div class="col-md-6">
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
@@ -70,17 +66,6 @@
                 </div>
             </div>
             }
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body text-end">
-                        <h5 class="mb-2">Tổng tiền phòng: <span class="fw-bold text-primary">@totalRoomPrice.ToString("N0") VNĐ</span></h5>
-                        <h5 class="mb-2">Tổng tiền dịch vụ: <span class="fw-bold text-warning">@totalServicePrice.ToString("N0") VNĐ</span></h5>
-                        <h4 class="mb-0">Tổng thanh toán: <span class="fw-bold text-success">@((totalRoomPrice + totalServicePrice).ToString("N0")) VNĐ</span></h4>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="text-center mt-4">
             <a href="/Bookings/WishList" class="btn btn-outline-secondary px-4 me-2">Quay lại chỉnh sửa</a>

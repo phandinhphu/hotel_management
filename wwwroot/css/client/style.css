@@ -2347,22 +2347,21 @@ ul, ol {
     cursor: pointer;
 }
 
-.client-login-card {
-    max-width: 400px;
-    margin: 40px auto;
+.client-card {
+    margin: -10px auto;
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     padding: 32px 24px;
     background: #fff;
 }
-.client-login-title {
+.client-title {
     font-size: 2rem;
     font-weight: 700;
     color: #2a4365;
     margin-bottom: 24px;
     text-align: center;
 }
-.client-login-btn {
+.client-btn {
     font-size: 1.1rem;
     padding: 10px 0;
     border-radius: 8px;

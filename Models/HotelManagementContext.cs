@@ -102,7 +102,7 @@ public partial class HotelManagementContext : IdentityDbContext<ApplicationUser>
 
             entity.HasIndex(e => e.RoomId, "Room_Id");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.BookingId).HasColumnName("Booking_Id");
             entity.Property(e => e.Price).HasPrecision(20, 6);
             entity.Property(e => e.RoomId).HasColumnName("Room_Id");
@@ -128,7 +128,7 @@ public partial class HotelManagementContext : IdentityDbContext<ApplicationUser>
 
             entity.HasIndex(e => e.ServiceId, "Service_Id");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.BookingId).HasColumnName("Booking_Id");
             entity.Property(e => e.Price).HasPrecision(18, 2);
             entity.Property(e => e.ServiceId).HasColumnName("Service_Id");

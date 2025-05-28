@@ -4,8 +4,6 @@
     ViewData["Title"] = "Room Detail";
 }
 
-<partial name="_StatusMessage" model="@TempData["StatusMessage"]" />
-
 <!-- Room Details Section Begin -->
 <section class="room-details-section spad">
     <div class="container">
@@ -17,7 +15,7 @@
                         <div class="rd-title">
                             <h3>@Model.room.RoomNumber</h3>
                         </div>
-                        <h2>@Model.room.Price<span>/Đêm</span></h2>
+                        <h2>@String.Format("{0:N0} VNĐ", Model.room.Price)<span>/Đêm</span></h2>
                         <table>
                             <tbody>
                                 <tr>

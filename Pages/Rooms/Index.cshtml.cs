@@ -1,3 +1,4 @@
+using Hotel_Management.Helpers;
 using Hotel_Management.Models;
 using Hotel_Management.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,19 +15,17 @@ namespace Hotel_Management.Rooms.Pages
             _roomsService = roomsService;
         }
 
-        public IEnumerable<Room> Rooms { get; set; } = new List<Room>();
+        public PaginatedList<Room> Rooms { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = 1;
+        [BindProperty(SupportsGet = true)]
+        public string? RoomNumber { get; set; }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            try
-            {
-                Rooms = _roomsService.GetAllRoomsAsync().Result;
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions (e.g., log the error, show an error message)
-                ModelState.AddModelError(string.Empty, "An error occurred while retrieving rooms: " + ex.Message);
-            }
+            Rooms = await _roomsService.GetAllRoomsAsync(RoomNumber, PageIndex, 20);
+
+            return Page();
         }
     }
 }

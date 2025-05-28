@@ -9,7 +9,7 @@ public partial class Booking
 
     public string UserId { get; set; } = null!;
 
-    public string StaffId { get; set; } = null!;
+    public string? StaffId { get; set; } = null!;
 
     public decimal? TotalPriceRooms { get; set; }
 
@@ -18,6 +18,8 @@ public partial class Booking
     public decimal? TotalPrice { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+
+    public string? Status { get; set; } = null;
 
     public virtual ICollection<BookingsRoomDetail> BookingsRoomDetails { get; set; } = new List<BookingsRoomDetail>();
 

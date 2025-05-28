@@ -40,6 +40,7 @@ builder.Services.AddDbContext<HotelManagementContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection") 
             ?? throw new InvalidOperationException("Connection string 'HotelManagementContext' not found."),
         new MySqlServerVersion(new Version(8, 0, 21)))
+    .EnableSensitiveDataLogging()
 );
 
 // Đăng ký Identity

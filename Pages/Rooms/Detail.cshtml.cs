@@ -1,6 +1,7 @@
 using Hotel_Management.Extensions;
 using Hotel_Management.Models;
 using Hotel_Management.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,10 +9,12 @@ namespace Hotel_Management.Rooms.Pages
 {
     public class DetailModel : PageModel
     {
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IRoomsService _roomsService;
 
-        public DetailModel(IRoomsService roomsService)
+        public DetailModel(SignInManager<ApplicationUser> signInManager,IRoomsService roomsService)
         {
+            _signInManager = signInManager;
             _roomsService = roomsService;
         }
 
@@ -42,11 +45,18 @@ namespace Hotel_Management.Rooms.Pages
             string? RoomType,
             string? RoomImage,
             decimal Price,
-            DateTime CheckInDate,
-            DateTime CheckOutDate
+            DateOnly CheckInDate,
+            DateOnly CheckOutDate
         )
         {
-            Console.WriteLine($"RoomId: {RoomId}, RoomNumber: {RoomNumber}, RoomType: {RoomType}, RoomImage: {RoomImage}, Price: {Price}, CheckInDate: {CheckInDate}, CheckOutDate: {CheckOutDate}");
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return RedirectToPage(
+                    "/Account/Login",
+                    new { area = "Identity", returnUrl = Url.Page("/Rooms/Detail", new { id = RoomId }) }
+                );
+            }
+
             var room = await _roomsService.GetRoomByIdAsync(RoomId);
 
             if (room == null)
@@ -56,6 +66,12 @@ namespace Hotel_Management.Rooms.Pages
             }
 
             var wishList = HttpContext.Session.GetObject<List<BookingItem>>("wishlist") ?? new List<BookingItem>();
+
+            if (wishList.Count == 5)
+            {
+                ModelState.AddModelError(string.Empty, "You can only add up to 5 rooms to your wishlist.");
+                return Page();
+            }
 
             wishList.Add(new BookingItem
             {
