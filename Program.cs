@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Areas.Admin.Services;
 using Hotel_Management;
+using Hotel_Management.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 var mailSettings = builder.Configuration.GetSection("MailSettings");
@@ -28,6 +29,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IHotelservicesService, HotelservicesService>();
 builder.Services.AddScoped<ICustomerServices, CustomerServices>();
