@@ -1,4 +1,5 @@
-﻿using Hotel_Management.Areas.Admin.Services.Interfaces;
+﻿using AutoMapper;
+using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Areas.Admin.ViewModels;
 using Hotel_Management.Models;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +12,16 @@ namespace Hotel_Management.Areas.Admin.Controllers
     {
         private readonly ICustomerServices _customerServices;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public CustomerController(ICustomerServices customerServices, UserManager<ApplicationUser> userManager)
+        public CustomerController(
+            ICustomerServices customerServices,
+            UserManager<ApplicationUser> userManager,
+            IMapper mapper)
         {
             _customerServices = customerServices;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -71,13 +77,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
             {
                 Console.WriteLine(customer.UserName);
                 Console.WriteLine(customer.Email);
-                var user = new ApplicationUser
-                {
-                    UserName = customer.UserName,
-                    Email = customer.Email,
-                    PhoneNumber = customer.PhoneNumber,
-                    EmailConfirmed = true
-                };
+                var user = _mapper.Map<ApplicationUser>(customer);
 
 
                 var result = await _userManager.CreateAsync(user, customer.Password);
@@ -119,13 +119,9 @@ namespace Hotel_Management.Areas.Admin.Controllers
                 {
                     return NotFound();
                 }
-                var editCustomerVM = new EditUserVM
-                {
-                    UserId = customer.Id,
-                    UserName = customer.UserName ?? string.Empty,
-                    Email = customer.Email ?? string.Empty,
-                    PhoneNumber = customer.PhoneNumber ?? string.Empty
-                };
+
+                var editCustomerVM = _mapper.Map<EditUserVM>(customer);
+
                 return View(editCustomerVM);
             }
             catch (ArgumentNullException ex)
@@ -159,9 +155,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
                         return NotFound();
                     }
 
-                    existingCustomer.UserName = customer.UserName;
-                    existingCustomer.Email = customer.Email;
-                    existingCustomer.PhoneNumber = customer.PhoneNumber;
+                    _mapper.Map(customer, existingCustomer);
 
                     var result = await _userManager.UpdateAsync(existingCustomer);
 

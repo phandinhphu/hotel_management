@@ -6,31 +6,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Management.Areas.Admin.Services
 {
-    public class CustomerServices : ICustomerServices
+    public class StaffServices : IStaffServices
     {
         private readonly HotelManagementContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CustomerServices(HotelManagementContext context, UserManager<ApplicationUser> userManager)
+        public StaffServices(HotelManagementContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        public Task<PaginatedList<ApplicationUser>> getAllAsync(string name = "", int pageIndex = 1, int pageSize = 20)
+        public async Task<PaginatedList<ApplicationUser>> getAllAsync(string name = "", int pageIndex = 1, int pageSize = 20)
         {
-            var user = _userManager.GetUsersInRoleAsync("Customer").Result;
+            var user = await _userManager.GetUsersInRoleAsync("Staff");
 
             if (!string.IsNullOrEmpty(name))
             {
                 user = user.Where(u => u.UserName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            return PaginatedList<ApplicationUser>.Create(
-                user,
-                pageIndex,
-                pageSize
-            );
+            return await PaginatedList<ApplicationUser>.Create(user, pageIndex, pageSize);
         }
 
         public async Task<ApplicationUser> getByIdAsync(string id)

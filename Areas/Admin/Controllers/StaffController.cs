@@ -1,4 +1,5 @@
-﻿using Hotel_Management.Areas.Admin.Services.Interfaces;
+﻿using AutoMapper;
+using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Areas.Admin.ViewModels;
 using Hotel_Management.Models;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +12,16 @@ namespace Hotel_Management.Areas.Admin.Controllers
     {
         private readonly IStaffServices _staffServices;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public StaffController(IStaffServices staffServices, UserManager<ApplicationUser> userManager)
+        public StaffController(
+            IStaffServices staffServices,
+            UserManager<ApplicationUser> userManager,
+            IMapper mapper)
         {
             _staffServices = staffServices;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -71,13 +77,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
             {
                 Console.WriteLine(customer.UserName);
                 Console.WriteLine(customer.Email);
-                var user = new ApplicationUser
-                {
-                    UserName = customer.UserName,
-                    Email = customer.Email,
-                    PhoneNumber = customer.PhoneNumber,
-                    EmailConfirmed = true
-                };
+                var user = _mapper.Map<ApplicationUser>(customer);
 
 
                 var result = await _userManager.CreateAsync(user, customer.Password);
@@ -119,13 +119,9 @@ namespace Hotel_Management.Areas.Admin.Controllers
                 {
                     return NotFound();
                 }
-                var editStaffVM = new EditUserVM
-                {
-                    UserId = staff.Id,
-                    UserName = staff.UserName ?? string.Empty,
-                    Email = staff.Email ?? string.Empty,
-                    PhoneNumber = staff.PhoneNumber ?? string.Empty
-                };
+
+                var editStaffVM = _mapper.Map<EditUserVM>(staff);
+
                 return View(editStaffVM);
             }
             catch (ArgumentNullException ex)
@@ -159,9 +155,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
                         return NotFound();
                     }
 
-                    existingStaff.UserName = staff.UserName;
-                    existingStaff.Email = staff.Email;
-                    existingStaff.PhoneNumber = staff.PhoneNumber;
+                    _mapper.Map(staff, existingStaff);
 
                     var result = await _userManager.UpdateAsync(existingStaff);
 
