@@ -1,0 +1,57 @@
+﻿@using Hotel_Management.Models
+@model ApplicationUser
+@{
+    ViewData["Title"] = "Chi tiết nhân viên";
+}
+
+<div class="container mt-5">
+    <div class="card shadow rounded-4 border-0">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h3 class="mb-0">Thông tin nhân viên</h3>
+        </div>
+        <div class="card-body mt-2">
+            <dl class="row">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3">Tên đăng nhập</dt>
+                <dd class="col-sm-9">@Model.UserName</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Xác thực Email</dt>
+                <dd class="col-sm-9">
+                    @if (Model.EmailConfirmed)
+                    {
+                        <span class="badge bg-success">Đã xác thực</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Chưa xác thực</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Số điện thoại</dt>
+                <dd class="col-sm-9">@(Model.PhoneNumber ?? "(Chưa cập nhật)")</dd>
+
+                <dt class="col-sm-3">Xác thực SĐT</dt>
+                <dd class="col-sm-9">
+                    @if (Model.PhoneNumberConfirmed)
+                    {
+                        <span class="badge bg-success">Đã xác thực</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Chưa xác thực</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Quay lại danh sách
+            </a>
+        </div>
+    </div>
+</div>

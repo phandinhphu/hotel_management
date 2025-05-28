@@ -1,0 +1,157 @@
+﻿@using Hotel_Management.Helpers
+@using Hotel_Management.Models
+@model PaginatedList<ApplicationUser>
+@{
+    ViewData["Title"] = "Danh sách khách hàng";
+}
+
+<style>
+    .bronze-color {
+        background-color: #cd7f32;
+        color: white;
+        /* Màu chữ */
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Danh sách khách hàng</div>
+                <div class="search-container">
+                    <!-- Search input group start -->
+                    <form asp-area="Admin" asp-controller="Customer" asp-action="Index" method="get" class="input-group">
+                        <input type="text" class="form-control" style="border: 1px solid black;" name="QuerySearch"
+                            placeholder="Tìm kiếm khách hàng">
+                        <button class="btn" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                    <!-- Search input group end -->
+                </div>
+                <a asp-area="Admin" asp-controller="Customer" asp-action="Index" class="btn btn-danger">
+					Xóa tìm kiếm
+                </a>
+
+                <a asp-area="Admin" asp-controller="Customer" asp-action="Create" class="btn btn-primary ms-1">
+                    <i class="bi bi-plus"></i>
+                    Thêm khách hàng
+                </a>
+            </div>
+            <div class="card-body">
+                @if (Model.Count == 0)
+                {
+                    <div class="alert alert-info" role="alert">
+                        Không có khách hàng nào được tìm thấy.
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table v-middle m-0">
+                            <thead>
+                                <tr>
+                                    <th>Khách hàng</th>
+                                    <th>Liên hệ</th>
+                                    <th>Email</th>
+                                    <th>Check-in cuối</th>
+                                    <th>Tổng tiền chi</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var customer in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="media-box">
+                                                <div class="media-box-body">
+                                                    <div class="text-truncate">@customer.UserName</div>
+                                                    <p>ID: #@customer.Id</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@customer.PhoneNumber</td>
+                                        <td>@customer.Email</td>
+                                        <td>27/10/2024</td>
+                                        <td>23.870.000VND</td>
+                                        <td>
+                                            <div class="actions">
+                                                <a asp-area="Admin" asp-controller="Customer" asp-action="Detail" asp-route-id="@customer.Id" class="viewRow">
+                                                    <i class="bi bi-list text-green"></i>
+                                                </a>
+                                                <a asp-area="Admin" asp-controller="Customer" asp-action="Edit" asp-route-id="@customer.Id" class="viewRow">
+                                                    <i class="bi bi-pencil text-yellow"></i>
+                                                </a>
+                                                <a href="#" class="deleteRow" data-id="@customer.Id">
+                                                    <i class="bi bi-trash text-red"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+
+                        <!-- Phân trang -->
+                        <nav aria-label="Page Navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item">
+                                    @if (Model.HasPreviousPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { pageIndex = Model.PageIndex - 1 })"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-left"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { pageIndex = i })">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    @if (Model.HasNextPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { pageIndex = Model.PageIndex + 1 })"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<form asp-area="Admin" asp-controller="Customer" asp-action="Delete" method="post" name="delete">
+    <input type="hidden" name="id" />
+</form>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const deleteButtons = document.querySelectorAll(".deleteRow");
+		deleteButtons.forEach(button => {
+			button.addEventListener("click", function (event) {
+				event.preventDefault();
+				const customerId = this.getAttribute("data-id");
+                const form = document.forms["delete"];
+				form.querySelector("input[name='id']").value = customerId;
+
+				if (confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
+					form.submit();
+                }
+			});
+		});
+	});
+</script>

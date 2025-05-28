@@ -1,0 +1,142 @@
+﻿@using Hotel_Management.Areas.Admin.ViewModels
+@using Hotel_Management.Helpers
+@using Microsoft.AspNetCore.Identity
+@model PaginatedList<UserAndRoleVM>
+@inject RoleManager<IdentityRole> roleManager
+
+@{
+	ViewData["Title"] = "Roles";
+
+	var Roles = roleManager.Roles.ToList();
+}
+
+<style>
+    .bronze-color {
+        background-color: #cd7f32;
+        color: white;
+        /* Màu chữ */
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Danh sách người dùng</div>
+                <div class="search-container">
+                    <!-- Search input group start -->
+                    <form method="get" class="input-group">
+                        <input type="text" class="form-control" style="border: 1px solid black;" name="QuerySearch"
+                               placeholder="Tìm kiếm khách hàng">
+                        <button class="btn" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                    <!-- Search input group end -->
+                </div>
+                <a asp-area="Admin" asp-controller="Role" asp-action="Index" class="btn btn-danger">
+                    Xóa tìm kiếm
+                </a>
+
+                <form method="get" class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <select class="form-select" name="SelectedRole" style="width: auto">
+							<option value="">Chọn role</option>
+							@foreach (var role in Roles)
+							{
+								<option value="@role.Name">@role.Name</option>
+							}
+						</select>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Lọc</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+                @if (Model.Count == 0)
+                {
+                    <div class="alert alert-info" role="alert">
+                        Không có người dùng nào được tìm thấy.
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table v-middle m-0">
+                            <thead>
+                                <tr>
+                                    <th>Người dùng</th>
+                                    <th>Liên hệ</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="media-box">
+                                                <div class="media-box-body">
+                                                    <div class="text-truncate">@user.UserName</div>
+                                                    <p>ID: #@user.Id</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@user.PhoneNumber</td>
+                                        <td>@user.Email</td>
+                                        <td><span class="badge rounded-pill shade-yellow">@(user.Role ?? "Không có role nào")</span></td>
+                                        <td>
+                                            <div class="actions">
+                                                <a asp-area="Admin" asp-controller="Role" asp-action="Edit" asp-route-id="@user.Id" class="viewRow">
+                                                    <i class="bi bi-pencil text-yellow"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+
+                        <!-- Phân trang -->
+                        <nav aria-label="Page Navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item">
+                                    @if (Model.HasPreviousPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { pageIndex = Model.PageIndex - 1 })"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-left"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { pageIndex = i })">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    @if (Model.HasNextPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { pageIndex = Model.PageIndex + 1 })"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Hotel_Management.Areas.Admin.Services.Interfaces;
+using Hotel_Management.Areas.Admin.Services;
+using Hotel_Management;
+using Hotel_Management.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 var mailSettings = builder.Configuration.GetSection("MailSettings");
@@ -25,8 +29,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IHotelservicesService, HotelservicesService>();
+builder.Services.AddScoped<ICustomerServices, CustomerServices>();
+builder.Services.AddScoped<IStaffServices, StaffServices>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<HotelManagementContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection") 
@@ -115,6 +123,12 @@ builder.Services.Configure<IdentityOptions>(options => {
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await DbInitializer.SeedRolesAndAdminAsync(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

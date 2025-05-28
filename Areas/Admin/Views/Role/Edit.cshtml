@@ -1,0 +1,60 @@
+﻿@using Hotel_Management.Areas.Admin.ViewModels
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model EditRoleUserVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h4 class="mb-0">Chỉnh sửa quyền người dùng</h4>
+        </div>
+        <div class="card-body">
+            <form asp-area="Admin" asp-controller="Role" asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CurrentRole" class="form-label">Quyền hiện tại</label>
+                    <input asp-for="CurrentRole" class="form-control" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SelectedRole" class="form-label">Quyền mới</label>
+                    <select asp-for="SelectedRole" class="form-select" asp-items="Model.AvailableRoles" required>
+                        <option value="">-- Chọn quyền --</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Vui lòng chọn quyền mới.
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}
