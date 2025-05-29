@@ -1,11 +1,12 @@
 ﻿@using Hotel_Management.Models
+@using System.Globalization
 @model Room
 
 <div class="room-item">
     <img src="~/images/client/room/room-2.jpg" alt="">
     <div class="ri-text">
         <h4>@Model.RoomNumber</h4>
-        <h3>@Model.Price<span>/Đêm</span></h3>
+        <h3>@String.Format("{0:N0} VNĐ", Model.Price)<span>/Đêm</span></h3>
         <table>
             <tbody>
                 <tr>

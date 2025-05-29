@@ -10,6 +10,9 @@ using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Areas.Admin.Services;
 using Hotel_Management;
 using Hotel_Management.Mapping;
+using Microsoft.AspNetCore.SignalR;
+using Hotel_Management.Providers;
+using Hotel_Management.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var mailSettings = builder.Configuration.GetSection("MailSettings");
@@ -37,12 +40,18 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<ICustomerServices, CustomerServices>();
 builder.Services.AddScoped<IStaffServices, StaffServices>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IBookingServices, BookingServices>();
 builder.Services.AddDbContext<HotelManagementContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection") 
             ?? throw new InvalidOperationException("Connection string 'HotelManagementContext' not found."),
         new MySqlServerVersion(new Version(8, 0, 21)))
+    .EnableSensitiveDataLogging()
 );
+
+// Đăng ký SignalR
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
 // Đăng ký Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -150,6 +159,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapHub<NotificationHub>("/notificationHub");
 
 // Đăng ký các route cho areas Admin
 app.MapControllerRoute(

@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li class="@(currentController == "Booking" ? "active" : "")">
-                    <a href="booking.html" class="@(currentController == "Booking" ? "current-page" : "")">
+                    <a asp-area="Admin" asp-controller="Booking" asp-action="Index" class="@(currentController == "Booking" ? "current-page" : "")">
                         <i class="bi bi-calendar2-check"></i>
                         <span class="menu-text">Quản lý đặt phòng</span>
                     </a>

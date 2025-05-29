@@ -1,0 +1,74 @@
+﻿@model PaginatedList<Booking>
+
+@{
+    ViewData["Title"] = "Quản lý Booking";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+	    toastr.success(TempData["SuccessMessage"].ToString(), "Thành công");
+    </script>
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Quản lý Đặt phòng</h2>
+
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Khách hàng</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th class="text-center">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.User?.UserName</td>
+                    <td>@booking.CreatedAt.ToString()</td>
+                    <td>@String.Format("{0:N0} VNĐ", booking.TotalPrice)</td>
+                    <td>
+                        <span class="badge bg-@(booking.Status == "Pending" ? "warning" : booking.Status == "Approved" ? "success" : "danger")">
+                            @booking.Status
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Detail" asp-route-id="@booking.Id" class="btn btn-info btn-sm me-1">Chi tiết</a>
+                        @if (booking.Status == "Pending")
+                        {
+                            <form method="post" asp-action="Approve" asp-route-id="@booking.Id" class="d-inline">
+                                <button type="submit" class="btn btn-success btn-sm me-1">Duyệt</button>
+                            </form>
+                            <form method="post" asp-action="Reject" asp-route-id="@booking.Id" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link" asp-route-pageNumber="@(Model.PageIndex - 1)">Trước</a>
+                </li>
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                    <a class="page-link" asp-route-pageNumber="@(Model.PageIndex + 1)">Sau</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

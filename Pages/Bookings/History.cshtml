@@ -1,0 +1,108 @@
+﻿@page
+@model Hotel_Management.Pages.Bookings.HistoryModel
+@{
+}
+@{
+    ViewData["Title"] = "Lịch sử đặt phòng";
+}
+
+<h2 class="mb-4">Lịch sử đặt phòng</h2>
+
+@if (Model.Bookings == null || !Model.Bookings.Any())
+{
+    <div class="alert alert-info">Bạn chưa có đơn đặt phòng nào.</div>
+}
+else
+{
+    <form method="get" class="mb-4 d-flex align-items-center gap-2" style="margin-left: 20px">
+        <label class="form-label mb-0">Lọc trạng thái:</label>
+        <select class="form-select w-auto" name="StatusFilter" onchange="this.form.submit()">
+            <option value="All" selected="@("All" == Model.StatusFilter)">Tất cả</option>
+            <option value="Pending" selected=@("Pending" == Model.StatusFilter)>Chờ xác nhận</option>
+            <option value="Paid" selected=@("Paid" == Model.StatusFilter)>Đã thanh toán</option>
+            <option value="UnPaid" selected=@("UnPaid" == Model.StatusFilter)>Chưa thanh toán</option>
+            <option value="Cancelled" selected=@("Cancelled" == Model.StatusFilter)>Đã hủy</option>
+        </select>
+    </form>
+
+    <div class="row" style="margin-left: 0; margin-right: 0">
+        @foreach (var booking in Model.Bookings)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card mb-4 shadow-sm border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+						        <strong>Ngày đặt:</strong> @booking.CreatedAt.ToString()
+                            </div>
+                            <div>
+                                <strong>Trạng thái:</strong> <span class="badge bg-light text-dark">@booking.Status</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="text-primary">Phòng đã đặt</h5>
+                        <ul class="list-group mb-3">
+                            @foreach (var roomDetail in booking.BookingsRoomDetails)
+                            {
+                                <li class="list-group-item">
+                                    <strong>Phòng:</strong> @roomDetail.Room?.RoomNumber <br />
+                                    <strong>Thời gian:</strong> @roomDetail.CheckIn.ToString() - @roomDetail.CheckOut.ToString()<br />
+                                    <strong>Giá:</strong> @String.Format("{0:N0} VNĐ", @roomDetail.Price)
+                                </li>
+                            }
+                        </ul>
+
+                        @if (booking.BookingsServiceDetails.Any())
+                        {
+                            <h5 class="text-primary">Dịch vụ đã chọn</h5>
+                            <ul class="list-group mb-3">
+                                @foreach (var serviceDetail in booking.BookingsServiceDetails)
+                                {
+                                    <li class="list-group-item">
+                                        <strong>@serviceDetail.Service?.Name</strong> - @String.Format("{0:N0} VNĐ", @serviceDetail.Service?.Price)
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="text-end">
+                            <strong>Tổng tiền phòng: </strong> <span class="text-danger fs-5">@String.Format("{0:N0} VNĐ", booking.TotalPriceRooms)</span><br />
+                            @if (booking.BookingsServiceDetails.Any())
+                            {
+						        <strong>Tổng tiền dịch vụ: </strong> <span class="text-danger fs-5">@String.Format("{0:N0} VNĐ", booking.TotalPriceServices)</span>
+						        <br />
+                            }
+                            <strong>Tổng tiền:</strong> <span class="text-danger fs-5">@String.Format("{0:N0} VNĐ", booking.TotalPrice)</span>
+                        </div>
+                        @if (booking.Status == "Pending")
+                        {
+                            <form method="post" asp-page-handler="Cancel" asp-route-id="@booking.Id" onsubmit="return confirm('Bạn có chắc muốn hủy đơn này không?');">
+                                <button class="btn btn-sm btn-outline-danger mt-2">Hủy đơn</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Phân trang -->
+    <nav style="margin-bottom: 20px">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.Bookings.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-route-pageIndex="@(Model.Bookings.PageIndex - 1)">«</a>
+            </li>
+            @for (int i = 1; i <= Model.Bookings.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.Bookings.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-route-pageIndex="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.Bookings.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-route-pageIndex="@(Model.Bookings.PageIndex + 1)">»</a>
+            </li>
+        </ul>
+    </nav>
+}

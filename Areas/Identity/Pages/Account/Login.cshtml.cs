@@ -87,6 +87,13 @@ namespace Hotel_Management.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            // Nếu người dùng đã đăng nhập, chuyển hướng đến trang chính
+            if (_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("/");
+                return;
+            }
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);

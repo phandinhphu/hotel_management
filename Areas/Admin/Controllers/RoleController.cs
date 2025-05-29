@@ -1,6 +1,7 @@
 ﻿using Hotel_Management.Areas.Admin.ViewModels;
 using Hotel_Management.Models;
 using Hotel_Management.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace Hotel_Management.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

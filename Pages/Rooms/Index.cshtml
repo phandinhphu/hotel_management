@@ -6,23 +6,53 @@
 
 <!-- Rooms Section Begin -->
 <section class="rooms-section spad">
-    <div class="container">
-        <div class="row">
-
-			@foreach (var room in Model.Rooms)
+	<div class="container">
+		<div class="row">
+			@if (Model.Rooms.Count == 0)
 			{
-				<div class="col-lg-4 col-md-6">
-					<partial name="_RoomPartial" model="room" />
+				<div class="col-lg-12 text-center">
+					<h3>Không có phòng nào</h3>
 				</div>
 			}
+			else
+			{
+				@foreach (var room in Model.Rooms)
+				{
+					<div class="col-lg-4 col-md-6">
+						<partial name="_RoomPartial" model="room" />
+					</div>
+				}
 
-            <div class="col-lg-12">
-                <div class="room-pagination">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">Tiếp <i class="fa fa-long-arrow-right"></i></a>
-                </div>
-            </div>
+				<div class="col-lg-12">
+					<div class="room-pagination">
+						@if (Model.Rooms.HasPreviousPage)
+						{
+							<a class="page-link"
+							   asp-page="/Rooms/Index" asp-route-PageIndex="@Model.PageIndex - 1"
+							   aria-label="Previous">
+								<i class="fa fa-long-arrow-left"></i>
+							</a>
+						}
+
+						@for (int i = 1; i <= Model.Rooms.TotalPages; i++)
+						{
+							<a class="page-item @(Model.PageIndex == i ? "active" : "")"
+								asp-page="/Rooms/Index" asp-route-PageIndex="@i">
+								@i
+							</a>
+						}
+
+						@if (Model.Rooms.HasNextPage)
+						{
+							<a class="page-link"
+							   asp-page="/Rooms/Index" asp-route-PageIndex="@Model.PageIndex + 1"
+							   aria-label="Next">
+								<i class="fa fa-long-arrow-right"></i>
+							</a>
+						}
+					</div>
+				</div>
+			}
         </div>
     </div>
 </section>

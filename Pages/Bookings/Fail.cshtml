@@ -1,0 +1,20 @@
+﻿@page
+@model Hotel_Management.Pages.Bookings.FailModel
+@{
+	ViewData["Title"] = "Đặt phòng thành công";
+}
+
+<div class="container mt-4">
+	<div class="alert alert-danger" role="alert">
+		<h4 class="alert-heading">Đặt phòng không thành công!</h4>
+		<p>Rất tiếc, việc đặt phòng của bạn đã không thành công. Vui lòng thử lại sau.</p>
+		<hr>
+		<p class="mb-0">Nếu vấn đề vẫn tiếp diễn, hãy liên hệ với chúng tôi để được hỗ trợ.</p>
+	</div>
+	<div class="text-center">
+		<a asp-page="/Bookings/Index" class="btn btn-primary">Quay lại trang đặt phòng</a>
+	</div>
+	<div class="text-center mt-3">
+		<a asp-page="/Index" class="btn btn-secondary">Về trang chủ</a>
+	</div>
+</div>

@@ -22,7 +22,6 @@
                             <a href="#"><i class="fa fa-twitter"></i></a>
                             <a href="#"><i class="fa fa-instagram"></i></a>
                         </div>
-                        <a href="#" class="bk-btn">Đặt ngay</a>
 
 						@if (SignInManager.IsSignedIn(User))
 						{
@@ -32,7 +31,13 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a asp-area="Identity" asp-page="/Account/Manage" class="dropdown-item">Thông tin cá nhân</a>
+                                        <a asp-page="/Bookings/WishList" class="dropdown-item">Wishlist</a>
+                                    </li>
+                                    <li>
+                                        <a asp-page="/Bookings/History" class="dropdown-item">Lịch sử đặt phòng</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="dropdown-item">Thông tin cá nhân</a>
                                     </li>
                                     <li>
                                         <a asp-area="Identity" asp-page="/Account/Logout" class="dropdown-item">Đăng xuất</a>
