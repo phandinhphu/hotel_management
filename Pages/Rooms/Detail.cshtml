@@ -41,12 +41,16 @@
             <div class="col-lg-4" id="booking-form">
                 <div class="room-booking">
                     <h3>Đặt chỗ của bạn</h3>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <form method="post" asp-page-handler="AddWishList">
                         <input type="hidden" name="RoomId" value="@Model.room.Id" />
                         <input type="hidden" name="RoomNumber" value="@Model.room.RoomNumber" />
                         <input type="hidden" name="RoomType" value="@Model.room.Type" />
                         <input type="hidden" name="RoomImage" value="@Model.room.Image" />
 						<input type="hidden" name="Price" value="@Model.room.Price" />
+                        <input type="hidden" name="Status" value="@Model.room.Status" />
+
                         <div class="check-date">
                             <label for="date-in">Nhận phòng:</label>
                             <input type="datetime" class="date-input" id="date-in" name="CheckInDate" required>
@@ -65,3 +69,6 @@
     </div>
 </section>
 <!-- Room Details Section End -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

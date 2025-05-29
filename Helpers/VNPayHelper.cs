@@ -1,4 +1,4 @@
-
+using System.Globalization;
 using Hotel_Management.libs;
 using Hotel_Management.Models;
 
@@ -6,7 +6,7 @@ namespace Hotel_Management.Helpers
 {
     public class VNPayHelper
     {
-        public static string CreatePaymentUrl(HttpContext context, VNPayRequestModel model, IConfiguration config)
+        public static string CreatePaymentUrl(HttpContext context, VNPayRequestModel model, IConfiguration config, int bookingId)
         {
             var vnp_Url = config["VNPay:BaseUrl"];
             var vnp_Returnurl = config["VNPay:ReturnUrl"];
@@ -19,12 +19,12 @@ namespace Hotel_Management.Helpers
                 throw new ArgumentException("VNPay configuration is not properly set.");
             }
 
-            var tick = DateTime.Now.Ticks.ToString();
+            var tick = bookingId.ToString();
             var pay = new VnPayLibrary();
             pay.AddRequestData("vnp_Version", "2.1.0");
             pay.AddRequestData("vnp_Command", "pay");
             pay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
-            pay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString());
+            pay.AddRequestData("vnp_Amount", (model.Amount * 100).ToString("F0", CultureInfo.InvariantCulture));
             pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
             pay.AddRequestData("vnp_CurrCode", "VND");
             pay.AddRequestData("vnp_IpAddr", context.Connection.RemoteIpAddress?.ToString());

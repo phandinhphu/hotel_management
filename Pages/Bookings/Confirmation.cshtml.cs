@@ -1,9 +1,11 @@
 ﻿using Hotel_Management.Extensions;
+using Hotel_Management.Hubs;
 using Hotel_Management.Models;
 using Hotel_Management.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Management.Pages.Bookings
@@ -15,19 +17,22 @@ namespace Hotel_Management.Pages.Bookings
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRoomsService _roomsService;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
         public ConfirmationModel(
             ILogger<ConfirmationModel> logger,
             HotelManagementContext context,
             UserManager<ApplicationUser> userManager,
             IRoomsService roomsService,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IHubContext<NotificationHub> hubContext)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _roomsService = roomsService;
             _signInManager = signInManager;
+            _hubContext = hubContext;
         }
 
         public List<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
@@ -103,6 +108,12 @@ namespace Hotel_Management.Pages.Bookings
                     await _context.SaveChangesAsync();
                 }
             }
+
+            await _hubContext.Clients.Group("Staff")
+                .SendAsync("ReceiveNotification", $"📥 Khách {_userManager.GetUserName(User)} vừa đặt phòng.");
+
+            await _hubContext.Clients.Group("Admin")
+                .SendAsync("ReceiveNotification", $"📥 Khách {_userManager.GetUserName(User)} vừa đặt phòng.");
 
             HttpContext.Session.Remove("wishlist");
             return RedirectToPage("/Bookings/Success");

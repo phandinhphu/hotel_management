@@ -2,12 +2,14 @@
 using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Areas.Admin.ViewModels;
 using Hotel_Management.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Management.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class StaffController : Controller
     {
         private readonly IStaffServices _staffServices;

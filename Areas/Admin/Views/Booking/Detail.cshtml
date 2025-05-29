@@ -1,0 +1,40 @@
+﻿@model Booking
+@{
+	ViewData["Title"] = "Chi tiết Booking";
+}
+
+<div class="container mt-4" style="background-color: #fff; border-radius: 8px;">
+    <h3>Chi tiết Booking</h3>
+    <p><strong>Khách hàng:</strong> @Model.User.UserName</p>
+    <p><strong>Trạng thái:</strong> @Model.Status</p>
+    <p><strong>Ngày tạo:</strong> @Model.CreatedAt.ToString()</p>
+
+    <h5 class="mt-4">Phòng:</h5>
+    <ul class="list-group">
+        @foreach (var room in Model.BookingsRoomDetails)
+        {
+            <li class="list-group-item">
+                Phòng: @room.Room.RoomNumber - @room.CheckIn.ToString() → @room.CheckOut.ToString()
+                <br />Giá: @String.Format("{0:N0} VNĐ", room.Price)
+            </li>
+        }
+    </ul>
+
+    <h5 class="mt-4">Dịch vụ:</h5>
+    <ul class="list-group">
+        @foreach (var service in Model.BookingsServiceDetails)
+        {
+            <li class="list-group-item">
+                @service.Service.Name - @String.Format("{0:N0} VNĐ", service.Price)
+            </li>
+        }
+    </ul>
+
+    <div class="mt-3">
+        <strong>Tổng tiền:</strong> @String.Format("{0:N0} VNĐ", Model.TotalPrice)
+    </div>
+
+	<div class="mt-3">
+		<a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>

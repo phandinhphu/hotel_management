@@ -1,4 +1,4 @@
-using Hotel_Management.Extensions;
+﻿using Hotel_Management.Extensions;
 using Hotel_Management.Models;
 using Hotel_Management.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -46,7 +46,8 @@ namespace Hotel_Management.Rooms.Pages
             string? RoomImage,
             decimal Price,
             DateOnly CheckInDate,
-            DateOnly CheckOutDate
+            DateOnly CheckOutDate,
+            String Status = "Available"
         )
         {
             if (!_signInManager.IsSignedIn(User))
@@ -55,6 +56,31 @@ namespace Hotel_Management.Rooms.Pages
                     "/Account/Login",
                     new { area = "Identity", returnUrl = Url.Page("/Rooms/Detail", new { id = RoomId }) }
                 );
+            }
+
+            if (Status == "Occupied")
+            {
+                // Window alert to inform user that the room is occupied
+                ModelState.AddModelError(string.Empty, "Phòng này hiện đang được sử dụng. Vui lòng chọn phòng khác hoặc quay lại sau.");
+                return Page();
+            }
+
+            if (CheckInDate >= CheckOutDate)
+            {
+                ModelState.AddModelError(string.Empty, "Ngày trả phòng phải lớn hơn ngày nhận phòng.");
+                return Page();
+            }
+
+            if (CheckInDate < DateOnly.FromDateTime(DateTime.Now))
+            {
+                ModelState.AddModelError(string.Empty, "Ngày nhận phòng phải lớn hơn hoặc bằng ngày hiện tại.");
+                return Page();
+            }
+
+            if (CheckOutDate < DateOnly.FromDateTime(DateTime.Now))
+            {
+                ModelState.AddModelError(string.Empty, "Ngày trả phòng phải lớn hơn hoặc bằng ngày hiện tại.");
+                return Page();
             }
 
             var room = await _roomsService.GetRoomByIdAsync(RoomId);
