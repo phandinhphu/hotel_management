@@ -1,7 +1,212 @@
-﻿@{
+﻿@model PaginatedList<RoomVM>
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin/customs/room.css" />
+    <!-- Country-select CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/css/countrySelect.min.css" />
+}
+@section Scripts {
+    <!-- Country-select JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/js/countrySelect.min.js"></script>
+    <script src="~/js/admin/customs/room.js"></script>
+}
+@{
 	ViewData["Title"] = "Room";
 }
 
-@section Scripts {
-	
-}
+<!-- Search and filter section start -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-area="Admin" asp-controller="Room" asp-action="Index" method="get" id="roomFilterForm">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="searchTerm" class="form-label">Tìm kiếm</label>
+                    <input type="text" class="form-control" id="searchTerm" name="searchTerm" 
+                        value="@ViewBag.CurrentSearchTerm" placeholder="Nhập số phòng, loại phòng...">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="roomType" class="form-label">Loại phòng</label>
+                    <select class="form-select" id="roomType" name="roomType">
+                        <option value="">Tất cả</option>
+                        @if (ViewBag.RoomTypes != null)
+                        {
+                            @foreach (var type in ViewBag.RoomTypes)
+                            {
+                                <option value="@type" selected="@(ViewBag.CurrentRoomType == type)">@type</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="status" class="form-label">Trạng thái</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">Tất cả</option>
+                        <option value="Available" selected="@(ViewBag.CurrentStatus == "Available")">Còn trống</option>
+                        <option value="Occupied" selected="@(ViewBag.CurrentStatus == "Occupied")">Đã đặt</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="priceRange" class="form-label">Khoảng giá</label>
+                    <div class="d-flex">
+                        <input type="number" class="form-control me-1" id="minPrice" name="minPrice" 
+                            value="@ViewBag.CurrentMinPrice" placeholder="Min">
+                        <input type="number" class="form-control" id="maxPrice" name="maxPrice" 
+                            value="@ViewBag.CurrentMaxPrice" placeholder="Max">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-search"></i> Tìm kiếm
+                    </button>
+                    <a href="@Url.Action("Index", "Room", new { area = "Admin" })" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Xóa bộ lọc
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Search and filter section end -->
+
+<!-- Row start -->
+<div class="row">
+    <div class="col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Danh sách phòng</div>
+                <div class="ml-auto">
+                    <div class="product-actions">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoom">
+                            <i class="fa fa-plus"></i> Thêm phòng
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                
+                <!-- Content start -->
+                <div class="row">
+                    @foreach (var room in Model)
+                    {
+                        <div class="col-xxl-3 col-md-4 col-sm-6 col-12">
+                            @await Component.InvokeAsync("RoomCard", new { room = room })
+                        </div>
+                    }
+                </div>
+                <!-- Content end -->
+
+                <!-- Pagination -->
+                <div class="col-12">
+                    <div class="card-body">
+                        <nav aria-label="Page Navigation">
+                            <ul class="pagination justify-content-center">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="@Url.Action("Index", "Room", new {
+                                area = "Admin",
+                                pageIndex = Model.PageIndex - 1,
+                                searchTerm = ViewBag.CurrentSearchTerm,
+                                roomType = ViewBag.CurrentRoomType,
+                                status = ViewBag.CurrentStatus,
+                                minPrice = ViewBag.CurrentMinPrice,
+                                maxPrice = ViewBag.CurrentMaxPrice
+                            })"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-left"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-left"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @{
+                                    int startPage = Math.Max(1, Model.PageIndex - 2);
+                                    int endPage = Math.Min(Model.TotalPages, startPage + 4);
+
+                                    // Adjust start page if we're near the end
+                                    if (endPage - startPage < 4 && startPage > 1)
+                                    {
+                                        startPage = Math.Max(1, endPage - 4);
+                                    }
+                                }
+
+                                @for (int i = startPage; i <= endPage; i++)
+                                {
+                                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                        <a class="page-link"
+                                            href="@Url.Action("Index", "Room", new {
+                                area = "Admin",
+                                pageIndex = i,
+                                searchTerm = ViewBag.CurrentSearchTerm,
+                                roomType = ViewBag.CurrentRoomType,
+                                status = ViewBag.CurrentStatus,
+                                minPrice = ViewBag.CurrentMinPrice,
+                                maxPrice = ViewBag.CurrentMaxPrice
+                            })">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="@Url.Action("Index", "Room", new {
+                                area = "Admin",
+                                pageIndex = Model.PageIndex + 1,
+                                searchTerm = ViewBag.CurrentSearchTerm,
+                                roomType = ViewBag.CurrentRoomType,
+                                status = ViewBag.CurrentStatus,
+                                minPrice = ViewBag.CurrentMinPrice,
+                                maxPrice = ViewBag.CurrentMaxPrice
+                            })"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Pagination end -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row end -->
+
+
+<!-- Modal Create Room -->
+@await Html.PartialAsync("Create", new RoomVM())
+<!-- Modal Edit Room -->
+@await Html.PartialAsync("Edit", new RoomVM())
+<!-- Modal Booking Room -->
+@await Html.PartialAsync("Booking")
