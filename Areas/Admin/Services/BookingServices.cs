@@ -24,7 +24,7 @@ namespace Hotel_Management.Areas.Admin.Services
             _mapper = mapper;
         }
 
-        public void ApproveBooking(int id)
+        public void ApproveBooking(int id, string userId)
         {
             var booking = GetBookingByIdAsync(id).Result;
 
@@ -33,12 +33,13 @@ namespace Hotel_Management.Areas.Admin.Services
                 throw new KeyNotFoundException($"Booking with ID {id} not found.");
             }
 
+            booking.StaffId = userId;
             booking.Status = BookingStatus.UnPaid.ToString();
+            _context.SaveChanges();
 
             // Chuyển trạng thái phòng trang Occupied
             foreach (var roomDetail in booking.BookingsRoomDetails)
             {
-                Console.WriteLine("roomDetail" + roomDetail.RoomId);
                 var room = _context.Rooms.Find(roomDetail.RoomId);
                 if (room != null)
                 {
@@ -46,7 +47,6 @@ namespace Hotel_Management.Areas.Admin.Services
                     _context.Rooms.Update(room);
                 }
             }
-
             _context.SaveChanges();
         }
 
@@ -90,7 +90,7 @@ namespace Hotel_Management.Areas.Admin.Services
                 query, pageIndex, pageSize);
         }
 
-        public void RejectBooking(int id)
+        public void RejectBooking(int id, string userId)
         {
             var booking = _context.Bookings.Find(id);
 
@@ -99,6 +99,7 @@ namespace Hotel_Management.Areas.Admin.Services
                 throw new KeyNotFoundException($"Booking with ID {id} not found.");
             }
 
+            booking.StaffId = userId;
             booking.Status = BookingStatus.Rejected.ToString();
 
             _context.Bookings.Update(booking);
