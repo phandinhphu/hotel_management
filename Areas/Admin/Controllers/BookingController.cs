@@ -1,9 +1,10 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using System.Security.Claims;
 using Hotel_Management.Areas.Admin.Services.Interfaces;
-using Hotel_Management.Helpers;
 using Hotel_Management.Hubs;
 using Hotel_Management.Models;
+using Hotel_Management.Models.VNPay;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -18,19 +19,19 @@ namespace Hotel_Management.Areas.Admin.Controllers
     {
         private readonly IBookingServices _bookingServices;
         private readonly IEmailSender _emailSender;
-        private readonly IConfiguration _configuration;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IVNPayServices _vnpayServices;
 
         public BookingController(
             IBookingServices bookingServices,
             IEmailSender emailSender,
-            IConfiguration configuration,
-            IHubContext<NotificationHub> hubContext)
+            IHubContext<NotificationHub> hubContext,
+            IVNPayServices vnpayServices)
         {
             _bookingServices = bookingServices;
             _emailSender = emailSender;
-            _configuration = configuration;
             _hubContext = hubContext;
+            _vnpayServices = vnpayServices;
         }
 
         // [GET] /Admin/Booking
@@ -62,15 +63,22 @@ namespace Hotel_Management.Areas.Admin.Controllers
         {
             try
             {
-                _bookingServices.ApproveBooking(id);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _bookingServices.ApproveBooking(id, userId);
 
                 // Tạo link thanh toán qua VNPay bằng class VNPayHelper
                 var booking = await _bookingServices.GetBookingByIdAsync(id);
-                var paymentUrl = VNPayHelper.CreatePaymentUrl(HttpContext, new VNPayRequestModel
-                {
-                    Amount = booking.TotalPrice ?? 0,
-                    Description = $"Thanh toán đặt phòng #{booking.Id}"
-                }, _configuration, id);
+
+                var paymentUrl = _vnpayServices.CreatePaymentUrl(
+                    new VNPayRequest
+                    {
+                        Name = booking.User.UserName,
+                        Amount = booking.TotalPrice ?? 0,
+                        Description = $"Thanh toán đặt phòng #{booking.BookingsRoomDetails.First().Room.RoomNumber}",
+                        OrderType = "other"
+                    },
+                    HttpContext,
+                    booking.Id);
 
                 // Gửi email thông báo cho người dùng
                 var emailContent = $"Chào {booking.User.UserName},<br/>" +
@@ -102,7 +110,8 @@ namespace Hotel_Management.Areas.Admin.Controllers
         {
             try
             {
-                _bookingServices.RejectBooking(id);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _bookingServices.RejectBooking(id, userId);
 
                 // Gửi email thông báo cho người dùng
                 var booking = await _bookingServices.GetBookingByIdAsync(id);

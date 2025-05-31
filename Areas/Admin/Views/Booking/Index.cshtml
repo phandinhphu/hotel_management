@@ -6,9 +6,10 @@
 
 @if (TempData["SuccessMessage"] != null)
 {
-    <script>
-	    toastr.success(TempData["SuccessMessage"].ToString(), "Thành công");
-    </script>
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<strong>Thành công!</strong> @TempData["SuccessMessage"]
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
 }
 
 <div class="container mt-4">
@@ -27,28 +28,31 @@
         <tbody>
             @foreach (var booking in Model)
             {
-                <tr>
-                    <td>@booking.User?.UserName</td>
-                    <td>@booking.CreatedAt.ToString()</td>
-                    <td>@String.Format("{0:N0} VNĐ", booking.TotalPrice)</td>
-                    <td>
-                        <span class="badge bg-@(booking.Status == "Pending" ? "warning" : booking.Status == "Approved" ? "success" : "danger")">
-                            @booking.Status
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <a asp-action="Detail" asp-route-id="@booking.Id" class="btn btn-info btn-sm me-1">Chi tiết</a>
-                        @if (booking.Status == "Pending")
-                        {
-                            <form method="post" asp-action="Approve" asp-route-id="@booking.Id" class="d-inline">
-                                <button type="submit" class="btn btn-success btn-sm me-1">Duyệt</button>
-                            </form>
-                            <form method="post" asp-action="Reject" asp-route-id="@booking.Id" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
-                            </form>
-                        }
-                    </td>
-                </tr>
+                @if (booking.Status == "Pending")
+                {
+                    <tr>
+                        <td>@booking.User?.UserName</td>
+                        <td>@booking.CreatedAt.ToString()</td>
+                        <td>@String.Format("{0:N0} VNĐ", booking.TotalPrice)</td>
+                        <td>
+                            <span class="badge bg-@(booking.Status == "Pending" ? "warning" : booking.Status == "Approved" ? "success" : "danger")">
+                                @booking.Status
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="Detail" asp-route-id="@booking.Id" class="btn btn-info btn-sm me-1">Chi tiết</a>
+                            @if (booking.Status == "Pending")
+                            {
+                                <form method="post" asp-action="Approve" asp-route-id="@booking.Id" class="d-inline form-approve">
+                                    <button type="submit" class="btn btn-success btn-sm me-1">Duyệt</button>
+                                </form>
+                                <form method="post" asp-action="Reject" asp-route-id="@booking.Id" class="d-inline form-reject">
+                                    <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -72,3 +76,21 @@
         </nav>
     </div>
 </div>
+
+<!-- Loading Spinner -->
+<div id="loadingSpinner" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50" style="z-index: 1050;">
+    <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden">Đang xử lý...</span>
+    </div>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const forms = document.querySelectorAll('.form-approve, .form-reject');
+		forms.forEach(form => {
+			form.addEventListener('submit', function (e) {
+				document.getElementById('loadingSpinner').classList.remove('d-none');
+			});
+		});
+	});
+</script>

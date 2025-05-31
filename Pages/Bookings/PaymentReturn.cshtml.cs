@@ -1,4 +1,6 @@
-﻿using Hotel_Management.Models;
+﻿using Hotel_Management.Areas.Admin.Services.Interfaces;
+using Hotel_Management.Models;
+using Hotel_Management.Models.VNPay;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,44 +10,80 @@ namespace Hotel_Management.Pages.Bookings
     public class PaymentReturnModel : PageModel
     {
         private readonly HotelManagementContext _context;
+        private readonly IVNPayServices _vnPayServices;
+        private readonly IBookingServices _bookingServices;
 
-        public PaymentReturnModel(HotelManagementContext context)
+        public PaymentReturnModel(
+            HotelManagementContext context,
+            IVNPayServices vNPayServices,
+            IBookingServices bookingServices)
         {
             _context = context;
+            _vnPayServices = vNPayServices;
+            _bookingServices = bookingServices;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var vnp_ResponseCode = Request.Query["vnp_ResponseCode"];
-            var vnp_TxnRef = Request.Query["vnp_TxnRef"];
-            var vnp_Amount = Request.Query["vnp_Amount"];
-            var vnp_PayDate = Request.Query["vnp_PayDate"];
-            var vnp_TransactionNo = Request.Query["vnp_TransactionNo"];
+            VNPayResponse response = _vnPayServices.PaymentExecute(Request.Query);
 
-            if (vnp_ResponseCode == "00")
+            var bookingId = int.Parse(response.OrderId.Split('_')[0]);
+
+            var booking = await _bookingServices.GetBookingByIdAsync(bookingId);
+
+            if (booking == null)
             {
-                var booking = await _context.Bookings.FindAsync(int.Parse(vnp_TxnRef));
-                if (booking != null)
+                return NotFound("Booking not found.");
+            }
+
+            booking.Status = "Paid";
+            _context.Bookings.Update(booking);
+            await _context.SaveChangesAsync();
+
+            // Cập nhật phòng đặt từ Occupied sang Available
+            foreach (var roomDetail in booking.BookingsRoomDetails)
+            {
+                var room = _context.Rooms.Find(roomDetail.RoomId);
+                if (room != null)
                 {
-                    booking.Status = "Paid";
-
-                    var payment = new Payment
-                    {
-                        BookingId = booking.Id,
-                        Amount = decimal.Parse(vnp_Amount) / 100, // vì VNPay nhân 100
-                        PaymentDate = DateTime.ParseExact(vnp_PayDate, "yyyyMMddHHmmss", null),
-                        PaymentMethod = "VNPay",
-                        Status = "Success"
-                    };
-                    _context.Payments.Add(payment);
-
-                    await _context.SaveChangesAsync();
+                    room.Status = "Available";
+                    _context.Rooms.Update(room);
                 }
+            }
+            _context.SaveChanges();
+
+            if (response.VnPayResponseCode == "00")
+            {
+                // Payment successful
+                var model = new Payment
+                {
+                    BookingId = booking.Id,
+                    Amount = booking.TotalPrice ?? 0,
+                    PaymentDate = DateTime.UtcNow,
+                    PaymentMethod = response.PaymentMethod,
+                    Status = "Success",
+                };
+                _context.Payments.Add(model);
+                await _context.SaveChangesAsync();
+
+                TempData["Message"] = "Payment successful. Thank you for your booking!";
 
                 return RedirectToPage("/Bookings/Success");
             }
             else
             {
+                var model = new Payment
+                {
+                    BookingId = booking.Id,
+                    Amount = booking.TotalPrice ?? 0,
+                    PaymentDate = DateTime.UtcNow,
+                    PaymentMethod = response.PaymentMethod,
+                    Status = "Failed",
+                };
+
+                _context.Payments.Add(model);
+                await _context.SaveChangesAsync();
+
                 return RedirectToPage("/Bookings/Fail");
             }
         }

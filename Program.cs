@@ -41,6 +41,7 @@ builder.Services.AddScoped<ICustomerServices, CustomerServices>();
 builder.Services.AddScoped<IStaffServices, StaffServices>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingServices, BookingServices>();
+builder.Services.AddScoped<IVNPayServices, VNPayServices>();
 builder.Services.AddDbContext<HotelManagementContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection") 

@@ -9,7 +9,7 @@ namespace Hotel_Management.Areas.Admin.Services.Interfaces
         Task<PaginatedList<Booking>> GetBookingsAsync(string searchString = "", int pageIndex = 1, int pageSize = 20);
         Task<Booking> GetBookingByIdAsync(int id);
         Task<Booking> GetBookingByUserAsync(string userName);
-        void ApproveBooking(int id);
-        void RejectBooking(int id);
+        void ApproveBooking(int id, string userId);
+        void RejectBooking(int id, string userId);
     }
 }
