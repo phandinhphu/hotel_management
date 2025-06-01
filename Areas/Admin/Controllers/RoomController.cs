@@ -61,56 +61,89 @@ namespace Hotel_Management.Areas.Admin.Controllers
                 return View("Error", new { message = "Không thể lấy danh sách phòng. Vui lòng thử lại sau." });
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync(RoomVM roomVM, IFormFile imageFile)
+
+        [HttpGet]
+        public IActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Dữ liệu không hợp lệ",
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
-                });
-            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync(RoomVM roomVM)
+        {
+            if (!ModelState.IsValid) return View(roomVM);
 
             try
             {
-                // Process image upload if provided
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    // Save image to /wwwroot/images/room folder
-                    var fileName = Path.GetRandomFileName() + Path.GetExtension(imageFile.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "room", fileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(stream);
-                    }
-
-                    roomVM.Image = fileName;
-                }
-                else
-                {
-                    // Set default image
-                    roomVM.Image = "room-default.png";
-                }
-
-                // Save to database
-                var roomId = await _roomService.CreateAsync(roomVM);
-
-                return Json(new { success = true, message = "Tạo phòng thành công", roomId });
+                TempData["Message"] = await _roomService.CreateAsync(roomVM)
+                    ? $"Thêm phòng số '{roomVM.RoomNumber}' thành công!"
+                    : $"Phòng số '{roomVM.RoomNumber}' đã tồn tại!";
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Đã xảy ra lỗi khi tạo phòng.");
-                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(roomVM);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var room = await _roomService.GetByIdAsync(id);
+                if (room == null)
+                {
+                    _logger.LogWarning($"Không tìm thấy phòng với ID {id}.");
+                    return NotFound();
+                }
+                return View(room);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Đã xảy ra lỗi khi lấy thông tin phòng.");
+                return View("Error", new { message = "Không thể lấy thông tin phòng. Vui lòng thử lại sau." });
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditAsync(RoomVM roomVM)
+        {
+            if (!ModelState.IsValid) return View(roomVM);
+            try
+            {
+                TempData["Message"] = await _roomService.UpdateAsync(roomVM)
+                    ? $"Cập nhật phòng số '{roomVM.RoomNumber}' thành công!"
+                    : $"Phòng số '{roomVM.RoomNumber}' đã tồn tại!";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Đã xảy ra lỗi khi cập nhật phòng.");
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(roomVM);
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
-
-
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                TempData["Message"] = await _roomService.DeleteAsync(id)
+                    ? $"Xóa phòng thành công!"
+                    : $"Xóa phòng thất bại!";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Đã xảy ra lỗi khi xóa phòng.");
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
 
     }

@@ -3,14 +3,28 @@
     <link rel="stylesheet" href="~/css/admin/customs/room.css" />
     <!-- Country-select CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/css/countrySelect.min.css" />
+    <!-- Dropzone CSS -->
+    <link rel="stylesheet" href="~/vendor/dropzone/dropzone.min.css" />
+    <link rel="stylesheet" href="~/css/admin/customs/dropzone.css" />
 }
 @section Scripts {
     <!-- Country-select JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/js/countrySelect.min.js"></script>
+    <!-- Dropzone JS -->
+    <script src="~/vendor/dropzone/dropzone.min.js"></script>
+    <script src="~/js/admin/customs/dropzone.js"></script>
     <script src="~/js/admin/customs/room.js"></script>
 }
 @{
 	ViewData["Title"] = "Room";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
 <!-- Search and filter section start -->
@@ -77,9 +91,9 @@
                 <div class="card-title">Danh sách phòng</div>
                 <div class="ml-auto">
                     <div class="product-actions">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRoom">
+                        <a asp-area="Admin" asp-controller="Room" asp-action="Create" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Thêm phòng
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -106,14 +120,14 @@
                                     <li class="page-item">
                                         <a class="page-link"
                                             href="@Url.Action("Index", "Room", new {
-                                area = "Admin",
-                                pageIndex = Model.PageIndex - 1,
-                                searchTerm = ViewBag.CurrentSearchTerm,
-                                roomType = ViewBag.CurrentRoomType,
-                                status = ViewBag.CurrentStatus,
-                                minPrice = ViewBag.CurrentMinPrice,
-                                maxPrice = ViewBag.CurrentMaxPrice
-                            })"
+                                                area = "Admin",
+                                                pageIndex = Model.PageIndex - 1,
+                                                searchTerm = ViewBag.CurrentSearchTerm,
+                                                roomType = ViewBag.CurrentRoomType,
+                                                status = ViewBag.CurrentStatus,
+                                                minPrice = ViewBag.CurrentMinPrice,
+                                                maxPrice = ViewBag.CurrentMaxPrice
+                                            })"
                                             aria-label="Previous">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-left"></i>
@@ -148,14 +162,15 @@
                                     <li class="page-item @(i == Model.PageIndex ? "active" : "")">
                                         <a class="page-link"
                                             href="@Url.Action("Index", "Room", new {
-                                area = "Admin",
-                                pageIndex = i,
-                                searchTerm = ViewBag.CurrentSearchTerm,
-                                roomType = ViewBag.CurrentRoomType,
-                                status = ViewBag.CurrentStatus,
-                                minPrice = ViewBag.CurrentMinPrice,
-                                maxPrice = ViewBag.CurrentMaxPrice
-                            })">
+                                                area = "Admin",
+                                                pageIndex = i,
+                                                searchTerm = ViewBag.CurrentSearchTerm,
+                                                roomType = ViewBag.CurrentRoomType,
+                                                status = ViewBag.CurrentStatus,
+                                                minPrice = ViewBag.CurrentMinPrice,
+                                                maxPrice = ViewBag.CurrentMaxPrice
+                                            })"
+                                        >
                                             @i
                                         </a>
                                     </li>
@@ -166,14 +181,14 @@
                                     <li class="page-item">
                                         <a class="page-link"
                                             href="@Url.Action("Index", "Room", new {
-                                area = "Admin",
-                                pageIndex = Model.PageIndex + 1,
-                                searchTerm = ViewBag.CurrentSearchTerm,
-                                roomType = ViewBag.CurrentRoomType,
-                                status = ViewBag.CurrentStatus,
-                                minPrice = ViewBag.CurrentMinPrice,
-                                maxPrice = ViewBag.CurrentMaxPrice
-                            })"
+                                                area = "Admin",
+                                                pageIndex = Model.PageIndex + 1,
+                                                searchTerm = ViewBag.CurrentSearchTerm,
+                                                roomType = ViewBag.CurrentRoomType,
+                                                status = ViewBag.CurrentStatus,
+                                                minPrice = ViewBag.CurrentMinPrice,
+                                                maxPrice = ViewBag.CurrentMaxPrice
+                                            })"
                                             aria-label="Next">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-right"></i>
@@ -203,10 +218,3 @@
 </div>
 <!-- Row end -->
 
-
-<!-- Modal Create Room -->
-@await Html.PartialAsync("Create", new RoomVM())
-<!-- Modal Edit Room -->
-@await Html.PartialAsync("Edit", new RoomVM())
-<!-- Modal Booking Room -->
-@await Html.PartialAsync("Booking")

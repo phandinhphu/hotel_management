@@ -12,16 +12,17 @@
         </button>
         <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item text-warning" data-bs-toggle="modal"
-                   data-bs-target="#editRoom" onclick="editRoom(@Model.ID)">
+                <a asp-area="Admin" asp-controller="Room" asp-action="Edit" asp-route-id="@Model.ID" class="dropdown-item text-warning">
                     <i class="fa-solid fa-pen-to-square"></i> Sửa
                 </a>
             </li>
             <li>
-                <a class="dropdown-item text-danger" data-bs-toggle="modal"
-                   data-bs-target="#deleteRoom" onclick="deleteRoom(@Model.ID)">
-                    <i class="fa-solid fa-trash"></i> Xóa
-                </a>
+                <form asp-area="Admin" asp-controller="Room" asp-action="Delete" asp-route-id="@Model.ID"
+                      method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa phòng @Model.RoomNumber?');">
+                    <button type="submit" class="dropdown-item text-danger">
+                        <i class="fa-solid fa-trash"></i> Xóa
+                    </button>
+                </form>
             </li>
         </ul>
     </div>

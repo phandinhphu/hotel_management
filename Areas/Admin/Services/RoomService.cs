@@ -9,10 +9,13 @@ namespace Hotel_Management.Areas.Admin.Services
     public class RoomService : IRoomService
     {
         private readonly HotelManagementContext _context;
-        public RoomService(HotelManagementContext context)
+        private readonly ImageHelper _imageHelper;
+        public RoomService(HotelManagementContext context, ImageHelper imageHelper)
         {
             _context = context;
+            _imageHelper = imageHelper;
         }
+
         #region Async Methods
 
         public async Task<PaginatedList<RoomVM>> GetAllAsync(
@@ -56,16 +59,18 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 query = query.Where(r => r.Price <= maxPrice);
             }
-            
+            query = query.OrderBy(r => r.Id);
+
             var mappedQuery = query.Select(r => new RoomVM
             {
                 ID = r.Id,
                 HotelId = r.HotelId ?? 0,
                 RoomNumber = r.RoomNumber ?? "",
                 Type = r.Type ?? "",
+                Description = r.Description ?? "",
                 Price = r.Price ?? 0,
                 Status = r.Status ?? "",
-                Description = r.Description ?? "",
+                Capacity = r.Capacity ?? 0,
                 Image = r.Image ?? ""
             });
             
@@ -87,9 +92,10 @@ namespace Hotel_Management.Areas.Admin.Services
                     HotelId = r.HotelId ?? 0,
                     RoomNumber = r.RoomNumber ?? "",
                     Type = r.Type ?? "",
+                    Description = r.Description ?? "",
                     Price = r.Price ?? 0,
                     Status = r.Status ?? "",
-                    Description = r.Description ?? "",
+                    Capacity = r.Capacity ?? 0,
                     Image = r.Image ?? ""
                 }).FirstOrDefaultAsync();
             if (room == null)
@@ -115,8 +121,17 @@ namespace Hotel_Management.Areas.Admin.Services
 
             return types;
         }
-        public async Task<int> CreateAsync(RoomVM roomVM)
+
+        public async Task<bool> CreateAsync(RoomVM roomVM)
         {
+            var existingRoom = await _context.Rooms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.RoomNumber == roomVM.RoomNumber);
+            if (existingRoom != null)
+            {
+                return false;
+            }
+            roomVM.Image = _imageHelper.SaveImage(roomVM.ImagetFile, "room");
             // Map ViewModel to entity
             var room = new Room
             {
@@ -134,7 +149,64 @@ namespace Hotel_Management.Areas.Admin.Services
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync();
 
-            return room.Id;
+            return true;
+        }
+
+        public async Task<bool> UpdateAsync(RoomVM roomVM)
+        {
+            var existingRoom = await _context.Rooms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Id == roomVM.ID);
+            if (existingRoom == null)
+            {
+                return false;
+            }
+
+            // Nếu có file ảnh mới, lưu và xóa ảnh cũ nếu có
+            if (roomVM.ImagetFile != null && roomVM.ImagetFile.Length > 0)
+            {
+                // Xóa ảnh cũ nếu có
+                if (!string.IsNullOrEmpty(existingRoom.Image))
+                {
+                    var imgDel = _imageHelper.DeleteImage(existingRoom.Image, "room");
+                }
+                roomVM.Image = _imageHelper.SaveImage(roomVM.ImagetFile, "room");
+            }
+            else
+            {
+                // Giữ nguyên ảnh cũ nếu không có file mới
+                roomVM.Image = existingRoom.Image;
+            }
+
+            // Map ViewModel to entity
+            existingRoom.RoomNumber = roomVM.RoomNumber;
+            existingRoom.Type = roomVM.Type;
+            existingRoom.Description = roomVM.Description;
+            existingRoom.Price = roomVM.Price;
+            existingRoom.Status = roomVM.Status;
+            existingRoom.Capacity = roomVM.Capacity;
+            existingRoom.Image = roomVM.Image;
+            // Update in database
+            _context.Rooms.Update(existingRoom);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var existingRoom = await _context.Rooms.FindAsync(id);
+            if (existingRoom == null)
+            {
+                return false;
+            }
+            // Xóa ảnh nếu có
+            if (!string.IsNullOrEmpty(existingRoom.Image))
+            {
+                _imageHelper.DeleteImage(existingRoom.Image, "room");
+            }
+            _context.Rooms.Remove(existingRoom);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         #endregion
