@@ -1,4 +1,9 @@
-﻿<!-- Offcanvas Menu Section Begin -->
+﻿@{
+	var isAuthenticated = Context.User.Identity.IsAuthenticated;
+    var isAdmin = isAuthenticated && Context.User.IsInRole("Admin");
+}
+
+<!-- Offcanvas Menu Section Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="canvas-open">
     <i class="fa-solid fa-bars fa-xs"></i>
@@ -10,26 +15,35 @@
     <div class="search-icon  search-switch">
         <i class="icon_search"></i>
     </div>
-    <div class="header-configure-area">
-        <div class="language-option">
-            <img src="~/images/admin/flags/1x1/vn.svg" alt="">
-            <span>VIE <i class="fa fa-angle-down"></i></span>
-            <div class="flag-dropdown">
-                <ul>
-                    <li><a href="#">Eng</a></li>
-                    <li><a href="#">Fr</a></li>
-                </ul>
-            </div>
-        </div>
-        <a href="./rooms.html" class="bk-btn">Đặt ngay</a>
-    </div>
     <nav class="mainmenu mobile-menu">
         <ul>
-            <li class="active"><a href="./index.html">Trang chủ</a></li>
-            <li><a href="./rooms.html">Phòng</a></li>
-            <li><a href="./about-us.html">Về chúng tôi</a></li>
-
-            <li><a href="./contact.html">Liên hệ</a></li>
+            <li class="active"><a asp-page="/Index">Trang chủ</a></li>
+			@if (isAdmin)
+			{
+				<li><a asp-area="Admin" asp-controller="Home" asp-action="Index" >Quản trị</a></li>
+			}
+            <li><a asp-page="/Rooms/Index">Phòng</a></li>
+            <li><a asp-page="/About">Về chúng tôi</a></li>
+            <li><a asp-page="/Contact">Liên hệ</a></li>
+			@if (isAuthenticated)
+			{
+				<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+						Xin chào, @Context.User.Identity.Name
+					</a>
+					<ul class="dropdown-menu" style="position: relative">
+                        <li><a asp-page="/Bookings/WishList" class="dropdown-item">Wishlist</a></li>
+                        <li><a asp-page="/Bookings/History" class="dropdown-item">Lịch sử đặt phòng</a></li>
+                        <li><a asp-area="Identity" asp-page="/Account/Manage/Index" class="dropdown-item">Thông tin cá nhân</a></li>
+						<li><a asp-area="Identity" asp-page="/Account/Logout" class="dropdown-item">Đăng xuất</a></li>
+					</ul>
+				</li>
+			}
+			else
+			{
+				<li><a asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a></li>
+				<li><a asp-area="Identity" asp-page="/Account/Register">Đăng ký</a></li>
+			}
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
