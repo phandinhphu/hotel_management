@@ -4,27 +4,33 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
-<hr />
-
-<p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email."/>
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-5 col-md-7" style="min-width: 700px">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <img src="~/images/logo.png" alt="Sona Hotel" class="mb-2" />
+                        <h2 class="fw-bold mb-2">Liên kết tài khoản @Model.ProviderDisplayName</h2>
+                        <p class="text-muted">
+                            Bạn đã xác thực thành công với <strong>@Model.ProviderDisplayName</strong>.<br />
+                            Vui lòng nhập email để hoàn tất đăng ký/đăng nhập.
+                        </p>
+                    </div>
+                    <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+                        class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <input asp-for="Input.Email" class="form-control form-control-lg" autocomplete="email"
+                                placeholder="Nhập email của bạn" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Hoàn tất</button>
+                    </form>
+                </div>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+        </div>
     </div>
 </div>
 
