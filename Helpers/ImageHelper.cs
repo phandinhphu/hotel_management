@@ -6,7 +6,94 @@ namespace Hotel_Management.Helpers
     {
         private readonly string[] _allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
         private readonly long _maxFileSize = 2 * 1024 * 1024; // 2 MB
-        private readonly string _defaultFolder = "wwwroot/img";
+        private readonly string _defaultFolder = "wwwroot/images";
+
+        /// <summary>
+        /// Kiểm tra và lưu một hình ảnh vào thư mục (/wwwroot/img/{folderName})
+        /// </summary>
+        /// <param name="image">File ảnh cần lưu</param>
+        /// <param name="folderName">Thư mục con để lưu ảnh</param>
+        /// <returns>Tên file đã lưu</returns>
+        public string SaveImage(IFormFile image, string folderName = "default")
+        {
+            if (image == null || image.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(image), "File ảnh không được để trống.");
+            }
+
+            var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), _defaultFolder, folderName);
+
+            if (!Directory.Exists(uploadFolder))
+            {
+                Directory.CreateDirectory(uploadFolder);
+            }
+
+            var extension = Path.GetExtension(image.FileName).ToLower();
+
+            // Kiểm tra đuôi file
+            if (!_allowedExtensions.Contains(extension))
+            {
+                throw new InvalidOperationException("Chỉ lưu file có đuôi .jpg, .jpeg, .png, .gif.");
+            }
+
+            // Kiểm tra kích thước file
+            if (image.Length > _maxFileSize)
+            {
+                throw new InvalidOperationException("File phải nhỏ hơn 2 MB.");
+            }
+
+            var fileName = Guid.NewGuid().ToString() + extension;
+            var filePath = Path.Combine(uploadFolder, fileName);
+
+            // Lưu file
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
+
+            return fileName;
+        }
+
+        /// <summary>
+        /// Xóa một hình ảnh từ thư mục (/wwwroot/img/{folderName})
+        /// </summary>
+        /// <param name="fileName">Tên file cần xóa</param>
+        /// <param name="folderName">Thư mục con chứa ảnh</param>
+        /// <returns>true nếu xóa thành công, false nếu không</returns>
+        public bool DeleteImage(string fileName, string folderName = "default")
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentNullException(nameof(fileName), "Tên file không được để trống.");
+            }
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), _defaultFolder, folderName);
+            var extension = Path.GetExtension(fileName).ToLower();
+
+            // Kiểm tra đuôi file
+            if (!_allowedExtensions.Contains(extension))
+            {
+                throw new InvalidOperationException("Đuôi file không hợp lệ.");
+            }
+
+            var filePath = Path.Combine(folderPath, fileName);
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    File.Delete(filePath);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Không thể xóa file {fileName}: {ex.Message}");
+                    return false;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Kiểm tra và lưu hình ảnh vào thư mục (/wwwroot/img/{folderName})
@@ -14,7 +101,7 @@ namespace Hotel_Management.Helpers
         /// <param name="images"></param>
         /// <param name="folderName"></param>
         /// <returns></returns>
-        public List<string> ValidateAndSaveImages(List<IFormFile> images, string folderName = "default")
+        public List<string> SaveImages(List<IFormFile> images, string folderName = "default")
         {
             var imagePaths = new List<string>();
             var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), _defaultFolder, folderName);

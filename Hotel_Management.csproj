@@ -41,11 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\admin\" />
-    <Folder Include="wwwroot\js\admin\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\css\admin\.DS_Store" />
     <None Include="wwwroot\css\admin\bootstrap\.DS_Store" />
     <None Include="wwwroot\css\admin\bootstrap\tests\.DS_Store" />

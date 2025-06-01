@@ -13,6 +13,7 @@ using Hotel_Management.Mapping;
 using Microsoft.AspNetCore.SignalR;
 using Hotel_Management.Providers;
 using Hotel_Management.Hubs;
+using Hotel_Management.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 var mailSettings = builder.Configuration.GetSection("MailSettings");
@@ -49,6 +50,9 @@ builder.Services.AddDbContext<HotelManagementContext>(options =>
         new MySqlServerVersion(new Version(8, 0, 21)))
     .EnableSensitiveDataLogging()
 );
+
+// Đăng ký helper
+builder.Services.AddScoped<ImageHelper>();
 
 // Đăng ký SignalR
 builder.Services.AddSignalR();

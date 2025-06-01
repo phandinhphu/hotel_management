@@ -42,8 +42,22 @@ namespace Hotel_Management.Areas.Admin.Services.Interfaces
         /// <summary>
         /// Thêm mới phòng
         /// </summary>
-        /// <param name="room">Thông tin phòng</param>
-        /// <returns>ID của phòng đã tạo</returns>
-        Task<int> CreateAsync(RoomVM room);
+        /// <param name="roomVM">Thông tin phòng</param>
+        /// <returns>True/False</returns>
+        Task<bool> CreateAsync(RoomVM roomVM);
+
+        /// <summary>
+        /// Cập nhật thông tin phòng
+        /// </summary>
+        /// <param name="roomVM">Thông tin phòng</param>
+        /// <returns>True/False</returns>
+        Task<bool> UpdateAsync(RoomVM roomVM);
+
+        /// <summary>
+        /// Xóa phòng theo ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> DeleteAsync(int id);
     }
 }
