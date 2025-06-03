@@ -46,5 +46,45 @@ namespace Hotel_Management.Areas.Admin.Services
 
             return user;
         }
+
+        public async Task<DateOnly?> getLastCheckInByIdAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Id cannot be null or empty.");
+            }
+
+            var lastCheckIn = await _context.BookingsRoomDetails
+                            .Where(d => d.Booking.UserId == id)
+                            .OrderByDescending(d => d.CheckIn)
+                            .Select(d => d.CheckIn)
+                            .FirstOrDefaultAsync();
+
+
+            if (lastCheckIn == default)
+            {
+                return await Task.FromResult<DateOnly?>(DateOnly.MinValue);
+            }
+
+            return await Task.FromResult<DateOnly?>(lastCheckIn);
+        }
+
+        public async Task<decimal?> getTotalSpentByIdAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Id cannot be null or empty.");
+            }
+
+            var totalSpent = await _context.Bookings
+                .Where(b => b.UserId == id)
+                .SumAsync(b => b.TotalPrice);
+
+            if (totalSpent < 0)
+            {
+                throw new InvalidOperationException($"No bookings found for user with id '{id}'.");
+            }
+            return await Task.FromResult<decimal?>(totalSpent > 0 ? totalSpent : null);
+        }
     }
 }

@@ -4,20 +4,34 @@
     ViewData["Title"] = "Register confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
-    }
-    else
-    {
-<p>
-        Please check your email to confirm your account.
-</p>
-    }
-}
-
+<div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-5 col-md-7" style="min-width: 700px">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5 text-center">
+                    <img src="~/images/logo.png" alt="Sona Hotel" class="mb-3" />
+                    <h2 class="fw-bold mb-3 text-success">Đăng ký thành công</h2>
+                    @if (Model.DisplayConfirmAccountLink)
+                    {
+                        <p class="mb-3">
+                            Ứng dụng hiện chưa cấu hình gửi email thực tế.<br />
+                            <a id="confirm-link" href="@Model.EmailConfirmationUrl"
+                                class="btn btn-outline-primary mt-2">Nhấn vào đây để xác nhận tài khoản</a>
+                        </p>
+                        <p class="text-muted small">
+                            (Xem tài liệu <a href="https://aka.ms/aspaccountconf" target="_blank">tại đây</a> để cấu hình
+                            gửi email thực)
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="mb-4">
+                            Vui lòng kiểm tra email của bạn để xác nhận tài khoản.
+                        </p>
+                    }
+                    <a asp-page="./Login" class="btn btn-primary btn-lg w-100">Quay lại đăng nhập</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -78,7 +78,7 @@ input:focus, select:focus, button:focus, textarea:focus {
 a:hover, a:focus {
 	text-decoration: none;
 	outline: none;
-	color: #fff;
+	color: #dfa974;
 }
 ul, ol {
 	padding: 0;
@@ -2365,4 +2365,9 @@ ul, ol {
     font-size: 1.1rem;
     padding: 10px 0;
     border-radius: 8px;
+}
+
+.page-item.active {
+    background: #dfa974;
+    border-color: #dfa974;
 }

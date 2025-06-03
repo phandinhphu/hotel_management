@@ -1,0 +1,36 @@
+﻿@using Hotel_Management.Models
+@model Service
+@{
+    ViewData["Title"] = "Chi tiết dịch vụ";
+}
+
+<div class="container mt-5">
+    <div class="card shadow rounded-4 border-0">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h3 class="mb-0">Thông tin dịch vụ</h3>
+        </div>
+        <div class="card-body mt-2">
+            <dl class="row">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3">Tên dịch vụ</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Mô tả</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+
+                <dt class="col-sm-3">Price</dt>
+                <dd class="col-sm-9">@String.Format("{0:N0} VNĐ", Model.Price)</dd>
+
+                <dt class="col-sm-3">Dịch vụ của khách sạn</dt>
+                <dd class="col-sm-9">@Model.Hotel.Name</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Quay lại danh sách
+            </a>
+        </div>
+    </div>
+</div>

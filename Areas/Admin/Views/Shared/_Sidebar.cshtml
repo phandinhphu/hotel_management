@@ -27,6 +27,12 @@
                         <span class="menu-text">Quản lý phòng</span>
                     </a>
                 </li>
+                <li class="@(currentController == "HotelServices" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="HotelServices" asp-action="Index" class="@(currentController == "HotelServices" ? "current-page" : "")">
+                        <i class="bi bi-gear"></i>
+						<span class="menu-text">Quản lý dịch vụ</span>
+                    </a>
+                </li>
                 <li class="@(currentController == "Booking" ? "active" : "")">
                     <a asp-area="Admin" asp-controller="Booking" asp-action="Index" class="@(currentController == "Booking" ? "current-page" : "")">
                         <i class="bi bi-calendar2-check"></i>

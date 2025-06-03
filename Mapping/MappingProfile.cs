@@ -18,12 +18,13 @@ namespace Hotel_Management.Mapping
             CreateMap<ApplicationUser, EditUserVM>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
 
-            // BookingVM
-            CreateMap<Booking, BookingVM>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
-                .ForMember(dest => dest.RoomNumber, opt => opt.MapFrom(src => src.BookingsRoomDetails.FirstOrDefault().Room.RoomNumber))
-                .ForMember(dest => dest.Services, opt => opt.MapFrom(src => src.BookingsServiceDetails.Select(s => s.Service.Id).ToList()))
-                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt.HasValue ? src.CreatedAt.Value.ToString("g") : string.Empty));
+            // HotelServicesVM
+            CreateMap<HotelServicesVM, Service>();
+            CreateMap<Service, HotelServicesVM>();
+
+            // ReviewVM
+            CreateMap<ReviewVM, Review>();
+            CreateMap<Review, ReviewVM>();
         }
     }
 }

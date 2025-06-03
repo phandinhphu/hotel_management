@@ -4,7 +4,18 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-5 col-md-7" style="min-width: 700px">
+            <div class="card shadow-lg border-0 rounded-4 border-danger">
+                <div class="card-body p-5 text-center">
+                    <img src="~/images/logo.png" alt="Sona Hotel" class="mb-3" />
+                    <h2 class="fw-bold mb-3 text-danger">@ViewData["Title"]</h2>
+                    <p class="mb-4 text-danger">Bạn không có quyền truy cập vào tài nguyên này.</p>
+                    <a href="javascript:history.back()" class="btn btn-outline-primary btn-lg w-100 mb-2">Quay lại</a>
+                    <a asp-page="./Login" class="btn btn-primary btn-lg w-100">Về trang đăng nhập</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

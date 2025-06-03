@@ -4,66 +4,75 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="client-card">
-    <h1 class="client-title">@ViewData["Title"]</h1>
-    <div class="row">
-        <div class="col-md-4">
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <h2>Create a new account.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="vd: John Doe" />
-                    <label asp-for="Input.UserName">UserName</label>
-                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                </div>
-                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-            </form>
-        </div>
-        <div class="col-md-6 col-md-offset-2">
-            <section>
-                <h3>Use another service to register.</h3>
-                <hr />
-                @{
-                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                    {
-                        <div>
-                            <p>
-                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                                about setting up this ASP.NET application to support logging in via external services</a>.
-                            </p>
+<div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-5 col-md-7" style="min-width: 700px">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <img src="~/images/logo.png" alt="Sona Hotel" class="mb-2" />
+                        <h2 class="fw-bold mb-2">Đăng ký tài khoản</h2>
+                        <p class="text-muted">Tạo tài khoản mới tại Sona Hotel</p>
+                    </div>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+                        class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        <div class="mb-3">
+                            <label asp-for="Input.UserName" class="form-label">Tên đăng nhập</label>
+                            <input asp-for="Input.UserName" class="form-control form-control-lg" autocomplete="username"
+                                aria-required="true" placeholder="Nhập tên đăng nhập" />
+                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
                         </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <input asp-for="Input.Email" class="form-control form-control-lg" autocomplete="email"
+                                aria-required="true" placeholder="Nhập email" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label">Mật khẩu</label>
+                            <input asp-for="Input.Password" class="form-control form-control-lg"
+                                autocomplete="new-password" aria-required="true" placeholder="Nhập mật khẩu" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.ConfirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg"
+                                autocomplete="new-password" aria-required="true" placeholder="Nhập lại mật khẩu" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg w-100 mb-3">Đăng
+                            ký</button>
+                        <div class="text-center">
+                            <span>Đã có tài khoản?</span>
+                            <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="ms-1">Đăng nhập</a>
+                        </div>
+                    </form>
+                    <hr class="my-4" />
+                    <div class="text-center mb-2">
+                        <span class="text-muted">Hoặc đăng ký bằng</span>
+                    </div>
+                    @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl"
+                            method="post" class="d-flex flex-column gap-2">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-primary w-100 mt-2" name="provider"
+                                    value="@provider.Name">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i> Đăng ký với @provider.DisplayName
+                                </button>
+                            }
+                        </form>
                     }
                     else
                     {
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                            <div>
-                                <p>
-                                    @foreach (var provider in Model.ExternalLogins!)
-                                    {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                    }
-                                </p>
-                            </div>
-                        </form>
+                        <div class="alert alert-info mt-2">
+                            Không có dịch vụ đăng ký ngoài nào được cấu hình.
+                        </div>
                     }
-                }
-            </section>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -34,8 +34,12 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// Đăng ký các dịch vụ cho các lớp trong Pages
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IHotelservicesService, HotelservicesService>();
+builder.Services.AddScoped<IReviewsService, ReviewsService>();
+
 // Đăng ký các dịch vụ cho các lớp trong Admin Area
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<ICustomerServices, CustomerServices>();
@@ -43,6 +47,8 @@ builder.Services.AddScoped<IStaffServices, StaffServices>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingServices, BookingServices>();
 builder.Services.AddScoped<IVNPayServices, VNPayServices>();
+builder.Services.AddScoped<IHotelSServices, HotelSServices>();
+builder.Services.AddScoped<IHotelServices, HotelServices>();
 builder.Services.AddDbContext<HotelManagementContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection") 

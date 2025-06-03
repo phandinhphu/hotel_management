@@ -4,20 +4,32 @@
     ViewData["Title"] = "Resend email confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2>Enter your email.</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-5 col-md-7" style="min-width: 700px">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <img src="~/images/logo.png" alt="Sona Hotel" class="mb-2" />
+                        <h2 class="fw-bold mb-2">Gửi lại email xác nhận</h2>
+                        <p class="text-muted">Nhập email của bạn để nhận lại email xác nhận tài khoản</p>
+                    </div>
+                    <form method="post" class="needs-validation" novalidate>
+                        <div asp-validation-summary="All" class="text-danger mb-3" role="alert"></div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <input asp-for="Input.Email" class="form-control form-control-lg" aria-required="true"
+                                placeholder="Nhập email của bạn" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Gửi lại xác nhận</button>
+                        <div class="text-center">
+                            <a asp-page="./Login" class="small text-decoration-none">Quay lại đăng nhập</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Resend</button>
-        </form>
+        </div>
     </div>
 </div>
 

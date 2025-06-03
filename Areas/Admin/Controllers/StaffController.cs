@@ -29,12 +29,14 @@ namespace Hotel_Management.Areas.Admin.Controllers
         [BindProperty(SupportsGet = true)]
         public int PageIndex { get; set; } = 1;
         [BindProperty(SupportsGet = true)]
-        public string? QuerySearch { get; set; } = string.Empty;
+        public string? QuerySearch { get; set; }
 
         // [GET] /Admin/Staff/Index
         public async Task<IActionResult> Index()
         {
             var customers = await _staffServices.getAllAsync(QuerySearch, PageIndex);
+
+            ViewBag.QuerySearch = QuerySearch;
 
             return View(customers);
         }
@@ -77,8 +79,6 @@ namespace Hotel_Management.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Console.WriteLine(customer.UserName);
-                Console.WriteLine(customer.Email);
                 var user = _mapper.Map<ApplicationUser>(customer);
 
 

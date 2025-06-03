@@ -4,11 +4,13 @@
 @model IndexModel
 @inject IHotelservicesService HotelservicesService
 @inject IRoomsService RoomsService
+@inject IReviewsService ReviewsService
 @{
     ViewData["Title"] = "Home";
 
     var hotelServices = HotelservicesService.GetAllHotelServicesAsync().Result;
     var rooms = RoomsService.GetAllRoomsAsync("", 1, 4).Result;
+    var reviews = ReviewsService.GetAllAsync(1).Result;
 }
 
 <!-- Hero Section Begin -->
@@ -160,40 +162,31 @@
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
                 <div class="testimonial-slider owl-carousel">
-                    <div class="ts-item">
-                        <p>
-                            Dịch vụ ăn uống tại Sona Hotel thật tuyệt vời. Bữa sáng phong phú và ngon miệng, với nhiều
-                            món ăn địa phương và quốc tế. Mỗi bữa đều là một trải nghiệm ẩm thực đáng nhớ!
-                        </p>
-                        <div class="ti-author">
-                            <div class="rating">
-                                <i class="icon_star"></i>
-                                <i class="icon_star"></i>
-                                <i class="icon_star"></i>
-                                <i class="icon_star"></i>
-                                <i class="icon_star-half_alt"></i>
+                    @foreach (var review in reviews)
+                    {
+                        <div class="ts-item">
+                            <p>
+                                @review.Comment
+                            </p>
+                            <div class="ti-author">
+                                <div class="rating">
+									@for (int i = 1; i <= 5; i++)
+									{
+										if (i <= review.Rating)
+										{
+											<i class="icon_star"></i>
+										}
+										else
+										{
+											<i class="icon_star_alt"></i>
+										}
+									}
+                                </div>
+                                <h5> - @review.User.UserName</h5>
                             </div>
-                            <h5> - Đào Trọng Thùy</h5>
+                            <img src="~/images/client/testimonial-logo.png" alt="">
                         </div>
-                        <img src="~/images/client/testimonial-logo.png" alt="">
-                    </div>
-                    <div class="ts-item">
-                        <p>
-                            Phòng tại Sona Hotel thật sự xuất sắc! Rất rộng rãi, sạch sẽ và được trang trí đẹp mắt.
-                            Cảm giác như tôi đang sống trong một không gian sang trọng!
-                        </p>
-                        <div class="ti-author">
-                            <div class="rating">
-                                <i class="icon_star"></i>
-                                <i class="icon_star"></i>
-                                <i class="icon_star"></i>
-                                <i class="icon_star"></i>
-                                <i class="icon_star-half_alt"></i>
-                            </div>
-                            <h5> - Huỳnh Nhất Nguyên</h5>
-                        </div>
-                        <img src="~/images/client/testimonial-logo.png" alt="">
-                    </div>
+                    }
                 </div>
             </div>
         </div>

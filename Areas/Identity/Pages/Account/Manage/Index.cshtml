@@ -5,9 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<div
-    class="container flex jutifycontent-center"
->
+<div class="container flex justify-content-center">
     <h3>@ViewData["Title"]</h3>
     <partial name="_StatusMessage" for="StatusMessage" />
     <div class="row">
@@ -15,11 +13,13 @@
             <form id="profile-form" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                    <input asp-for="Username" class="form-control" placeholder="Please choose your username."
+                        disabled />
                     <label asp-for="Username" class="form-label"></label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
+                    <input asp-for="Input.PhoneNumber" class="form-control"
+                        placeholder="Please enter your phone number." />
                     <label asp-for="Input.PhoneNumber" class="form-label"></label>
                     <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                 </div>

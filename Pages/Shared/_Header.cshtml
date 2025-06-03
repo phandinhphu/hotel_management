@@ -3,6 +3,9 @@
 @using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@{
+    var isAdmin = User.IsInRole("Admin");
+}
 
 <!-- Header Section Begin -->
 <header class="header-section">
@@ -23,13 +26,19 @@
                             <a href="#"><i class="fa fa-instagram"></i></a>
                         </div>
 
-						@if (SignInManager.IsSignedIn(User))
-						{
+                        @if (SignInManager.IsSignedIn(User))
+                        {
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									Xin chào, @UserManager.GetUserName(User)
+                                    Xin chào, @UserManager.GetUserName(User)
                                 </button>
                                 <ul class="dropdown-menu">
+                                    @if (isAdmin)
+                                    {
+                                        <li>
+                                            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="dropdown-item">Quản trị</a>
+                                        </li>
+                                    }
                                     <li>
                                         <a asp-page="/Bookings/WishList" class="dropdown-item">Wishlist</a>
                                     </li>
@@ -44,12 +53,12 @@
                                     </li>
                                 </ul>
                             </div>
-						}
-						else
-						{
+                        }
+                        else
+                        {
                             <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">Đăng nhập</a>
                             <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info">Đăng ký</a>
-						}
+                        }
                     </div>
                 </div>
             </div>
@@ -76,6 +85,12 @@
                                     (Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("chi-tiet-phong")) ? "active" : "")">
                                     <a asp-page="/Rooms/Index">Phòng</a>
                                 </li>
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <li class="@(Context.Request.Path == "/Review" ? "active" : "")">
+                                        <a asp-page="/Review">Đánh giá</a>
+                                    </li>
+                                }
                                 <li class="@(Context.Request.Path == "/About" ? "active" : "")">
                                     <a asp-page="/About">Về chúng tôi</a>
                                 </li>
