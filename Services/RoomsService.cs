@@ -14,13 +14,13 @@ namespace Hotel_Management.Services
             _context = context;
         }
 
-        public async Task<PaginatedList<Room>> GetAllRoomsAsync(string roomNumber = "", int pageIndex = 1, int pageSize = 20)
+        public async Task<PaginatedList<Room>> GetAllRoomsAsync(string status = "", int pageIndex = 1, int pageSize = 20)
         {
             var query = _context.Rooms.AsQueryable();
 
-            if (!string.IsNullOrEmpty(roomNumber))
+            if (!string.IsNullOrEmpty(status))
             {
-                query = query.Where(r => r.RoomNumber != null && r.RoomNumber.Contains(roomNumber));
+                query = query.Where(r => r.Status != null && r.Status.ToLower().Contains(status.ToLower()));
             }
 
             return await PaginatedList<Room>.Create(

@@ -1,5 +1,7 @@
-﻿@using Hotel_Management.Helpers
+﻿@using Hotel_Management.Areas.Admin.Services.Interfaces
+@using Hotel_Management.Helpers
 @using Hotel_Management.Models
+@inject ICustomerServices CustomerServices
 @model PaginatedList<ApplicationUser>
 @{
     ViewData["Title"] = "Danh sách khách hàng";
@@ -7,9 +9,9 @@
 
 <style>
     .bronze-color {
-        background-color: #cd7f32;
-        color: white;
-        /* Màu chữ */
+    background-color: #cd7f32;
+    color: white;
+    /* Màu chữ */
     }
 </style>
 
@@ -22,7 +24,7 @@
                     <!-- Search input group start -->
                     <form asp-area="Admin" asp-controller="Customer" asp-action="Index" method="get" class="input-group">
                         <input type="text" class="form-control" style="border: 1px solid black;" name="QuerySearch"
-                            placeholder="Tìm kiếm khách hàng">
+                        placeholder="Tìm kiếm khách hàng">
                         <button class="btn" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
@@ -30,7 +32,7 @@
                     <!-- Search input group end -->
                 </div>
                 <a asp-area="Admin" asp-controller="Customer" asp-action="Index" class="btn btn-danger">
-					Xóa tìm kiếm
+                    Xóa tìm kiếm
                 </a>
 
                 <a asp-area="Admin" asp-controller="Customer" asp-action="Create" class="btn btn-primary ms-1">
@@ -73,8 +75,26 @@
                                         </td>
                                         <td>@customer.PhoneNumber</td>
                                         <td>@customer.Email</td>
-                                        <td>27/10/2024</td>
-                                        <td>23.870.000VND</td>
+                                        <td>
+                                            @if (CustomerServices.getLastCheckInByIdAsync(customer.Id).Result.ToString() == DateOnly.MinValue.ToString())
+                                            {
+                                                <span class="bronze-color">Chưa có check-in</span>
+											}
+											else
+											{
+												@CustomerServices.getLastCheckInByIdAsync(customer.Id).Result.ToString()
+											}
+                                        </td>
+                                        <td>
+											@if (CustomerServices.getTotalSpentByIdAsync(customer.Id) != null)
+											{
+												@String.Format("{0:N0} VNĐ", CustomerServices.getTotalSpentByIdAsync(customer.Id).Result)
+											}
+											else
+											{
+												<span class="bronze-color">Chưa có giao dịch</span>
+											}
+                                        </td>
                                         <td>
                                             <div class="actions">
                                                 <a asp-area="Admin" asp-controller="Customer" asp-action="Detail" asp-route-id="@customer.Id" class="viewRow">
@@ -100,7 +120,7 @@
                                 <li class="page-item">
                                     @if (Model.HasPreviousPage)
                                     {
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex - 1 })"
+										<a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex - 1, QuerySearch = ViewBag.QuerySearch })"
                                             aria-label="Previous">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-left"></i>
@@ -111,13 +131,13 @@
                                 @for (int i = 1; i <= Model.TotalPages; i++)
                                 {
                                     <li class="page-item @(Model.PageIndex == i ? "active" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = i })">@i</a>
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, QuerySearch = ViewBag.QuerySearch })">@i</a>
                                     </li>
                                 }
                                 <li class="page-item">
                                     @if (Model.HasNextPage)
                                     {
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex + 1 })"
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex + 1, QuerySearch = ViewBag.QuerySearch })"
                                             aria-label="Next">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-right"></i>

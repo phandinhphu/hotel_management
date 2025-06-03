@@ -1,48 +1,40 @@
 ﻿@using Hotel_Management.Helpers
 @using Hotel_Management.Models
-@model PaginatedList<ApplicationUser>
+@model PaginatedList<Service>
 @{
-    ViewData["Title"] = "Danh sách nhân viên";
+    ViewData["Title"] = "Danh sách dịch vụ khách sạn";
 }
-
-<style>
-    .bronze-color {
-        background-color: #cd7f32;
-        color: white;
-        /* Màu chữ */
-    }
-</style>
 
 <div class="row">
     <div class="col-sm-12 col-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Danh sách nhân viên</div>
+                <div class="card-title">Danh sách dịch vụ</div>
                 <div class="search-container">
                     <!-- Search input group start -->
-                    <form asp-area="Admin" asp-controller="Staff" asp-action="Index" method="get" class="input-group">
+                    <form asp-area="Admin" asp-controller="HotelServices" asp-action="Index" method="get" class="input-group">
                         <input type="text" class="form-control" style="border: 1px solid black;" name="QuerySearch"
-                            placeholder="Tìm kiếm nhân viên">
+                               placeholder="Tìm kiếm dịch vụ">
                         <button class="btn" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
                     <!-- Search input group end -->
                 </div>
-                <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="btn btn-danger ms-1">
-					Xóa tìm kiếm
+                <a asp-area="Admin" asp-controller="HotelServices" asp-action="Index" class="btn btn-danger">
+                    Xóa tìm kiếm
                 </a>
 
-                <a asp-area="Admin" asp-controller="Staff" asp-action="Create" class="btn btn-primary ms-1">
+                <a asp-area="Admin" asp-controller="HotelServices" asp-action="Create" class="btn btn-primary ms-1">
                     <i class="bi bi-plus"></i>
-                    Thêm nhân viên
+                    Thêm dịch vụ
                 </a>
             </div>
             <div class="card-body">
                 @if (Model.Count == 0)
                 {
                     <div class="alert alert-info" role="alert">
-                        Không có nhân viên nào được tìm thấy.
+                        Không có dịch vụ nào được tìm thấy.
                     </div>
                 }
                 else
@@ -51,35 +43,30 @@
                         <table class="table v-middle m-0">
                             <thead>
                                 <tr>
-                                    <th>Nhân viên</th>
-                                    <th>Liên hệ</th>
-                                    <th>Email</th>
-                                    <th>Hành động</th>
+                                    <th>Tên dịch vụ</th>
+                                    <th>Mô tả</th>
+                                    <th>Price</th>
+                                    <th>Khách sạn</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var staff in Model)
+                                @foreach (var service in Model)
                                 {
                                     <tr>
-                                        <td>
-                                            <div class="media-box">
-                                                <div class="media-box-body">
-                                                    <div class="text-truncate">@staff.UserName</div>
-                                                    <p>ID: #@staff.Id</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>@staff.PhoneNumber</td>
-                                        <td>@staff.Email</td>
+                                        <td>@service.Name</td>
+                                        <td>@service.Description</td>
+                                        <td>@String.Format("{0:N0} VNĐ", service.Price)</td>
+                                        <td>@service.Hotel.Name</td>
                                         <td>
                                             <div class="actions">
-                                                <a asp-area="Admin" asp-controller="Staff" asp-action="Detail" asp-route-id="@staff.Id" class="viewRow">
+                                                <a asp-area="Admin" asp-controller="HotelServices" asp-action="Detail" asp-route-id="@service.Id" class="viewRow">
                                                     <i class="bi bi-list text-green"></i>
                                                 </a>
-                                                <a asp-area="Admin" asp-controller="Staff" asp-action="Edit" asp-route-id="@staff.Id" class="viewRow">
+                                                <a asp-area="Admin" asp-controller="HotelServices" asp-action="Edit" asp-route-id="@service.Id" class="viewRow">
                                                     <i class="bi bi-pencil text-yellow"></i>
                                                 </a>
-                                                <a href="#" class="deleteRow" data-id="@staff.Id">
+                                                <a href="#" class="deleteRow" data-id="@service.Id">
                                                     <i class="bi bi-trash text-red"></i>
                                                 </a>
                                             </div>
@@ -96,8 +83,8 @@
                                 <li class="page-item">
                                     @if (Model.HasPreviousPage)
                                     {
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex - 1, QuerySearch = ViewBag.QuerySearch })"
-                                            aria-label="Previous">
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex - 1, QuerySearch = ViewBag.QuerySearch  })"
+                                           aria-label="Previous">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-left"></i>
                                             </span>
@@ -107,14 +94,14 @@
                                 @for (int i = 1; i <= Model.TotalPages; i++)
                                 {
                                     <li class="page-item @(Model.PageIndex == i ? "active" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, QuerySearch = ViewBag.QuerySearch })">@i</a>
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, QuerySearch = ViewBag.QuerySearch  })">@i</a>
                                     </li>
                                 }
                                 <li class="page-item">
                                     @if (Model.HasNextPage)
                                     {
 										<a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex + 1, QuerySearch = ViewBag.QuerySearch })"
-                                            aria-label="Next">
+                                           aria-label="Next">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-right"></i>
                                             </span>
@@ -130,24 +117,24 @@
     </div>
 </div>
 
-<form asp-area="Admin" asp-controller="Staff" asp-action="Delete" method="post" name="delete">
+<form asp-area="Admin" asp-controller="HotelServices" asp-action="Delete" method="post" name="delete">
     <input type="hidden" name="id" />
 </form>
 
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const deleteButtons = document.querySelectorAll(".deleteRow");
-		deleteButtons.forEach(button => {
-			button.addEventListener("click", function (event) {
-				event.preventDefault();
-				const staffId = this.getAttribute("data-id");
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".deleteRow");
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function (event) {
+                event.preventDefault();
+                const customerId = this.getAttribute("data-id");
                 const form = document.forms["delete"];
-				form.querySelector("input[name='id']").value = staffId;
+                form.querySelector("input[name='id']").value = customerId;
 
-				if (confirm("Bạn có chắc chắn muốn xóa nhân viên này?")) {
-					form.submit();
+                if (confirm("Bạn có chắc chắn muốn xóa dịch vụ này?")) {
+                    form.submit();
                 }
-			});
-		});
-	});
+            });
+        });
+    });
 </script>

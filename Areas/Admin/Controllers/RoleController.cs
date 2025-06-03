@@ -38,6 +38,9 @@ namespace Hotel_Management.Areas.Admin.Controllers
         {
             var user = await _userService.GetUsersWithRoleAsync(SelectedRole, QuerySearch, PageIndex, 20);
 
+            ViewBag.SelectedRole = SelectedRole;
+            ViewBag.QuerySearch = QuerySearch;
+
             return View(user);
         }
 

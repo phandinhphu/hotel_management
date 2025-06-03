@@ -36,6 +36,8 @@ namespace Hotel_Management.Areas.Admin.Controllers
         {
             var customers = await _customerServices.getAllAsync(QuerySearch, PageIndex);
 
+            ViewBag.QuerySearch = QuerySearch;
+
             return View(customers);
         }
 

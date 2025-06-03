@@ -19,11 +19,11 @@ namespace Hotel_Management.Rooms.Pages
         [BindProperty(SupportsGet = true)]
         public int PageIndex { get; set; } = 1;
         [BindProperty(SupportsGet = true)]
-        public string? RoomNumber { get; set; }
+        public string? Status { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Rooms = await _roomsService.GetAllRoomsAsync(RoomNumber, PageIndex, 20);
+            Rooms = await _roomsService.GetAllRoomsAsync(Status, PageIndex, 20);
 
             return Page();
         }

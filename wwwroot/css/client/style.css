@@ -2366,3 +2366,8 @@ ul, ol {
     padding: 10px 0;
     border-radius: 8px;
 }
+
+.page-item.active {
+    background: #dfa974;
+    border-color: #dfa974;
+}

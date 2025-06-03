@@ -107,7 +107,11 @@
                                 <li class="page-item">
                                     @if (Model.HasPreviousPage)
                                     {
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex - 1 })"
+                                        <a class="page-link" href="@Url.Action("Index", new { 
+                                                PageIndex = Model.PageIndex - 1,
+                                                QuerySearch = ViewBag.QuerySearch,
+                                                SelectedRole = ViewBag.SelectedRole
+                                            })"
                                            aria-label="Previous">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-left"></i>
@@ -118,13 +122,21 @@
                                 @for (int i = 1; i <= Model.TotalPages; i++)
                                 {
                                     <li class="page-item @(Model.PageIndex == i ? "active" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = i })">@i</a>
+                                        <a class="page-link" href="@Url.Action("Index", new {
+                                                PageIndex = i,
+                                                QuerySearch = ViewBag.QuerySearch,
+                                                SelectedRole = ViewBag.SelectedRole
+                                            })">@i</a>
                                     </li>
                                 }
                                 <li class="page-item">
                                     @if (Model.HasNextPage)
                                     {
-                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex + 1 })"
+                                        <a class="page-link" href="@Url.Action("Index", new {
+                                                PageIndex = Model.PageIndex + 1,
+                                                QuerySearch = ViewBag.QuerySearch,
+                                                SelectedRole = ViewBag.SelectedRole
+                                            })"
                                            aria-label="Next">
                                             <span aria-hidden="true">
                                                 <i class="bi bi-arrow-right"></i>
