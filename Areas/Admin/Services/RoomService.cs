@@ -71,7 +71,8 @@ namespace Hotel_Management.Areas.Admin.Services
                 Price = r.Price ?? 0,
                 Status = r.Status ?? "",
                 Capacity = r.Capacity ?? 0,
-                Image = r.Image ?? ""
+                Image = r.Image ?? "",
+                Images = r.Roomimages.Select(ri => ri.ImageUrl).ToList()
             });
             
             return await PaginatedList<RoomVM>.Create(
@@ -96,7 +97,8 @@ namespace Hotel_Management.Areas.Admin.Services
                     Price = r.Price ?? 0,
                     Status = r.Status ?? "",
                     Capacity = r.Capacity ?? 0,
-                    Image = r.Image ?? ""
+                    Image = r.Image ?? "",
+                    Images = r.Roomimages.Select(ri => ri.ImageUrl).ToList()
                 }).FirstOrDefaultAsync();
             if (room == null)
             {
@@ -131,7 +133,11 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 return false;
             }
-            roomVM.Image = _imageHelper.SaveImage(roomVM.ImagetFile, "room");
+            // Lưu ảnh đại diện
+            if(roomVM.ImagetFile != null)
+            {
+                roomVM.Image = _imageHelper.SaveImage(roomVM.ImagetFile, "room");
+            }
             // Map ViewModel to entity
             var room = new Room
             {
@@ -148,6 +154,22 @@ namespace Hotel_Management.Areas.Admin.Services
             // Add to database
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync();
+
+            //Lưu ảnh bổ sung
+            if (roomVM.ImageFiles != null)
+            {
+                List<string> imageUrls = _imageHelper.SaveImages(roomVM.ImageFiles, "room");
+                foreach (var imageUrl in imageUrls)
+                {
+                    var roomImage = new Roomimage
+                    {
+                        RoomId = room.Id,
+                        ImageUrl = imageUrl
+                    };
+                    _context.Roomimages.Add(roomImage);
+                }
+                await _context.SaveChangesAsync();
+            }
 
             return true;
         }
@@ -174,7 +196,6 @@ namespace Hotel_Management.Areas.Admin.Services
             }
             else
             {
-                // Giữ nguyên ảnh cũ nếu không có file mới
                 roomVM.Image = existingRoom.Image;
             }
 
@@ -189,6 +210,30 @@ namespace Hotel_Management.Areas.Admin.Services
             // Update in database
             _context.Rooms.Update(existingRoom);
             await _context.SaveChangesAsync();
+
+            // Xử lý ảnh bổ sung
+            if (roomVM.ImageFiles != null && roomVM.ImageFiles.Count > 0)
+            {
+                var existingImages = await _context.Roomimages.Where(ri => ri.RoomId == existingRoom.Id).ToListAsync();
+                if (existingImages.Any())
+                {
+                    var imgDels = _imageHelper.DeleteImages(existingImages.Select(ri => ri.ImageUrl).ToList(), "room");
+                    _context.Roomimages.RemoveRange(existingImages);
+                }
+                // Lưu các ảnh mới
+                List<string> imageUrls = _imageHelper.SaveImages(roomVM.ImageFiles, "room");
+                foreach (var imageUrl in imageUrls)
+                {
+                    var roomImage = new Roomimage
+                    {
+                        RoomId = roomVM.ID,
+                        ImageUrl = imageUrl
+                    };
+                    _context.Roomimages.Add(roomImage);
+                }
+                await _context.SaveChangesAsync();
+            }
+
             return true;
         }
 
@@ -203,6 +248,13 @@ namespace Hotel_Management.Areas.Admin.Services
             if (!string.IsNullOrEmpty(existingRoom.Image))
             {
                 _imageHelper.DeleteImage(existingRoom.Image, "room");
+            }
+            // Xóa ảnh bổ sung
+            var existingImages = await _context.Roomimages.Where(ri => ri.RoomId == existingRoom.Id).ToListAsync();
+            if (existingImages.Any())
+            {
+                var imgDels = _imageHelper.DeleteImages(existingImages.Select(ri => ri.ImageUrl).ToList(), "room");
+                _context.Roomimages.RemoveRange(existingImages);
             }
             _context.Rooms.Remove(existingRoom);
             await _context.SaveChangesAsync();

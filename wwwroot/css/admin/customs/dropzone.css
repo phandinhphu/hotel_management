@@ -15,19 +15,19 @@
         #dropzone-area .dz-preview .dz-image {
             width: 100%;
             height: auto;
+            max-height: 200px;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            border-radius: 8px;
+            background: #fff;
         }
 
             #dropzone-area .dz-preview .dz-image img {
                 width: 100%;
                 height: auto;
-                max-height: 200px;
                 object-fit: contain;
-                border-radius: 8px;
                 display: block;
-                background: #fff;
             }
 
 #single-dropzone-area {

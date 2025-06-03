@@ -40,6 +40,9 @@ namespace Hotel_Management.Areas.Admin.ViewModels
         [Display(Name = "Ảnh phòng")]
         public string Image { get; set; } = string.Empty;
 
+        [Display(Name = "Ảnh bổ sung")]
+        public List<string> Images { get; set; } = new List<string>();
+
         [Display(Name = "Tải lên ảnh chính")]
         public IFormFile? ImagetFile { get; set; } = null!;
 

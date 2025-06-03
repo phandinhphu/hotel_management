@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Dropzone cho nhiều ảnh (nếu cần)
+    // Dropzone cho ảnh bổ sung
     if (document.querySelector("#dropzone-area")) {
         const multipleImageDropzone = new Dropzone("#dropzone-area", {
             url: "#",
@@ -150,6 +150,36 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     inputFile.files = dataTransfer.files;
                 };
+
+                if (typeof window.existingFiles !== 'undefined' && window.existingFiles) {
+                    const existingFiles = window.existingFiles;
+                    existingFiles.forEach(fileName => {
+                        const fileUrl = `/images/room/${fileName}`;
+                        // Tạo pseudo-file từ URL ảnh hiện có
+                        fetch(fileUrl)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`Lỗi khi tải ảnh: ${response.status}`);
+                                }
+                                return response.blob();
+                            })
+                            .then(blob => {
+                                // Tạo File từ Blob
+                                const file = new File([blob], fileName, {
+                                    type: blob.type || 'image/jpeg'
+                                });
+                                // Hiển thị file trong dropzone
+                                myDropzone.displayExistingFile(file, fileUrl);
+                                // Đánh dấu file này là ảnh đã có
+                                file.previewElement.classList.add('dz-existing');
+                                // Thêm vào danh sách files của Dropzone
+                                myDropzone.files.push(file);
+                            })
+                            .catch(error => {
+                                console.error("Không thể tải ảnh hiện có:", error);
+                            });
+                    });
+                }
 
                 // Khi file được thêm vào Dropzone
                 this.on("addedfile", function (file) {
