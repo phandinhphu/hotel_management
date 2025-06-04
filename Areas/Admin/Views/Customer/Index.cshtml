@@ -76,24 +76,31 @@
                                         <td>@customer.PhoneNumber</td>
                                         <td>@customer.Email</td>
                                         <td>
-                                            @if (CustomerServices.getLastCheckInByIdAsync(customer.Id).Result.ToString() == DateOnly.MinValue.ToString())
-                                            {
-                                                <span class="bronze-color">Chưa có check-in</span>
-											}
-											else
-											{
-												@CustomerServices.getLastCheckInByIdAsync(customer.Id).Result.ToString()
-											}
+                                            @{
+												var lastCheckIn = CustomerServices.getLastCheckInByIdAsync(customer.Id).Result;
+                                                if (lastCheckIn.ToString() == DateOnly.MinValue.ToString())
+                                                {
+                                                    <span class="badge rounded-pill shade-red">Chưa có check-in</span>
+											    }
+											    else
+											    {
+                                                    <span class="badge rounded-pill shade-yellow">@lastCheckIn.ToString()</span>
+											    }
+                                            }
                                         </td>
                                         <td>
-											@if (CustomerServices.getTotalSpentByIdAsync(customer.Id) != null)
-											{
-												@String.Format("{0:N0} VNĐ", CustomerServices.getTotalSpentByIdAsync(customer.Id).Result)
-											}
-											else
-											{
-												<span class="bronze-color">Chưa có giao dịch</span>
-											}
+											@{
+                                                var totalSpent = CustomerServices.getTotalSpentByIdAsync(customer.Id).Result;
+                                                if (totalSpent != null || totalSpent > 0)
+											    {
+                                                    <span class="badge rounded-pill shade-yellow">@String.Format("{0:N0} VNĐ", totalSpent)</span>
+											    }
+											    else
+											    {
+                                                    <span class="badge rounded-pill shade-red">Chưa có giao dịch</span>
+											    }
+                                            }
+                                            
                                         </td>
                                         <td>
                                             <div class="actions">

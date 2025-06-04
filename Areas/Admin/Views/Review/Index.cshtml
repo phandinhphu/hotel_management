@@ -1,0 +1,142 @@
+﻿@using Hotel_Management.Helpers
+@using Hotel_Management.Models
+@model PaginatedList<Review>
+@{
+    ViewData["Title"] = "Danh sách đánh giá";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Danh sách đánh giá của khách sạn</div>
+                <div>
+                    <!-- Search input group start -->
+                    <form asp-area="Admin" asp-controller="Review" asp-action="Index" method="get" class="input-group">
+                        <select class="form-select" name="Rating" style="width: auto">
+                            <option value="">Tất cả đánh giá</option>
+                            <option value="1">1 sao</option>
+                            <option value="2">2 sao</option>
+                            <option value="3">3 sao</option>
+                            <option value="4">4 sao</option>
+                            <option value="5">5 sao</option>
+                        </select>
+                        <button class="btn" type="submit">
+							<i class="bi bi-funnel"></i>
+                        </button>
+                    </form>
+                    <!-- Search input group end -->
+                </div>
+                <a asp-area="Admin" asp-controller="Review" asp-action="Index" class="btn btn-danger">
+                    Xóa Lọc
+                </a>
+            </div>
+            <div class="card-body">
+                @if (Model.Count == 0)
+                {
+                    <div class="alert alert-info" role="alert">
+						Hiện tại không đánh giá nào được tìm thấy.
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table v-middle m-0">
+                            <thead>
+                                <tr>
+                                    <th>Khách hàng</th>
+                                    <th>Nội dung đánh giá</th>
+                                    <th>Rating</th>
+                                    <th>Ngày bình luận</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var review in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="media-box">
+                                                <div class="media-box-body">
+                                                    <div class="text-truncate">@review.User.UserName</div>
+                                                    <p>ID: #@review.User.Id</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@review.Comment</td>
+                                        <td>@review.Rating</td>
+                                        <td>@review.CreatedAt.ToString()</td>
+                                        <td>
+                                            <div class="actions">
+                                                <a href="#" class="deleteRow" data-id="@review.Id">
+                                                    <i class="bi bi-trash text-red"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+
+                        <!-- Phân trang -->
+                        <nav aria-label="Page Navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item">
+                                    @if (Model.HasPreviousPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex - 1, Rating = ViewBag.Rating })"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-left"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = i, Rating = ViewBag.Rating })">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    @if (Model.HasNextPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex + 1, Rating = ViewBag.Rating })"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<form asp-area="Admin" asp-controller="Review" asp-action="Delete" method="post" name="delete">
+    <input type="hidden" name="id" />
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".deleteRow");
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function (event) {
+                event.preventDefault();
+                const reviewId = this.getAttribute("data-id");
+                const form = document.forms["delete"];
+                form.querySelector("input[name='id']").value = reviewId;
+
+                if (confirm("Bạn có chắc chắn muốn xóa đánh giá này?")) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 using Hotel_Management.Providers;
 using Hotel_Management.Hubs;
 using Hotel_Management.Helpers;
+using Hotel_Management.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 var mailSettings = builder.Configuration.GetSection("MailSettings");
@@ -49,7 +50,7 @@ builder.Services.AddScoped<IBookingServices, BookingServices>();
 builder.Services.AddScoped<IVNPayServices, VNPayServices>();
 builder.Services.AddScoped<IHotelSServices, HotelSServices>();
 builder.Services.AddScoped<IHotelServices, HotelServices>();
-builder.Services.AddDbContext<HotelManagementContext>(options =>
+builder.Services.AddDbContextFactory<HotelManagementContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection") 
             ?? throw new InvalidOperationException("Connection string 'HotelManagementContext' not found."),
@@ -68,6 +69,10 @@ builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<HotelManagementContext>()
     .AddDefaultTokenProviders();
+
+// Đăng ký Cloudinary
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddScoped<IImageServices, CloudinaryImageServices>();
 
 // Cấu hình cookie
 builder.Services.ConfigureApplicationCookie(options =>

@@ -1,20 +1,27 @@
-﻿using Hotel_Management.Areas.Admin.Services.Interfaces;
+﻿using System;
+using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Helpers;
 using Hotel_Management.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Hotel_Management.Areas.Admin.Services
 {
     public class CustomerServices : ICustomerServices
     {
         private readonly HotelManagementContext _context;
+        private readonly IDbContextFactory<HotelManagementContext> _contextFactory;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CustomerServices(HotelManagementContext context, UserManager<ApplicationUser> userManager)
+        public CustomerServices(
+            HotelManagementContext context,
+            UserManager<ApplicationUser> userManager,
+            IDbContextFactory<HotelManagementContext> dbContextFactory)
         {
             _context = context;
             _userManager = userManager;
+            _contextFactory = dbContextFactory;
         }
 
         public async Task<PaginatedList<ApplicationUser>> getAllAsync(string name = "", int pageIndex = 1, int pageSize = 20)
@@ -54,7 +61,9 @@ namespace Hotel_Management.Areas.Admin.Services
                 throw new ArgumentNullException(nameof(id), "Id cannot be null or empty.");
             }
 
-            var lastCheckIn = await _context.BookingsRoomDetails
+            await using var context = _contextFactory.CreateDbContext();
+
+            var lastCheckIn = await context.BookingsRoomDetails
                             .Where(d => d.Booking.UserId == id)
                             .OrderByDescending(d => d.CheckIn)
                             .Select(d => d.CheckIn)
@@ -66,7 +75,7 @@ namespace Hotel_Management.Areas.Admin.Services
                 return await Task.FromResult<DateOnly?>(DateOnly.MinValue);
             }
 
-            return await Task.FromResult<DateOnly?>(lastCheckIn);
+            return lastCheckIn;
         }
 
         public async Task<decimal?> getTotalSpentByIdAsync(string id)
@@ -76,7 +85,9 @@ namespace Hotel_Management.Areas.Admin.Services
                 throw new ArgumentNullException(nameof(id), "Id cannot be null or empty.");
             }
 
-            var totalSpent = await _context.Bookings
+            await using var context = _contextFactory.CreateDbContext();
+
+            var totalSpent = await context.Bookings
                 .Where(b => b.UserId == id)
                 .SumAsync(b => b.TotalPrice);
 
@@ -84,7 +95,7 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 throw new InvalidOperationException($"No bookings found for user with id '{id}'.");
             }
-            return await Task.FromResult<decimal?>(totalSpent > 0 ? totalSpent : null);
+            return totalSpent > 0 ? totalSpent : null;
         }
     }
 }
