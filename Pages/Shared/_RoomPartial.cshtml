@@ -3,7 +3,7 @@
 @model Room
 
 <div class="room-item">
-    <img src="~/images/client/room/room-2.jpg" alt="">
+    <img src="@Model.Image" alt="">
     <div class="ri-text">
         <h4>@Model.RoomNumber</h4>
         <h3>@String.Format("{0:N0} VNĐ", Model.Price)<span>/Đêm</span></h3>

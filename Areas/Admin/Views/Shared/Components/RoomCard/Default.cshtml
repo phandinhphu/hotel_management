@@ -4,7 +4,7 @@
 <div class="product-card">
     <div class="image-container">
         <img class="product-card-img-top"
-             src="~/images/room/@(string.IsNullOrEmpty(Model.Image) ? "room-default.png" : Model.Image)" alt="@Model.RoomNumber"
+             src="@Model.Image" alt="@Model.RoomNumber"
         >
         <button class="menu-button" data-bs-toggle="dropdown"
                 aria-expanded="false">

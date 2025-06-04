@@ -10,10 +10,13 @@ namespace Hotel_Management.Areas.Admin.Services
     {
         private readonly HotelManagementContext _context;
         private readonly ImageHelper _imageHelper;
-        public RoomService(HotelManagementContext context, ImageHelper imageHelper)
+        private readonly IImageServices _cloudinaryImageService;
+
+        public RoomService(HotelManagementContext context, ImageHelper imageHelper, IImageServices cloudinaryImageService)
         {
             _context = context;
             _imageHelper = imageHelper;
+            _cloudinaryImageService = cloudinaryImageService;
         }
 
         #region Async Methods
@@ -136,7 +139,12 @@ namespace Hotel_Management.Areas.Admin.Services
             // Lưu ảnh đại diện
             if(roomVM.ImagetFile != null)
             {
-                roomVM.Image = _imageHelper.SaveImage(roomVM.ImagetFile, "room");
+                var imgUrl = await _cloudinaryImageService.UploadImageAsync(roomVM.ImagetFile, "room");
+                if (string.IsNullOrEmpty(imgUrl))
+                {
+                    return false; // Không thể lưu ảnh
+                }
+                roomVM.Image = imgUrl;
             }
             // Map ViewModel to entity
             var room = new Room
@@ -158,7 +166,7 @@ namespace Hotel_Management.Areas.Admin.Services
             //Lưu ảnh bổ sung
             if (roomVM.ImageFiles != null)
             {
-                List<string> imageUrls = _imageHelper.SaveImages(roomVM.ImageFiles, "room");
+                List<string> imageUrls = await _cloudinaryImageService.UploadImagesAsync(roomVM.ImageFiles, "room");
                 foreach (var imageUrl in imageUrls)
                 {
                     var roomImage = new Roomimage
@@ -190,9 +198,16 @@ namespace Hotel_Management.Areas.Admin.Services
                 // Xóa ảnh cũ nếu có
                 if (!string.IsNullOrEmpty(existingRoom.Image))
                 {
-                    var imgDel = _imageHelper.DeleteImage(existingRoom.Image, "room");
+                    await _cloudinaryImageService.DeleteImageAsync(existingRoom.Image);
                 }
-                roomVM.Image = _imageHelper.SaveImage(roomVM.ImagetFile, "room");
+
+                // Lưu ảnh mới
+                var imgUrl = await _cloudinaryImageService.UploadImageAsync(roomVM.ImagetFile, "room");
+                if (string.IsNullOrEmpty(imgUrl))
+                {
+                    return false; // Không thể lưu ảnh mới
+                }
+                roomVM.Image = imgUrl; // Cập nhật ảnh mới vào ViewModel
             }
             else
             {
@@ -217,11 +232,14 @@ namespace Hotel_Management.Areas.Admin.Services
                 var existingImages = await _context.Roomimages.Where(ri => ri.RoomId == existingRoom.Id).ToListAsync();
                 if (existingImages.Any())
                 {
-                    var imgDels = _imageHelper.DeleteImages(existingImages.Select(ri => ri.ImageUrl).ToList(), "room");
-                    _context.Roomimages.RemoveRange(existingImages);
+                    foreach (var img in existingImages)
+                    {
+                        await _cloudinaryImageService.DeleteImageAsync(img.ImageUrl); // hàm delete phía dưới
+                        _context.Roomimages.Remove(img);
+                    }
                 }
                 // Lưu các ảnh mới
-                List<string> imageUrls = _imageHelper.SaveImages(roomVM.ImageFiles, "room");
+                List<string> imageUrls = await _cloudinaryImageService.UploadImagesAsync(roomVM.ImageFiles, "room");
                 foreach (var imageUrl in imageUrls)
                 {
                     var roomImage = new Roomimage
@@ -247,14 +265,17 @@ namespace Hotel_Management.Areas.Admin.Services
             // Xóa ảnh nếu có
             if (!string.IsNullOrEmpty(existingRoom.Image))
             {
-                _imageHelper.DeleteImage(existingRoom.Image, "room");
+                await _cloudinaryImageService.DeleteImageAsync(existingRoom.Image);
             }
             // Xóa ảnh bổ sung
             var existingImages = await _context.Roomimages.Where(ri => ri.RoomId == existingRoom.Id).ToListAsync();
             if (existingImages.Any())
             {
-                var imgDels = _imageHelper.DeleteImages(existingImages.Select(ri => ri.ImageUrl).ToList(), "room");
-                _context.Roomimages.RemoveRange(existingImages);
+                foreach (var img in existingImages)
+                {
+                    await _cloudinaryImageService.DeleteImageAsync(img.ImageUrl);
+                    _context.Roomimages.Remove(img);
+                }
             }
             _context.Rooms.Remove(existingRoom);
             await _context.SaveChangesAsync();
