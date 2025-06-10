@@ -10,7 +10,7 @@
                 aria-expanded="false">
             <i class="bi bi-three-dots-vertical"></i>
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu dropdown-menu-end">
             <li>
                 <a asp-area="Admin" asp-controller="Room" asp-action="Edit" asp-route-id="@Model.ID" class="dropdown-item text-warning">
                     <i class="fa-solid fa-pen-to-square"></i> Sửa
@@ -43,12 +43,6 @@
         </div>
         <div class="product-description">
             @Model.Description
-        </div>
-        <div class="product-actions">
-            <button class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#bookingRoom" onclick="bookRoom(@Model.ID)">
-                Nhận phòng
-            </button>
         </div>
     </div>
 </div>

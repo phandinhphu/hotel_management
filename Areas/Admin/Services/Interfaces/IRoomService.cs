@@ -34,7 +34,7 @@ namespace Hotel_Management.Areas.Admin.Services.Interfaces
         Task<RoomVM> GetByIdAsync(int id);
 
         /// <summary>
-        /// Gets all available room types
+        /// Lấy danh sách các loại phòng
         /// </summary>
         /// <returns>List of unique room types</returns>
         Task<List<string>> GetAllRoomTypesAsync();

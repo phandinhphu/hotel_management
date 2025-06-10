@@ -1,0 +1,132 @@
+﻿@model PaymentVM
+
+<!-- Payment Detail Modal -->
+<div class="modal fade" id="payment" tabindex="-1" aria-labelledby="modalDarkLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalDarkLabel">Chi tiết thanh toán</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="card-body">
+					<div class="invoice-container">
+
+						<div class="invoice-header">
+							<!-- Row start -->
+							<div class="row justify-content-between">
+								<div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-12">
+									<div class="m-0">
+										Mã hóa đơn - #@Model.Id<br>
+										@if (!string.IsNullOrEmpty(Model.StaffName))
+										{
+											<span class="text-muted">Nhân viên:</span> @Model.StaffName
+										}
+									</div>
+								</div>
+								<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-12">
+									<address class="text-right">
+										<span class="text-muted">Ngày thanh toán:</span> @Model.PaymentDate.ToString("dd/MM/yyyy")<br>
+										@if (Model.Status == "Paid")
+										{
+											<span class="badge shade-green">Đã trả</span>
+										}
+										else if (Model.Status == "Pending")
+										{
+											<span class="badge shade-yellow">Chờ xử lý</span>
+										}
+										else
+										{
+											<span class="badge shade-red">Thất bại</span>
+										}
+									</address>
+								</div>
+							</div>
+							<!-- Row end -->
+						</div>
+
+						<!-- Row start -->
+						<div class="row">
+							<div class="col-sm-12 col-12">
+								<div class="invoice-details">
+									<div class="m-0">
+										<span class="text-muted">Khách hàng:</span> @Model.CustomerName<br>
+										<span class="text-muted">Email:</span> @Model.Email<br>
+										<span class="text-muted">SĐT:</span> @Model.PhoneNumber
+									</div>
+
+									<div class="invoice-num">
+										<br>
+										<span class="text-muted">Check-in:</span> @Model.CheckIn.ToString("dd/MM/yyyy")<br>
+										<span class="text-muted">Check-out:</span> @Model.CheckOut.ToString("dd/MM/yyyy")
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Row end -->
+						<!-- Row start -->
+						<div class="row">
+							<div class="col-12">
+
+								<div class="table-responsive">
+									<table class="table table-bordered invoice-table">
+										<thead>
+											<tr>
+												<th>Mặt hàng</th>
+												<th>Số lượng</th>
+												<th>Giá</th>
+												<th>Thành tiền</th>
+											</tr>
+										</thead>
+										<tbody>
+											@if (Model.Items != null && Model.Items.Any())
+											{
+												@foreach (var item in Model.Items)
+												{
+													<tr>
+														<td>
+															<h6>@item.Name</h6>
+														</td>
+														<td>
+															<h6>1</h6>
+														</td>
+														<td>
+															<h6 class="text-end">@item.Price.ToString("N0")</h6>
+														</td>
+														<td>
+															<h6 class="text-end">@item.Price.ToString("N0")</h6>
+														</td>
+													</tr>
+												}
+											}
+											<tr>
+												<td>&nbsp;</td>
+												<td colspan="2">
+													<p>Tiền phòng</p>
+													<p>Tiền dịch vụ</p>
+													<h6 class="mt-4 text-red">Thành tiền</h6>
+												</td>
+												<td>
+													<p class="text-end">@Model.RoomPrice.ToString("N0") VND</p>
+													<p class="text-end">@Model.ServicePrice.ToString("N0") VND</p>
+													<h6 class="mt-4 text-red text-end">@Model.Amount.ToString("N0") VND</h6>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
+						<!-- Row end -->
+
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-dark" data-bs-dismiss="modal">Đóng</button>
+			</div>
+		</div>
+	</div>
+</div>

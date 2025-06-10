@@ -1,0 +1,45 @@
+﻿@if (TempData["SuccessMessage"] != null 
+    || TempData["ErrorMessage"] != null 
+    || TempData["InfoMessage"] != null 
+    || TempData["WarningMessage"] != null 
+    || TempData["Message"] != null)
+{
+    <script>
+        $(document).ready(function() {
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <text>
+                    toastr.success('@Html.Raw(Json.Serialize(TempData["SuccessMessage"]))');
+                </text>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <text>
+                    toastr.error('@Html.Raw(Json.Serialize(TempData["ErrorMessage"]))');
+                </text>
+            }
+
+            @if (TempData["InfoMessage"] != null)
+            {
+                <text>
+                    toastr.info('@Html.Raw(Json.Serialize(TempData["InfoMessage"]))');
+                </text>
+            }
+
+            @if (TempData["WarningMessage"] != null)
+            {
+                <text>
+                    toastr.warning('@Html.Raw(Json.Serialize(TempData["WarningMessage"]))');
+                </text>
+            }
+
+            @if (TempData["Message"] != null)
+            {
+                <text>
+                    toastr.info('@Html.Raw(Json.Serialize(TempData["Message"]))');
+                </text>
+            }
+        });
+    </script>
+}

@@ -75,9 +75,10 @@ namespace Hotel_Management.Areas.Admin.Controllers
 
             try
             {
-                TempData["Message"] = await _roomService.CreateAsync(roomVM)
-                    ? $"Thêm phòng số '{roomVM.RoomNumber}' thành công!"
-                    : $"Phòng số '{roomVM.RoomNumber}' đã tồn tại!";
+                var result = await _roomService.CreateAsync(roomVM);
+                if (result) 
+                    TempData["SuccessMessage"] = $"Thêm phòng số '{roomVM.RoomNumber}' thành công!";
+                else TempData["ErrorMessage"] = $"Thêm phòng số '{roomVM.RoomNumber}' thất bại!";
             }
             catch (Exception ex)
             {
@@ -115,9 +116,10 @@ namespace Hotel_Management.Areas.Admin.Controllers
             if (!ModelState.IsValid) return View(roomVM);
             try
             {
-                TempData["Message"] = await _roomService.UpdateAsync(roomVM)
-                    ? $"Cập nhật phòng số '{roomVM.RoomNumber}' thành công!"
-                    : $"Phòng số '{roomVM.RoomNumber}' đã tồn tại!";
+                var result = await _roomService.UpdateAsync(roomVM);
+                if (result)
+                    TempData["SuccessMessage"] = $"Cập nhật phòng số '{roomVM.RoomNumber}' thành công!";
+                else TempData["ErrorMessage"] = $"Cập nhật phòng số '{roomVM.RoomNumber}' thất bại!";
             }
             catch (Exception ex)
             {
@@ -133,14 +135,19 @@ namespace Hotel_Management.Areas.Admin.Controllers
         {
             try
             {
-                TempData["Message"] = await _roomService.DeleteAsync(id)
-                    ? $"Xóa phòng thành công!"
-                    : $"Xóa phòng thất bại!";
+                var result = await _roomService.DeleteAsync(id);
+                if (result) TempData["SuccessMessage"] = $"Xóa phòng thành công!";
+                else TempData["ErrorMessage"] = $"Xóa phòng thất bại!";
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Không thể xóa phòng do đã có người đặt.");
+                TempData["ErrorMessage"] = ex.Message;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Đã xảy ra lỗi khi xóa phòng.");
-                ModelState.AddModelError(string.Empty, ex.Message);
+                TempData["ErrorMessage"] = ex.Message;
             }
             return RedirectToAction(nameof(Index));
         }

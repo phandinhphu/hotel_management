@@ -262,6 +262,14 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 return false;
             }
+
+            // Check if room has related bookings
+            var hasBookings = await _context.BookingsRoomDetails.AnyAsync(b => b.RoomId == id);
+            if (hasBookings)
+            {
+                throw new InvalidOperationException("Không thể xóa phòng này vì đã có người đặt. Hãy hủy các đặt phòng trước.");
+            }
+
             // Xóa ảnh nếu có
             if (!string.IsNullOrEmpty(existingRoom.Image))
             {

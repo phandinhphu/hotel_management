@@ -45,8 +45,8 @@
                         <span class="menu-text">Quản lý đặt phòng</span>
                     </a>
                 </li>
-                <li class="@(currentController == "Invoice" ? "active" : "")">
-                    <a href="invoice-list.html" class="@(currentController == "Invoice" ? "current-page" : "")">
+                <li class="@(currentController == "Payment" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="Payment" asp-action="Index" class="@(currentController == "Payment" ? "current-page" : "")">
                         <i class="bi bi-credit-card-2-back"></i>
                         <span class="menu-text">Quản lý thanh toán</span>
                     </a>

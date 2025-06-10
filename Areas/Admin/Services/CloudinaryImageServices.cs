@@ -28,7 +28,7 @@ namespace Hotel_Management.Areas.Admin.Services
             var uri = new Uri(imageUrl);
             var publicId = Path.GetFileNameWithoutExtension(uri.LocalPath); // Lấy phần sau cùng trước .jpg
 
-            var deletionParams = new DeletionParams($"hotel/rooms/{publicId}");
+            var deletionParams = new DeletionParams($"hotel/room/{publicId}");
             var result = await _cloudinary.DestroyAsync(deletionParams);
 
             return result.Result == "ok";

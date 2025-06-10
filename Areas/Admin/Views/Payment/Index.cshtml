@@ -1,0 +1,192 @@
+﻿@using Hotel_Management.Areas.Admin.ViewModels
+@model PaginatedList<PaymentVM>
+@{
+	ViewData["Title"] = "Danh sách giao dịch";
+}
+
+@section Styles {
+	<style>
+		.icon-button {
+			width: 36px;
+			height: 36px;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			background-color: white;
+			border: 1px solid #dee2e6;
+			padding: 0;
+			transition: all 0.2s ease;
+			cursor: pointer;
+		}
+
+			.icon-button i {
+				font-size: 1rem;
+			}
+	</style>
+}
+
+@section Scripts {
+	<script>
+		$(document).on('click', 'button[data-bs-target="#payment"]', function () {
+			var paymentId = $(this).data('payment-id');
+
+			$.ajax({
+				url: '/Admin/Payment/Details/' + paymentId,
+				type: 'GET',
+				success: function (result) {
+					$('body').append(result);
+					const modalEl = document.getElementById('payment');
+					if (modalEl) {
+						const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+						modal.show();
+						modalEl.addEventListener('hidden.bs.modal', function () {
+							modalEl.remove();
+						});
+					}
+				},
+				error: function (error) {
+					alert('Không thể tải chi tiết thanh toán.');
+					console.error(error);
+				}
+			});
+
+			return false;
+		});
+
+	</script>
+}
+
+
+<!-- Row start -->
+<div class="row">
+	<div class="col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">
+					Danh sách giao dịch
+				</div>
+				<div class="search-container">
+					<!-- Search input group start -->
+					<form method="get" asp-action="Index">
+						<div class="input-group">
+							<input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control" style="border: 1px solid black;"
+								   placeholder="Tìm kiếm giao dịch">
+							<button class="btn" type="submit">
+								<i class="bi bi-search"></i>
+							</button>
+						</div>
+					</form>
+					<!-- Search input group end -->
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered invoice-table">
+						<thead>
+							<tr>
+								<td>Khách hàng</td>
+								<td>Liên hệ</td>
+								<td>Ngày thanh toán</td>
+								<td>Số tiền</td>
+								<td>Phương thức</td>
+								<td>Trạng thái</td>
+								<td>Thao tác</td>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var payment in Model)
+							{
+								<tr>
+									<td>
+										<div class="media-box">
+											<img src="~/images/admin/user.svg" class="media-avatar" alt="User" />
+											<div class="media-box-body">
+												<div class="text-truncate">@payment.CustomerName</div>
+												<p class="small text-muted">Booking ID: #@payment.BookingId</p>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="media-box-body">
+											<p class="small text-muted">Email: @payment.Email</p>
+											<p class="small text-muted">SDT: @payment.PhoneNumber</p>
+										</div>
+									</td>
+									<td>@payment.PaymentDate.ToString("dd/MM/yyyy")</td>
+									<td>@payment.Amount.ToString("N0") VNĐ</td>
+									<td>@payment.PaymentMethod</td>
+									<td>
+										@if (payment.Status == "Paid")
+										{
+											<span class="badge shade-green">Đã trả</span>
+										}
+										else if (payment.Status == "Pending")
+										{
+											<span class="badge shade-yellow">Chờ xử lý</span>
+										}
+										else
+										{
+											<span class="badge shade-red">Thất bại</span>
+										}
+									</td>
+									<td>
+										<div class="actions">
+											<!-- View Details Button -->
+											<button class="icon-button me-1" data-bs-toggle="modal" data-bs-target="#payment" data-payment-id="@payment.Id">
+												<i class="bi bi-eye text-info"></i>
+											</button>
+											<!-- Delete Button -->
+											<form asp-area="Admin" asp-action="Delete" asp-route-id="@payment.Id"
+												  method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thanh toán #@payment.Id?');">
+												<button type="submit" class="icon-button">
+													<i class="bi bi-trash text-red"></i>
+												</button>
+											</form>
+										</div>
+									</td>
+								</tr>
+							}
+
+							@if (!Model.Any())
+							{
+								<tr>
+									<td colspan="8" class="text-center">Không tìm thấy giao dịch nào</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+
+					<!-- Pagination -->
+					<nav aria-label="Page Navigation">
+						<ul class="pagination justify-content-end">
+							<li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+								<a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-searchTerm="@ViewBag.SearchTerm" aria-label="Previous">
+									<span aria-hidden="true">
+										<i class="bi bi-arrow-left"></i>
+									</span>
+								</a>
+							</li>
+							@for (int i = 1; i <= Model.TotalPages; i++)
+							{
+								<li class="page-item @(i == Model.PageIndex ? "active" : "")">
+									<a class="page-link" asp-action="Index" asp-route-pageIndex="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+								</li>
+							}
+							<li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+								<a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-searchTerm="@ViewBag.SearchTerm" aria-label="Next">
+									<span aria-hidden="true">
+										<i class="bi bi-arrow-right"></i>
+									</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Row end -->
+
+<!-- Payment Detail Modal -->
+<div id="payment-modal-container"></div>
