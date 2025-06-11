@@ -27,13 +27,9 @@
 								<div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-12">
 									<address class="text-right">
 										<span class="text-muted">Ngày thanh toán:</span> @Model.PaymentDate.ToString("dd/MM/yyyy")<br>
-										@if (Model.Status == "Paid")
+										@if (Model.Status == "Success")
 										{
 											<span class="badge shade-green">Đã trả</span>
-										}
-										else if (Model.Status == "Pending")
-										{
-											<span class="badge shade-yellow">Chờ xử lý</span>
 										}
 										else
 										{

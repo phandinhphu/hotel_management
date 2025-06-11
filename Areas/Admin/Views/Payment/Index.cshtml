@@ -116,13 +116,9 @@
 									<td>@payment.Amount.ToString("N0") VNĐ</td>
 									<td>@payment.PaymentMethod</td>
 									<td>
-										@if (payment.Status == "Paid")
+										@if (payment.Status == "Success")
 										{
 											<span class="badge shade-green">Đã trả</span>
-										}
-										else if (payment.Status == "Pending")
-										{
-											<span class="badge shade-yellow">Chờ xử lý</span>
 										}
 										else
 										{
