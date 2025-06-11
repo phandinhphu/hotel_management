@@ -3,6 +3,39 @@
 @{
     ViewData["Title"] = "Room Detail";
 }
+@section Styles {
+    <style>
+        .room-images-carousel .item {
+            margin: 5px;
+        }
+
+        .room-images-carousel img {
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+            .room-images-carousel img:hover {
+                border-color: #dfa974;
+            }
+
+        .main-image-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+        }
+    </style>
+}
 
 <!-- Room Details Section Begin -->
 <section class="room-details-section spad">
@@ -10,7 +43,29 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="room-details-item">
-                    <img src="@Model.room.Image" alt="">
+                    <div class="main-image-container">
+                        <img id="main-room-image" src="@Model.room.Image" alt="@Model.room.RoomNumber" class="main-image">
+                    </div>
+
+                    @if (Model.room.Roomimages != null && Model.room.Roomimages.Count > 0)
+                    {
+                        <div class="room-images-carousel mt-3">
+                            <div class="owl-carousel owl-theme">
+                                <!-- Include the main image first -->
+                                <div class="item">
+                                    <img src="@Model.room.Image" alt="@Model.room.RoomNumber" onclick="changeMainImage(this.src)">
+                                </div>
+                                <!-- Then add all the additional images -->
+                                @foreach (var image in Model.room.Roomimages)
+                                {
+                                    <div class="item">
+                                        <img src="@image.ImageUrl" alt="Room Image" onclick="changeMainImage(this.src)">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
                     <div class="rd-text">
                         <div class="rd-title">
                             <h3>@Model.room.RoomNumber</h3>
@@ -71,4 +126,29 @@
 <!-- Room Details Section End -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function(){
+            // Initialize Owl Carousel
+            $('.room-images-carousel .owl-carousel').owlCarousel({
+                loop: false,
+                margin: 10,
+                responsive: {
+                    0: {
+                        items: 3
+                    },
+                    600: {
+                        items: 4
+                    },
+                    1000: {
+                        items: 5
+                    }
+                }
+            });
+        });
+
+        // Function to change the main image when clicking on a thumbnail
+        function changeMainImage(src) {
+            document.getElementById('main-room-image').src = src;
+        }
+    </script>
 }

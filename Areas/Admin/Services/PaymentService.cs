@@ -143,7 +143,8 @@ namespace Hotel_Management.Areas.Admin.Services
                 var payment = await _context.Payments
                 .Include(p => p.Booking)
                     .ThenInclude(b => b.BookingsRoomDetails)
-                        .ThenInclude(brd => brd.Room)
+                .Include(p => p.Booking)
+                    .ThenInclude(b => b.BookingsServiceDetails)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
                 if (payment == null)
@@ -161,6 +162,12 @@ namespace Hotel_Management.Areas.Admin.Services
                     if (payment.Booking.BookingsRoomDetails != null && payment.Booking.BookingsRoomDetails.Any())
                     {
                         _context.BookingsRoomDetails.RemoveRange(payment.Booking.BookingsRoomDetails);
+                    }
+
+                    // Delete Booking Services
+                    if (payment.Booking.BookingsServiceDetails != null && payment.Booking.BookingsServiceDetails.Any())
+                    {
+                        _context.BookingsServiceDetails.RemoveRange(payment.Booking.BookingsServiceDetails);
                     }
 
                     // Delete Booking

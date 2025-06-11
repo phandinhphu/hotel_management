@@ -21,6 +21,7 @@ namespace Hotel_Management.Rooms.Pages
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
         public Room room { get; set; } = new Room();
+        public List<Roomimage> Roomimage { get; set; } = new List<Roomimage>();
 
         public void OnGet()
         {
@@ -30,6 +31,11 @@ namespace Hotel_Management.Rooms.Pages
                 if (room == null)
                 {
                     ModelState.AddModelError(string.Empty, "Room not found.");
+                }
+
+                if (room.Roomimages != null && room.Roomimages.Count > 0)
+                {
+                    Roomimage = room.Roomimages.ToList();
                 }
             }
             catch (Exception ex)
