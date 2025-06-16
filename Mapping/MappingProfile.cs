@@ -25,6 +25,10 @@ namespace Hotel_Management.Mapping
             // ReviewVM
             CreateMap<ReviewVM, Review>();
             CreateMap<Review, ReviewVM>();
+
+            // PasswordVM
+            CreateMap<ApplicationUser, PasswordVM>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

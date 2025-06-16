@@ -40,13 +40,29 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IHotelservicesService, HotelservicesService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Đăng ký các dịch vụ cho các lớp trong Admin Area
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<ICustomerServices, CustomerServices>();
-builder.Services.AddScoped<IStaffServices, StaffServices>();
-builder.Services.AddScoped<IUserService, UserService>();
+
+// Đăng ký dịch vụ Customer và Staff
+builder.Services.AddScoped<CustomerServices>();
+builder.Services.AddScoped<StaffServices>();
+builder.Services.AddScoped<ICustomerServices>(sp => sp.GetRequiredService<CustomerServices>());
+builder.Services.AddScoped<IStaffServices>(sp => sp.GetRequiredService<StaffServices>());
+
+// Đăng ký factory cho IUserServices
+builder.Services.AddScoped<Func<string, IUserServices>>(sp => key =>
+{
+    return key switch
+    {
+        "customer" => sp.GetRequiredService<CustomerServices>(),
+        "staff" => sp.GetRequiredService<StaffServices>(),
+        _ => throw new ArgumentException("Invalid service key", nameof(key))
+    };
+});
+
 builder.Services.AddScoped<IBookingServices, BookingServices>();
 builder.Services.AddScoped<IVNPayServices, VNPayServices>();
 builder.Services.AddScoped<IHotelSServices, HotelSServices>();

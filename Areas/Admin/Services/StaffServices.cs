@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Management.Areas.Admin.Services
 {
-    public class StaffServices : IStaffServices
+    public class StaffServices : IUserServices, IStaffServices
     {
         private readonly HotelManagementContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -45,6 +45,37 @@ namespace Hotel_Management.Areas.Admin.Services
             }
 
             return user;
+        }
+
+        public Task<int> getTotalBookedRoomsByIdAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> ResetPasswordAsync(string userId, string newPassword)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User with id '{userId}' not found.");
+            }
+
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
+
+            if (result.Succeeded)
+            {
+                return true;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Failed to reset password for user with id '{userId}': {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
         }
     }
 }

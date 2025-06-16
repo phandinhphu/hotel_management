@@ -37,6 +37,9 @@ namespace Hotel_Management.Areas.Admin.Controllers
         // [GET] /Admin/Booking
         public async Task<IActionResult> Index()
         {
+            // Reset TempData messages
+            TempData.Clear();
+
             var bookings = await _bookingServices.GetBookingsAsync();
 
             return View(bookings);
@@ -130,6 +133,36 @@ namespace Hotel_Management.Areas.Admin.Controllers
                     .SendAsync("ReceiveNotification", $"📥 Đặt phòng #{booking.BookingsRoomDetails.First().Room.RoomNumber} của bạn đã bị từ chối.");
 
                 TempData["SuccessMessage"] = "Đặt phòng đã bị từ chối và email thông báo đã được gửi đến người dùng.";
+                return RedirectToAction("Index");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        // [POST] /Admin/Booking/Delete/{id}
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var booking = await _bookingServices.GetBookingByIdAsync(id);
+                if (booking == null)
+                {
+                    return NotFound();
+                }
+
+                var result = await _bookingServices.DeleteBookingAsync(id);
+
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "Đặt phòng đã được xóa thành công.";
+                } else
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa đặt phòng. Vui lòng thử lại sau.";
+                }
+                
                 return RedirectToAction("Index");
             }
             catch (KeyNotFoundException)

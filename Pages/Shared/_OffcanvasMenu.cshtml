@@ -1,6 +1,7 @@
 ﻿@{
 	var isAuthenticated = Context.User.Identity.IsAuthenticated;
     var isAdmin = isAuthenticated && Context.User.IsInRole("Admin");
+	var isStaff = isAuthenticated && Context.User.IsInRole("Staff");
 }
 
 <!-- Offcanvas Menu Section Begin -->
@@ -18,7 +19,7 @@
     <nav class="mainmenu mobile-menu">
         <ul>
             <li class="active"><a asp-page="/Index">Trang chủ</a></li>
-			@if (isAdmin)
+            @if (isAdmin || isStaff)
 			{
 				<li><a asp-area="Admin" asp-controller="Home" asp-action="Index" >Quản trị</a></li>
 			}

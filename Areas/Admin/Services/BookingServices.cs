@@ -105,5 +105,44 @@ namespace Hotel_Management.Areas.Admin.Services
             _context.Bookings.Update(booking);
             _context.SaveChanges();
         }
+
+        public async Task<bool> DeleteBookingAsync(int id)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var booking = await _context.Bookings
+                                .Include(b => b.BookingsRoomDetails)
+                                .Include(b => b.BookingsServiceDetails)
+                                .FirstOrDefaultAsync(b => b.Id == id);
+                if (booking == null)
+                {
+                    return false; // Booking not found
+                }
+
+                // Delete BookingsRoomDetails
+                if (booking.BookingsRoomDetails != null && booking.BookingsRoomDetails.Any())
+                {
+                    _context.BookingsRoomDetails.RemoveRange(booking.BookingsRoomDetails);
+                }
+
+                // Delete BookingsServiceDetails
+                if (booking.BookingsServiceDetails != null && booking.BookingsServiceDetails.Any())
+                {
+                    _context.BookingsServiceDetails.RemoveRange(booking.BookingsServiceDetails);
+                }
+
+                _context.Bookings.Remove(booking);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return true; // Booking deleted successfully
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return false; // An error occurred while deleting the booking
+            }
+        }
     }
 }
