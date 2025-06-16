@@ -12,16 +12,16 @@ namespace Hotel_Management.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class StaffController : Controller
     {
-        private readonly IStaffServices _staffServices;
+        private readonly IUserServices _userServices;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
         public StaffController(
-            IStaffServices staffServices,
+            Func<string, IUserServices> userServiceFactory,
             UserManager<ApplicationUser> userManager,
             IMapper mapper)
         {
-            _staffServices = staffServices;
+            _userServices = userServiceFactory("staff");
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -34,7 +34,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
         // [GET] /Admin/Staff/Index
         public async Task<IActionResult> Index()
         {
-            var customers = await _staffServices.getAllAsync(QuerySearch, PageIndex);
+            var customers = await _userServices.getAllAsync(QuerySearch, PageIndex);
 
             ViewBag.QuerySearch = QuerySearch;
 
@@ -51,7 +51,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
 
             try
             {
-                var customer = await _staffServices.getByIdAsync(id);
+                var customer = await _userServices.getByIdAsync(id);
                 return View(customer);
             }
             catch (ArgumentNullException ex)
@@ -116,7 +116,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
 
             try
             {
-                var staff = await _staffServices.getByIdAsync(id);
+                var staff = await _userServices.getByIdAsync(id);
                 if (staff == null)
                 {
                     return NotFound();
@@ -151,7 +151,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
             {
                 try
                 {
-                    var existingStaff = await _staffServices.getByIdAsync(staff.UserId);
+                    var existingStaff = await _userServices.getByIdAsync(staff.UserId);
                     if (existingStaff == null)
                     {
                         return NotFound();
@@ -196,7 +196,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
             }
             try
             {
-                var staff = await _staffServices.getByIdAsync(id);
+                var staff = await _userServices.getByIdAsync(id);
                 if (staff == null)
                 {
                     return NotFound();
@@ -225,6 +225,83 @@ namespace Hotel_Management.Areas.Admin.Controllers
                 return BadRequest(ex.Message);
             }
             return RedirectToAction("Index");
+        }
+
+        // [GET] /Admin/Staff/ResetPassword/{id}
+        public async Task<IActionResult> ResetPassword(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+            try
+            {
+                var staff = await _userServices.getByIdAsync(id);
+                if (staff == null)
+                {
+                    return NotFound();
+                }
+                var passwordVM = _mapper.Map<PasswordVM>(staff);
+
+                return View(passwordVM);
+            }
+            catch (ArgumentNullException ex)
+            {
+                // Log the exception (ex) if necessary
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Log the exception (ex) if necessary
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // [POST] /Admin/Staff/ResetPassword/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(PasswordVM passwordVM)
+        {
+            if (string.IsNullOrEmpty(passwordVM.UserId))
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var staff = await _userServices.getByIdAsync(passwordVM.UserId);
+                    if (staff == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var result = await _userServices.ResetPasswordAsync(passwordVM.UserId, passwordVM.NewPassword);
+
+                    if (result)
+                    {
+                        TempData.Clear();
+
+                        TempData["SuccessMessage"] = "Đặt lại mật khẩu thành công.";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Đặt lại mật khẩu không thành công. Vui lòng thử lại.");
+                    }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    // Log the exception (ex) if necessary
+                    return NotFound(ex.Message);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // Log the exception (ex) if necessary
+                    return BadRequest(ex.Message);
+                }
+            }
+            return View(passwordVM);
         }
     }
 }

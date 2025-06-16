@@ -1,13 +1,24 @@
-﻿@model PaginatedList<Booking>
-
+﻿@using Microsoft.AspNetCore.Identity
+@model PaginatedList<Booking>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Quản lý Booking";
+    var isAdmin = User.IsInRole("Admin");
 }
 
 @if (TempData["SuccessMessage"] != null)
 {
-	<div class="alert alert-success alert-dismissible fade show" role="alert">
-		<strong>Thành công!</strong> @TempData["SuccessMessage"]
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Thành công!</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+	<div class="alert alert-danger alert-dismissible fade show" role="alert">
+		<strong>Lỗi!</strong> @TempData["ErrorMessage"]
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
 }
@@ -28,31 +39,35 @@
         <tbody>
             @foreach (var booking in Model)
             {
-                @if (booking.Status == "Pending")
-                {
-                    <tr>
-                        <td>@booking.User?.UserName</td>
-                        <td>@booking.CreatedAt.ToString()</td>
-                        <td>@String.Format("{0:N0} VNĐ", booking.TotalPrice)</td>
-                        <td>
-                            <span class="badge bg-@(booking.Status == "Pending" ? "warning" : booking.Status == "Approved" ? "success" : "danger")">
-                                @booking.Status
-                            </span>
-                        </td>
-                        <td class="text-center">
-                            <a asp-action="Detail" asp-route-id="@booking.Id" class="btn btn-info btn-sm me-1">Chi tiết</a>
-                            @if (booking.Status == "Pending")
-                            {
-                                <form method="post" asp-action="Approve" asp-route-id="@booking.Id" class="d-inline form-approve">
-                                    <button type="submit" class="btn btn-success btn-sm me-1">Duyệt</button>
-                                </form>
-                                <form method="post" asp-action="Reject" asp-route-id="@booking.Id" class="d-inline form-reject">
-                                    <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
-                                </form>
-                            }
-                        </td>
-                    </tr>
-                }
+                <tr>
+                    <td>@booking.User?.UserName</td>
+                    <td>@booking.CreatedAt.ToString()</td>
+                    <td>@String.Format("{0:N0} VNĐ", booking.TotalPrice)</td>
+                    <td>
+                        <span class="badge bg-@(booking.Status == "Pending" ? "warning" : booking.Status == "Approved" ? "success" : "danger")">
+                            @booking.Status
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Detail" asp-route-id="@booking.Id" class="btn btn-info btn-sm me-1">Chi tiết</a>
+                        @if (booking.Status == "Pending")
+                        {
+                            <form method="post" asp-action="Approve" asp-route-id="@booking.Id" class="d-inline form-approve">
+                                <button type="submit" class="btn btn-success btn-sm me-1">Duyệt</button>
+                            </form>
+                            <form method="post" asp-action="Reject" asp-route-id="@booking.Id" class="d-inline form-reject">
+                                <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                            </form>
+                        }
+                        @if (booking.Status != "Pending" && isAdmin)
+                        {
+                            <form method="post" asp-action="Delete" asp-route-id="@booking.Id" class="d-inline"
+                                  onsubmit="return confirm('Bạn có chắc chắn muốn xóa thanh toán #@booking.Id?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+							</form>
+                        }
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

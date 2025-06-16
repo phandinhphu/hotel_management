@@ -5,6 +5,7 @@
 @model PaginatedList<ApplicationUser>
 @{
     ViewData["Title"] = "Danh sách khách hàng";
+    var isAdmin = User.IsInRole("Admin");
 }
 
 <style>
@@ -14,6 +15,13 @@
     /* Màu chữ */
     }
 </style>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 <div class="row">
     <div class="col-sm-12 col-12">
@@ -77,30 +85,30 @@
                                         <td>@customer.Email</td>
                                         <td>
                                             @{
-												var lastCheckIn = CustomerServices.getLastCheckInByIdAsync(customer.Id).Result;
+                                                var lastCheckIn = CustomerServices.getLastCheckInByIdAsync(customer.Id).Result;
                                                 if (lastCheckIn.ToString() == DateOnly.MinValue.ToString())
                                                 {
                                                     <span class="badge rounded-pill shade-red">Chưa có check-in</span>
-											    }
-											    else
-											    {
+                                                }
+                                                else
+                                                {
                                                     <span class="badge rounded-pill shade-yellow">@lastCheckIn.ToString()</span>
-											    }
+                                                }
                                             }
                                         </td>
                                         <td>
-											@{
+                                            @{
                                                 var totalSpent = CustomerServices.getTotalSpentByIdAsync(customer.Id).Result;
                                                 if (totalSpent != null || totalSpent > 0)
-											    {
+                                                {
                                                     <span class="badge rounded-pill shade-yellow">@String.Format("{0:N0} VNĐ", totalSpent)</span>
-											    }
-											    else
-											    {
+                                                }
+                                                else
+                                                {
                                                     <span class="badge rounded-pill shade-red">Chưa có giao dịch</span>
-											    }
+                                                }
                                             }
-                                            
+
                                         </td>
                                         <td>
                                             <div class="actions">
@@ -113,6 +121,12 @@
                                                 <a href="#" class="deleteRow" data-id="@customer.Id">
                                                     <i class="bi bi-trash text-red"></i>
                                                 </a>
+                                                @if (isAdmin)
+                                                {
+                                                    <a asp-area="Admin" asp-controller="Customer" asp-action="ResetPassword" asp-route-id="@customer.Id" class="resetPassword">
+                                                        <i class="bi bi-key text-blue"></i>
+                                                    </a>
+                                                }
                                             </div>
                                         </td>
                                     </tr>

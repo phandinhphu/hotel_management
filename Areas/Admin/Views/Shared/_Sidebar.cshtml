@@ -1,4 +1,8 @@
-﻿<!-- Sidebar wrapper start -->
+﻿@{
+    var isAdmin = User.IsInRole("Admin");
+}
+
+<!-- Sidebar wrapper start -->
 <nav class="sidebar-wrapper">
 
     <!-- Sidebar brand starts -->
@@ -10,7 +14,7 @@
     <!-- Sidebar brand starts -->
     <!-- Sidebar menu starts -->
     @{
-		var currentController = Context.GetRouteValue("controller")?.ToString();
+        var currentController = Context.GetRouteValue("controller")?.ToString();
     }
     <div class="sidebar-menu">
         <div class="sidebarMenuScroll">
@@ -30,13 +34,13 @@
                 <li class="@(currentController == "HotelServices" ? "active" : "")">
                     <a asp-area="Admin" asp-controller="HotelServices" asp-action="Index" class="@(currentController == "HotelServices" ? "current-page" : "")">
                         <i class="bi bi-gear"></i>
-						<span class="menu-text">Quản lý dịch vụ</span>
+                        <span class="menu-text">Quản lý dịch vụ</span>
                     </a>
                 </li>
                 <li class="@(currentController == "Review" ? "active" : "")">
                     <a asp-area="Admin" asp-controller="Review" asp-action="Index" class="@(currentController == "Review" ? "current-page" : "")">
                         <i class="bi bi-chat-left-text"></i>
-						<span class="menu-text">Quản lý đánh giá</span>
+                        <span class="menu-text">Quản lý đánh giá</span>
                     </a>
                 </li>
                 <li class="@(currentController == "Booking" ? "active" : "")">
@@ -57,18 +61,21 @@
                         <span class="menu-text">Quản lý khách hàng</span>
                     </a>
                 </li>
-                <li class="@(currentController == "Staff" ? "active" : "")">
-                    <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="@(currentController == "Staff" ? "current-page" : "")">
-                        <i class="bi bi-person-bounding-box"></i>
-                        <span class="menu-text">Quản lý nhân viên</span>
-                    </a>
-                </li>
-                <li class="@(currentController == "Role" ? "active" : "")">
-                    <a asp-area="Admin" asp-controller="Role" asp-action="Index" class="@(currentController == "Role" ? "current-page" : "")">
-                        <i class="bi bi-person-bounding-box"></i>
-                        <span class="menu-text">Phân quyền</span>
-                    </a>
-                </li>
+                @if (isAdmin)
+                {
+                    <li class="@(currentController == "Staff" ? "active" : "")">
+                        <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="@(currentController == "Staff" ? "current-page" : "")">
+                            <i class="bi bi-person-bounding-box"></i>
+                            <span class="menu-text">Quản lý nhân viên</span>
+                        </a>
+                    </li>
+                    <li class="@(currentController == "Role" ? "active" : "")">
+                        <a asp-area="Admin" asp-controller="Role" asp-action="Index" class="@(currentController == "Role" ? "current-page" : "")">
+                            <i class="bi bi-person-bounding-box"></i>
+                            <span class="menu-text">Phân quyền</span>
+                        </a>
+                    </li>
+                }
                 <li>
                     <a href="analysis.html">
                         <i class="bi bi-clipboard-data"></i>

@@ -5,6 +5,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     var isAdmin = User.IsInRole("Admin");
+	var isStaff = User.IsInRole("Staff");
 }
 
 <!-- Header Section Begin -->
@@ -33,7 +34,7 @@
                                     Xin chào, @UserManager.GetUserName(User)
                                 </button>
                                 <ul class="dropdown-menu">
-                                    @if (isAdmin)
+                                    @if (isAdmin || isStaff)
                                     {
                                         <li>
                                             <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="dropdown-item">Quản trị</a>

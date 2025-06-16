@@ -11,5 +11,6 @@ namespace Hotel_Management.Areas.Admin.Services.Interfaces
         Task<Booking> GetBookingByUserAsync(string userName);
         void ApproveBooking(int id, string userId);
         void RejectBooking(int id, string userId);
+        Task<bool> DeleteBookingAsync(int id);
     }
 }

@@ -7,11 +7,18 @@
 
 <style>
     .bronze-color {
-        background-color: #cd7f32;
-        color: white;
-        /* Màu chữ */
+    background-color: #cd7f32;
+    color: white;
+    /* Màu chữ */
     }
 </style>
+
+@if (TempData["SuccessMessage"] != null)
+{
+	<div class="alert alert-success" role="alert">
+		@TempData["SuccessMessage"]
+	</div>
+}
 
 <div class="row">
     <div class="col-sm-12 col-12">
@@ -22,7 +29,7 @@
                     <!-- Search input group start -->
                     <form asp-area="Admin" asp-controller="Staff" asp-action="Index" method="get" class="input-group">
                         <input type="text" class="form-control" style="border: 1px solid black;" name="QuerySearch"
-                            placeholder="Tìm kiếm nhân viên">
+                        placeholder="Tìm kiếm nhân viên">
                         <button class="btn" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
@@ -30,7 +37,7 @@
                     <!-- Search input group end -->
                 </div>
                 <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="btn btn-danger ms-1">
-					Xóa tìm kiếm
+                    Xóa tìm kiếm
                 </a>
 
                 <a asp-area="Admin" asp-controller="Staff" asp-action="Create" class="btn btn-primary ms-1">
@@ -82,6 +89,9 @@
                                                 <a href="#" class="deleteRow" data-id="@staff.Id">
                                                     <i class="bi bi-trash text-red"></i>
                                                 </a>
+                                                <a asp-area="Admin" asp-controller="Staff" asp-action="ResetPassword" asp-route-id="@staff.Id" class="resetPassword">
+                                                    <i class="bi bi-key text-blue"></i>
+												</a>
                                             </div>
                                         </td>
                                     </tr>
