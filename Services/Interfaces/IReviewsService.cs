@@ -7,8 +7,10 @@ namespace Hotel_Management.Services.Interfaces
     {
         Task<PaginatedList<Review>> GetPaginatedAsync(int rating = 0, int hotelId = 1, int pageIndex = 1, int pageSize = 10);
         Task<IEnumerable<Review>> GetAllAsync(int hotelId);
+        Task<Review?> GetByIdAsync(int reviewId, string userId);
         Task<Review?> GetByUserAsync(string userId);
         Task<bool> AddAsync(Review review);
+        Task<bool> UpdateAsync(Review review, string userId);
         Task<bool> DeleteAsync(int reviewId);
     }
 }

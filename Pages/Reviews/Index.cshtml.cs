@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Hotel_Management.Pages
+namespace Hotel_Management.Reviews.Pages
 {
     [Authorize]
-    public class ReviewModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly IReviewsService _reviewsService;
         private readonly IMapper _mapper;
 
-        public ReviewModel(IReviewsService reviewsService, IMapper mapper)
+        public IndexModel(IReviewsService reviewsService, IMapper mapper)
         {
             _mapper = mapper;
             _reviewsService = reviewsService;

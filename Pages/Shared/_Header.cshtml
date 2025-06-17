@@ -88,8 +88,8 @@
                                 </li>
                                 @if (SignInManager.IsSignedIn(User))
                                 {
-                                    <li class="@(Context.Request.Path == "/Review" ? "active" : "")">
-                                        <a asp-page="/Review">Đánh giá</a>
+                                    <li class="@(Context.Request.Path == "/Reviews" ? "active" : "")">
+                                        <a asp-page="/Reviews/Index">Đánh giá</a>
                                     </li>
                                 }
                                 <li class="@(Context.Request.Path == "/About" ? "active" : "")">

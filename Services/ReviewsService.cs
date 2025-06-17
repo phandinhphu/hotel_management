@@ -115,5 +115,64 @@ namespace Hotel_Management.Services
 
             return true;
         }
+
+        public async Task<Review?> GetByIdAsync(int reviewId, string userId)
+        {
+            if (reviewId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(reviewId), "Review ID must be greater than zero.");
+            }
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
+
+            return await _context.Reviews
+                .Where(r => r.Id == reviewId && r.UserId == userId)
+                .Include(r => r.User)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateAsync(Review review, string userId)
+        {
+            if (review == null)
+            {
+                throw new ArgumentNullException(nameof(review));
+            }
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
+            var existingReview = await _context.Reviews
+                .Where(r => r.Id == review.Id && r.UserId == userId)
+                .FirstOrDefaultAsync();
+            if (existingReview == null)
+            {
+                return false; // Review not found
+            }
+
+            existingReview.Rating = review.Rating;
+            existingReview.Comment = review.Comment;
+            _context.Reviews.Update(existingReview);
+            await _context.SaveChangesAsync();
+
+            // Update rating for the hotel
+            if (review.HotelId.HasValue)
+            {
+                var hotel = await _context.Hotels.FindAsync(review.HotelId.Value);
+                if (hotel != null)
+                {
+                    hotel.Rating = (float?)(_context.Reviews
+                        .Where(r => r.HotelId == review.HotelId)
+                        .Average(r => r.Rating) ?? 0);
+                    _context.Hotels.Update(hotel);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
