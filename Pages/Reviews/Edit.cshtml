@@ -1,0 +1,57 @@
+﻿@page "{ReviewId:int}"
+@model Hotel_Management.Pages.Reviews.EditModel
+@{
+	ViewData["Title"] = "Chỉnh sửa đánh giá khách sạn";
+}
+
+<div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-lg-6">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <img src="~/images/logo.png" alt="Sona Hotel" class="mb-2" />
+                    <h2 class="fw-bold mb-2">Đánh giá khách sạn</h2>
+                    <p class="text-muted">Chia sẻ trải nghiệm của bạn với Sona Hotel</p>
+                </div>
+                <form method="post" class="needs-validation" novalidate>
+					<input type="hidden" asp-for="Review.Id" />
+                    <input type="hidden" asp-for="Review.HotelId" />
+                    <input type="hidden" asp-for="Review.UserId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Chọn số sao:</label>
+                        <div class="mb-3">
+                            <select class="form-select form-select-lg" asp-for="Review.Rating" required>
+                                <option value="">-- Chọn --</option>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <option value="@i">@i sao</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Review.Rating" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3" style="margin-top: 4rem">
+                        <textarea class="form-control form-control-lg" asp-for="Review.Comment" rows="4"
+                                  placeholder="Nhập cảm nhận của bạn..."></textarea>
+                        <span asp-validation-for="Review.Comment" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3 text-danger">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <div>@error.ErrorMessage</div>
+                        }
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Lưu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    }
