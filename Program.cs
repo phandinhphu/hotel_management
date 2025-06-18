@@ -45,6 +45,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 // Đăng ký các dịch vụ cho các lớp trong Admin Area
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IDashboardServices, DashboardServices>();
+builder.Services.AddScoped<IExcelServices, ExcelServices>();
 
 // Đăng ký dịch vụ Customer và Staff
 builder.Services.AddScoped<CustomerServices>();

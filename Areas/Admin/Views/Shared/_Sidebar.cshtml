@@ -76,10 +76,10 @@
                         </a>
                     </li>
                 }
-                <li>
-                    <a href="analysis.html">
+                <li class="@(currentController == "Dashboard" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="@(currentController == "Dashboard" ? "current-page" : "")">
                         <i class="bi bi-clipboard-data"></i>
-                        <span class="menu-text">Báo cáo & phân tích</span>
+                        <span class="menu-text">Tổng quan</span>
                     </a>
                 </li>
             </ul>

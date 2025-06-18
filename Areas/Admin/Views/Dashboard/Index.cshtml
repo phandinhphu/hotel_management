@@ -1,0 +1,411 @@
+﻿@using Hotel_Management.Areas.Admin.ViewModels;
+@model DashboardVM
+@{
+    ViewData["Title"] = "Tổng quan";
+}
+@section Styles {
+	<!-- jQcloud -->
+	<link rel="stylesheet" href="~/vendor/tagsCloud/tagsCloud.css">
+    <style>
+        .tagc2 {
+            display: inline-block;
+            max-width: 200px;
+            /* Giới hạn độ rộng */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Hoặc giới hạn số dòng */
+        .tagc2-multiline {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* Giới hạn 2 dòng */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+    </style>
+}
+@section Scripts {
+    <!-- Charts -->
+    <script src="~/vendor/apex/apexcharts.min.js"></script>
+	<script src="~/js/admin/customs/dashboard.js"></script>
+    <!-- jQcloud -->
+    <script src="~/vendor/tagsCloud/tagsCloud.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Serialize and validate data from the server
+            let revenueChartData = @(Html.Raw(Json.Serialize(Model.RevenueChartData?.Select(c => new { c.Label, c.Value }).ToArray() ?? new object[] { })));
+            let bookingChartData = @(Html.Raw(Json.Serialize(Model.BookingChartData?.Select(c => new { c.Label, c.Value }).ToArray() ?? new object[] { })));
+            let roomTypeChartData = @(Html.Raw(Json.Serialize(Model.RoomTypeChartData?.Select(c => new { c.Label, c.Value }).ToArray() ?? new object[] { })));
+            console.log("Revenue Chart Data:", revenueChartData);
+            console.log("Booking Chart Data:", bookingChartData);
+			console.log("Room Type Chart Data:", roomTypeChartData);
+
+            initRevenueChart({
+                categories: revenueChartData.map(d => d.label || ""),
+                values: revenueChartData.map(d => d.value || 0)
+            });
+            initBookingChart({
+                categories: bookingChartData.map(d => d.label || ""),
+                values: bookingChartData.map(d => d.value || 0)
+            });
+            initRoomTypeChart({
+                labels: roomTypeChartData.map(d => d.label || ""),
+                values: roomTypeChartData.map(d => d.value || 0)
+            });
+
+            initDateFilter();
+        });
+    </script>
+
+}
+<!-- Filter Row start -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                        id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-funnel"></i> Lọc theo thời gian
+                </button>
+                <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="filterDropdown"
+                     style="width: 300px;">
+                    <div class="mb-3">
+                        <label class="form-label">Từ ngày</label>
+                        <input type="date" class="form-control" id="fromDate" value="@Model.StartDate.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Đến ngày</label>
+                        <input type="date" class="form-control" id="toDate" value="@Model.EndDate.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary" id="applyFilter">
+                            <i class="bi bi-funnel"></i> Áp dụng
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" id="resetFilter">
+                            <i class="bi bi-arrow-clockwise"></i> Đặt lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Filter Row end -->
+<!-- Row start -->
+<div class="row">
+    <div class="col-xxl-3 col-sm-6 col-12">
+        <div class="stats-tile">
+            <div class="sale-icon-bdr">
+                <i class="bi bi-pie-chart"></i>
+            </div>
+            <div class="sale-details">
+                <h5>Lượt đặt phòng</h5>
+                <h4 class="text-blue">@Model.TotalBookings</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-3 col-sm-6 col-12">
+        <div class="stats-tile">
+            <div class="sale-icon-bdr">
+                <i class="bi bi-emoji-smile"></i>
+            </div>
+            <div class="sale-details">
+                <h5>Khách hàng</h5>
+                <h4 class="text-blue">@Model.TotalCustomers</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-3 col-sm-6 col-12">
+        <div class="stats-tile">
+            <div class="sale-icon-bdr green">
+                <i class="bi bi-handbag"></i>
+            </div>
+            <div class="sale-details">
+                <h5>Doanh thu dịch vụ</h5>
+                <h4 class="text-green">@String.Format("{0:N0}", Model.TotalRevenueService) VNĐ</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-3 col-sm-6 col-12">
+        <div class="stats-tile">
+            <div class="sale-icon-bdr green">
+                <i class="bi bi-handbag"></i>
+            </div>
+            <div class="sale-details">
+                <h5>Doanh thu phòng</h5>
+                <h4 class="text-green">@String.Format("{0:N0}", Model.TotalRevenueRoom) VNĐ</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row end -->
+<!-- Row start -->
+<div class="row">
+    <div class="col-xxl-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Doanh thu</div>
+                <div class="d-flex justify-content-end">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a href="@Url.Action("ExportToExcel", "Dashboard", new { section = "total", startDate = Model.StartDate.ToString("yyyy-MM-dd"), endDate = Model.EndDate.ToString("yyyy-MM-dd") })"
+                           class="btn btn-outline-dark">
+                            <i class="bi bi-cloud-download"></i>
+                        </a>
+                        <a href="@Url.Action("RevenueExcelPreview", "Dashboard", new { startDate = Model.StartDate.ToString("yyyy-MM-dd"), endDate = Model.EndDate.ToString("yyyy-MM-dd") })" class="btn btn-outline-dark">
+                            <i class="bi bi-printer"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="RevenueChart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row end -->
+<!-- Row start -->
+<div class="row">
+    <div class="col-xxl-6 col-sm-12 col-12 align-items-stretch">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Doanh thu dịch vụ</div>
+                <div class="d-flex justify-content-end">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a href="@Url.Action("ExportToExcel", "Dashboard", new { section = "service", startDate = Model.StartDate.ToString("yyyy-MM-dd"), endDate = Model.EndDate.ToString("yyyy-MM-dd") })"
+                           class="btn btn-outline-dark">
+                            <i class="bi bi-cloud-download"></i>
+                        </a>
+                        <a href="@Url.Action("ServiceExcelPreview", "Dashboard", new { startDate = Model.StartDate.ToString("yyyy-MM-dd"), endDate = Model.EndDate.ToString("yyyy-MM-dd") })" class="btn btn-outline-dark">
+                            <i class="bi bi-printer"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-lg-12 col-sm-12 col-12">
+                    <div class="sales-stats-container">
+                        <div class="scroll250">
+                            <ul class="sales-stats">
+                                @if (Model.ServiceRevenueItems != null && Model.ServiceRevenueItems.Any())
+                                {
+                                    foreach (var item in Model.ServiceRevenueItems)
+                                    {
+                                        <li>
+                                            <p>
+                                                <span class="text-secondary">@item.ServiceName</span>
+                                                <span class="text-success">
+                                                    @String.Format("{0:N0}", item.Revenue) VNĐ
+                                                </span>
+                                            </p>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>
+                                        <p>Không có dữ liệu doanh thu dịch vụ</p>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xxl-6 col-sm-12 col-12 align-items-stretch">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Doanh thu phòng</div>
+                <div class="d-flex justify-content-end">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a href="@Url.Action("ExportToExcel", "Dashboard", new { section = "room", startDate = Model.StartDate.ToString("yyyy-MM-dd"), endDate = Model.EndDate.ToString("yyyy-MM-dd") })"
+                           class="btn btn-outline-dark">
+                            <i class="bi bi-cloud-download"></i>
+                        </a>
+                        <a href="@Url.Action("RoomExcelPreview", "Dashboard", new { startDate = Model.StartDate.ToString("yyyy-MM-dd"), endDate = Model.EndDate.ToString("yyyy-MM-dd") })" class="btn btn-outline-dark">
+                            <i class="bi bi-printer"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-lg-12 col-sm-12 col-12">
+                    <div class="sales-stats-container">
+                        <div class="scroll250">
+                            <ul class="sales-stats">
+                                @if (Model.RoomTypeRevenueItems != null && Model.RoomTypeRevenueItems.Any())
+                                {
+                                    foreach (var item in Model.RoomTypeRevenueItems)
+                                    {
+                                        <li>
+                                            <p>
+                                                <span class="text-secondary">@item.RoomTypeName</span>
+                                                <span class="text-success">
+                                                    @String.Format("{0:N0}", item.Revenue) VNĐ
+                                                </span>
+                                            </p>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>
+                                        <p>Không có dữ liệu doanh thu phòng</p>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row end -->
+<!-- Row start -->
+<div class="row">
+    <div class="col-xxl-8 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Đặt phòng</div>
+            </div>
+            <div class="card-body">
+                <div id="BookingChart" class="chart-height-xl"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-4 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Loại phòng</div>
+            </div>
+            <div class="card-body">
+                <div id="RoomTypeChart" class="chart-height-xl auto-align-graph"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row end -->
+<!-- Row start -->
+<div class="row">
+    <div class="col-xxl-4 col-sm-6 col-12 ">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Đánh giá</div>
+            </div>
+            <div class="card-body">
+                <div id="tagscloud">
+                    @if (Model.UserReviews != null && Model.UserReviews.Any())
+                    {
+                        // Định nghĩa các class tag để đa dạng hiển thị
+                        string[] tagClasses = { "tagc1", "tagc2", "tagc3", "tagc4" };
+                        int tagIndex = 0;
+
+                        foreach (var review in Model.UserReviews)
+                        {
+                            <a href="#" class="@tagClasses[tagIndex % tagClasses.Length]">
+                                @(string.IsNullOrEmpty(review.Content) ? "Không có đánh giá" : review.Content)
+                            </a>
+                            tagIndex++;
+                        }
+                    }
+                    else
+                    {
+                        <a href="#" class="tagc1">Không có đánh giá nào</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-4 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Trạng thái nhân viên</div>
+            </div>
+            <div class="card-body">
+
+                <div class="scroll300">
+                    <ul class="tickets-container">
+                        @if (Model.StaffInfos != null && Model.StaffInfos.Any())
+                        {
+                            foreach (var staff in Model.StaffInfos)
+                            {
+                                <li>
+                                    <div class="ticket-details">
+                                        <h4>@staff.Name</h4>
+                                        <h5>Phân quyền: @staff.Role</h5>
+                                    </div>
+                                    <div class="ticket-status">
+                                        @if (staff.Status?.ToLower() == "xác thực")
+                                        {
+                                            <span class="badge shade-green">@staff.Status</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge shade-dark">@staff.Status</span>
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <div class="ticket-details">
+                                    <h4>Không có dữ liệu nhân viên</h4>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-4 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Phòng phổ biến</div>
+            </div>
+            <div class="card-body">
+                <div class="scroll300">
+                    <ul class="recent-orders">
+                        @if (Model.PopularRoomTypes != null && Model.PopularRoomTypes.Any())
+                        {
+                            foreach (var roomType in Model.PopularRoomTypes)
+                            {
+                                <li>
+                                    <div class="order-img">
+                                        <img src="@(string.IsNullOrEmpty(roomType.ImageUrl) ? "~/images/room/room-default.png" : roomType.ImageUrl)" alt="Room Image">
+                                        <span class="badge @(roomType.BookingCount > 10 ? "shade-green" : "shade-red")">@roomType.BookingCount lượt</span>
+                                    </div>
+                                    <div class="order-details">
+                                        <h5 class="order-title">@roomType.RoomNumber</h5>
+                                        <p class="order-revenue">Doanh thu: <span>@String.Format("{0:N0}", roomType.Revenue) VNĐ</span></p>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <div class="order-details">
+                                    <h5 class="order-title">Không có dữ liệu phòng phổ biến</h5>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row end -->
