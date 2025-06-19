@@ -199,7 +199,7 @@ app.MapHub<NotificationHub>("/notificationHub");
 // Đăng ký các route cho areas Admin
 app.MapControllerRoute(
     name: "Admin",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
 );
 
 app.Run();

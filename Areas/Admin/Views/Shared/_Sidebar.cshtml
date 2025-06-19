@@ -7,11 +7,12 @@
 
     <!-- Sidebar brand starts -->
     <div class="sidebar-brand">
-        <a asp-area="Admin" asp-controller="Home" class="logo">
+        <a asp-area="Admin" asp-controller="Dashboard" class="logo">
             <img src="~/images/logo.png" alt="Sona Hotel" />
         </a>
     </div>
     <!-- Sidebar brand starts -->
+
     <!-- Sidebar menu starts -->
     @{
         var currentController = Context.GetRouteValue("controller")?.ToString();
@@ -19,8 +20,14 @@
     <div class="sidebar-menu">
         <div class="sidebarMenuScroll">
             <ul>
-                <li class="@(currentController == "Home" ? "active" : "")">
+                @* <li class="@(currentController == "Home" ? "active" : "")">
                     <a asp-area="Admin" asp-controller="Home" class="@(currentController == "Home" ? "current-page" : "")">
+                        <i class="bi bi-house"></i>
+                        <span class="menu-text">Trang chủ</span>
+                    </a>
+                </li> *@
+                <li class="@(currentController == "Dashboard" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="@(currentController == "Dashboard" ? "current-page" : "")">
                         <i class="bi bi-house"></i>
                         <span class="menu-text">Trang chủ</span>
                     </a>
@@ -76,12 +83,6 @@
                         </a>
                     </li>
                 }
-                <li class="@(currentController == "Dashboard" ? "active" : "")">
-                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="@(currentController == "Dashboard" ? "current-page" : "")">
-                        <i class="bi bi-clipboard-data"></i>
-                        <span class="menu-text">Tổng quan</span>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
