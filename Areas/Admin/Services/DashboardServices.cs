@@ -155,7 +155,6 @@ namespace Hotel_Management.Areas.Admin.Services
                 // Adjust the end date to include the entire day
                 var adjustedEndDate = endDate.Date.AddDays(1).AddSeconds(-1);
 
-                // First, collect all needed data in memory to avoid multiple database queries
                 // This prevents thread safety issues with DbContext
                 var revenueByDay = _context.Payments
                     .AsNoTracking()
@@ -286,22 +285,26 @@ namespace Hotel_Management.Areas.Admin.Services
                     .Distinct()
                     .ToList();
 
-                var successfulBookingIds = _context.Payments
+                // Lấy danh sách booking đã thanh toán thành công và đếm số lượng đặt phòng theo loại phòng
+                var roomTypeStats = _context.BookingsRoomDetails
                     .AsNoTracking()
-                    .Where(p => p.Status == "Success")
-                    .Select(p => p.BookingId)
-                    .Distinct()
-                    .ToList();
-
-                // Lấy tổng số đặt phòng
-                var totalBookings = _context.BookingsRoomDetails
-                    .AsNoTracking()
-                    .Include(brd => brd.Room)
-                    .Include(brd => brd.Booking)
                     .Where(brd => brd.Booking.CreatedAt >= startDate.Date &&
-                                brd.Booking.CreatedAt <= adjustedEndDate &&
-                                successfulBookingIds.Contains(brd.BookingId))
-                    .Count();
+                                  brd.Booking.CreatedAt <= adjustedEndDate)
+                    .Join(_context.Payments,
+                        brd => brd.BookingId,
+                        p => p.BookingId,
+                        (brd, p) => new { BookingRoomDetail = brd, Payment = p })
+                    .Where(x => x.Payment.Status == "Success")
+                    .GroupBy(x => x.BookingRoomDetail.Room.Type ?? "Unknown Room Type")
+                    .Select(g => new
+                    {
+                        RoomType = g.Key,
+                        BookingCount = g.Count()
+                    })
+                    .ToDictionary(x => x.RoomType, x => x.BookingCount);
+
+                // Tính tổng số đặt phòng
+                int totalBookings = roomTypeStats.Values.Sum();
 
                 // Nếu không có booking nào, trả về dữ liệu với tất cả phòng là 0%
                 if (totalBookings == 0)
@@ -316,32 +319,14 @@ namespace Hotel_Management.Areas.Admin.Services
                     }).ToList();
                 }
 
-                // Nhóm theo loại phòng và đếm số lượt đặt
-                var roomTypeBookings = _context.BookingsRoomDetails
-                    .AsNoTracking()
-                    .Include(brd => brd.Room)
-                    .Include(brd => brd.Booking)
-                    .Where(brd => brd.Booking.CreatedAt >= startDate.Date &&
-                                brd.Booking.CreatedAt <= adjustedEndDate &&
-                                brd.Room != null &&
-                                successfulBookingIds.Contains(brd.BookingId))
-                    .GroupBy(brd => brd.Room.Type)
-                    .ToDictionary(g => g.Key ?? "Unknown Room Type", g => g.Count());
-
                 // Tạo kết quả bao gồm tất cả các loại phòng, kể cả loại không có đặt phòng
                 var result = allRoomTypes.Select(roomType =>
                 {
                     // Lấy số lượng booking cho loại phòng, hoặc 0 nếu không có
-                    int bookingCount = 0;
-                    if (roomTypeBookings.ContainsKey(roomType))
-                    {
-                        bookingCount = roomTypeBookings[roomType];
-                    }
+                    int bookingCount = roomTypeStats.GetValueOrDefault(roomType, 0);
 
                     // Tính phần trăm
-                    decimal percentage = totalBookings > 0
-                        ? Math.Round((decimal)bookingCount / totalBookings * 100, 0)
-                        : 0;
+                    decimal percentage = Math.Round((decimal)bookingCount / totalBookings * 100, 0);
 
                     return new DashboardVM.ChartDataPoint
                     {
@@ -367,50 +352,44 @@ namespace Hotel_Management.Areas.Admin.Services
                 // Đảm bảo endDate bao gồm cả ngày cuối
                 var adjustedEndDate = endDate.Date.AddDays(1).AddSeconds(-1);
 
+                // Lấy tất cả các dịch vụ hiện có trong hệ thống
                 var allServices = _context.Services
                     .AsNoTracking()
                     .Select(s => s.Name ?? "Unknown Service")
                     .Distinct()
                     .ToList();
 
-                // Lấy danh sách booking id có payment status = Success
-                var successfulBookingIds = _context.Payments
-                    .AsNoTracking()
-                    .Where(p => p.Status == "Success")
-                    .Select(p => p.BookingId)
-                    .Distinct()
-                    .ToList();
-
+                // Lấy doanh thu dịch vụ cho các đơn có thanh toán thành công
                 var serviceRevenues = _context.BookingsServiceDetails
                     .AsNoTracking()
-                    .Where(bsd => bsd.Booking != null &&
-                                bsd.Booking.CreatedAt.HasValue &&
-                                bsd.Booking.CreatedAt.Value >= startDate.Date &&
-                                bsd.Booking.CreatedAt.Value <= adjustedEndDate &&
-                                bsd.Service != null &&
-                                successfulBookingIds.Contains(bsd.BookingId))
-                    .Select(bsd => new
+                    .Where(bsd => bsd.Booking.CreatedAt >= startDate.Date &&
+                                  bsd.Booking.CreatedAt <= adjustedEndDate)
+                    .Join(_context.Payments,
+                        bsd => bsd.BookingId,
+                        p => p.BookingId,
+                        (bsd, p) => new { BookingServiceDetail = bsd, Payment = p })
+                    .Where(x => x.Payment.Status == "Success")
+                    .GroupBy(x => x.BookingServiceDetail.Service.Name ?? "Unknown Service")
+                    .Select(g => new
                     {
-                        ServiceName = bsd.Service.Name ?? "Unknown Service",
-                        Price = bsd.Price ?? 0
+                        ServiceName = g.Key,
+                        Revenue = g.Sum(x => x.BookingServiceDetail.Price ?? 0)
                     })
-                    .ToList()
-                    .GroupBy(x => x.ServiceName)
-                    .ToDictionary(g => g.Key, g => g.Sum(x => x.Price));
+                    .ToDictionary(x => x.ServiceName, x => x.Revenue);
 
+                // Tạo kết quả bao gồm tất cả các dịch vụ, kể cả dịch vụ không có doanh thu
                 var result = allServices.Select(serviceName => new DashboardVM.ServiceRevenueItem
-                    {
-                        ServiceName = serviceName,
-                        Revenue = serviceRevenues.ContainsKey(serviceName) ? serviceRevenues[serviceName] : 0
-                    })
-                .OrderByDescending(item => item.Revenue)
-                .ToList();
+                {
+                    ServiceName = serviceName,
+                    Revenue = serviceRevenues.GetValueOrDefault(serviceName, 0)
+                })
+                    .OrderByDescending(item => item.Revenue)
+                    .ToList();
 
-                if (!result.Any())
+                if (!result.Any(sr => sr.Revenue > 0))
                 {
                     _logger.LogInformation("No service revenue data found for the date range: {StartDate} to {EndDate}",
                         startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
-                    return new List<DashboardVM.ServiceRevenueItem>();
                 }
 
                 return result;
@@ -421,6 +400,7 @@ namespace Hotel_Management.Areas.Admin.Services
                 return new List<DashboardVM.ServiceRevenueItem>();
             }
         }
+
         public List<DashboardVM.RoomTypeRevenueItem> GetRoomTypeRevenueItems(DateTime startDate, DateTime endDate)
         {
             try
@@ -434,41 +414,34 @@ namespace Hotel_Management.Areas.Admin.Services
                     .Distinct()
                     .ToList();
 
-                var successfulBookingIds = _context.Payments
-                    .AsNoTracking()
-                    .Where(p => p.Status == "Success")
-                    .Select(p => p.BookingId)
-                    .Distinct()
-                    .ToList();
-
-                // Lấy doanh thu từng loại phòng trong kỳ hiện tại
+                // Lấy doanh thu loại phòng cho các đơn có thanh toán thành công
                 var roomTypeRevenues = _context.BookingsRoomDetails
                     .AsNoTracking()
-                    .Where(brd => brd.Booking != null &&
-                                brd.Booking.CreatedAt.HasValue &&
-                                brd.Booking.CreatedAt.Value >= startDate.Date &&
-                                brd.Booking.CreatedAt.Value <= adjustedEndDate &&
-                                brd.Room != null &&
-                                successfulBookingIds.Contains(brd.BookingId))
-                    .Select(brd => new
+                    .Where(brd => brd.Booking.CreatedAt >= startDate.Date &&
+                                  brd.Booking.CreatedAt <= adjustedEndDate)
+                    .Join(_context.Payments,
+                        brd => brd.BookingId,
+                        p => p.BookingId,
+                        (brd, p) => new { BookingRoomDetail = brd, Payment = p })
+                    .Where(x => x.Payment.Status == "Success")
+                    .GroupBy(x => x.BookingRoomDetail.Room.Type ?? "Unknown Room Type")
+                    .Select(g => new
                     {
-                        RoomType = brd.Room.Type ?? "Unknown Room Type",
-                        Price = brd.Price ?? 0
+                        RoomType = g.Key,
+                        Revenue = g.Sum(x => x.BookingRoomDetail.Price ?? 0)
                     })
-                    .ToList()
-                    .GroupBy(x => x.RoomType)
-                    .ToDictionary(g => g.Key, g => g.Sum(x => x.Price));
+                    .ToDictionary(x => x.RoomType, x => x.Revenue);
 
                 // Tạo kết quả bao gồm tất cả các loại phòng, kể cả những loại không có doanh thu
                 var result = allRoomTypes.Select(roomType => new DashboardVM.RoomTypeRevenueItem
-                    {
-                        RoomTypeName = roomType,
-                        Revenue = roomTypeRevenues.ContainsKey(roomType) ? roomTypeRevenues[roomType] : 0
-                    })
+                {
+                    RoomTypeName = roomType,
+                    Revenue = roomTypeRevenues.GetValueOrDefault(roomType, 0)
+                })
                     .OrderByDescending(item => item.Revenue)
                     .ToList();
 
-                if (!result.Any())
+                if (!result.Any(rtr => rtr.Revenue > 0))
                 {
                     _logger.LogInformation("No room type revenue data found for the date range: {StartDate} to {EndDate}",
                         startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
@@ -800,10 +773,17 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 var adjustedEndDate = endDate.Date.AddDays(1).AddSeconds(-1);
 
+                var bookingIds = _context.Payments
+                                        .AsNoTracking()
+                                        .Select(p => p.BookingId)
+                                        .Distinct()
+                                        .ToList();
+
                 var serviceRevenues = _context.BookingsServiceDetails
                     .AsNoTracking()
                     .Where(bsd => bsd.Booking.CreatedAt >= startDate.Date &&
-                                bsd.Booking.CreatedAt <= adjustedEndDate)
+                                bsd.Booking.CreatedAt <= adjustedEndDate &&
+                                bookingIds.Contains(bsd.BookingId))
                     .Include(bsd => bsd.Service)
                     .Include(bsd => bsd.Booking)
                         .ThenInclude(b => b.User)
@@ -850,10 +830,17 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 var adjustedEndDate = endDate.Date.AddDays(1).AddSeconds(-1);
 
+                var bookingIds = _context.Payments
+                                        .AsNoTracking()
+                                        .Select(p => p.BookingId)
+                                        .Distinct()
+                                        .ToList();
+
                 var roomRevenues = _context.BookingsRoomDetails
                     .AsNoTracking()
                     .Where(brd => brd.Booking.CreatedAt >= startDate.Date &&
-                                brd.Booking.CreatedAt <= adjustedEndDate)
+                                brd.Booking.CreatedAt <= adjustedEndDate &&
+                                bookingIds.Contains(brd.BookingId))
                     .Include(brd => brd.Room)
                     .Include(brd => brd.Booking)
                         .ThenInclude(b => b.User)
@@ -903,12 +890,18 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 var adjustedEndDate = endDate.Date.AddDays(1).AddSeconds(-1);
                 var result = new List<RevenueExcel>();
+                var bookingIds = _context.Payments
+                                        .AsNoTracking()
+                                        .Select(p => p.BookingId)
+                                        .Distinct()
+                                        .ToList();
 
                 // First approach: Get bookings with both room and service information
                 var bookings = _context.Bookings
                     .AsNoTracking()
                     .Where(b => b.CreatedAt >= startDate.Date &&
-                               b.CreatedAt <= adjustedEndDate)
+                               b.CreatedAt <= adjustedEndDate &&
+                               bookingIds.Contains(b.Id))
                     .Include(b => b.User)
                     .Include(b => b.Staff)
                     .Include(b => b.Payments)
