@@ -47,6 +47,7 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IDashboardServices, DashboardServices>();
 builder.Services.AddScoped<IExcelServices, ExcelServices>();
+builder.Services.AddScoped<IProfileServices, ProfileServices>();
 
 // Đăng ký dịch vụ Customer và Staff
 builder.Services.AddScoped<CustomerServices>();

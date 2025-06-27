@@ -1,0 +1,162 @@
+﻿@using Hotel_Management.Areas.Admin.ViewModels;
+@model ProfileVM
+@{
+    ViewData["Title"] = "Cài đặt";
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <!-- Charts -->
+    <script src="~/vendor/apex/apexcharts.min.js"></script>
+    <script src="~/js/admin/customs/profile.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Serialize and validate data from the server
+            let performanceChart = @(Html.Raw(Json.Serialize(Model.PerformanceChartData?.Select(c => new { c.Label, c.Value }).ToArray() ?? new object[] { })));
+            console.log("Performance Chart Data:", performanceChart);
+
+            initPerformanceChart({
+                categories: performanceChart.map(d => d.label || ""),
+                values: performanceChart.map(d => d.value || 0)
+            });
+
+        });
+    </script>
+}
+
+<partial name="_Notifications" />
+
+<!-- Row info start -->
+<div class="row gutters">
+    <div class="col-sm-12 col-12">
+
+        <div class="profile-header">
+            <h1>Welcome, @Model.UserName</h1>
+            <div class="profile-header-content">
+                <div class="profile-header-tiles">
+                    <div class="row gutters">
+                        <div class="col-sm-4 col-12">
+                            <div class="profile-tile">
+                                <span class="icon">
+                                    <i class="bi bi-pentagon"></i>
+                                </span>
+                                <h6>Tên - <span>@Model.UserName</span></h6>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <div class="profile-tile">
+                                <span class="icon">
+                                    <i class="bi bi-pin-angle"></i>
+                                </span>
+                                <h6>Email - <span>@Model.Email</span></h6>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <div class="profile-tile">
+                                <span class="icon">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+                                <h6>SĐT - <span>@Model.PhoneNumber</span></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-avatar-tile">
+                    <img src="~/images/admin/user.png" class="img-fluid"
+                         alt="Bootstrap Gallery" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Row info end -->
+<!-- Row start -->
+<div class="row gutters">
+    <div class="col-lg-8 col-sm-12 col-12">
+        <!-- Row report start -->
+        <div class="row gutters">
+
+            <div class="col-sm-12 col-12">
+                <!-- Card start -->
+                <div class="card h-370">
+                    <div class="card-header">
+                        <div class="card-title">Hiệu suất làm việc</div>
+                    </div>
+                    <div class="card-body">
+                        <div id="PerformanceChart"></div>
+                    </div>
+                </div>
+                <!-- Card end -->
+            </div>
+        </div>
+        <!-- Row report end -->
+    </div>
+    <div class="col-lg-4 col-sm-12 col-12">
+        <!-- Row edit start -->
+        <div class="row gutters">
+            <div class="col-sm-12 col-12">
+                <!-- Card start -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Thay đổi thông tin cá nhân</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="scroll450">
+                            <form asp-action="UpdateProfile" method="post" autocomplete="off">
+                                <div class="row">
+                                    <div class="col-xxl-12 col-sm-12 col-12">
+                                        <div class="mb-3">
+                                            <label asp-for="UserName" class="form-label"></label>
+                                            <input asp-for="UserName" class="form-control" placeholder="Nhập tên đăng nhập" />
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-6 col-sm-12 col-12">
+                                        <div class="mb-3">
+                                            <label asp-for="Email" class="form-label"></label>
+                                            <input asp-for="Email" class="form-control" placeholder="Nhập email" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-6 col-sm-12 col-12">
+                                        <div class="mb-3">
+                                            <label asp-for="PhoneNumber" class="form-label"></label>
+                                            <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại" />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-6 col-sm-12 col-12">
+                                        <div class="mb-3">
+                                            <label asp-for="Password" class="form-label"></label>
+                                            <input asp-for="Password" class="form-control" placeholder="Nhập mật khẩu mới" />
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-6 col-sm-12 col-12">
+                                        <div class="mb-3">
+                                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Xác nhận mật khẩu mới" />
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-12 col-sm-12 col-12">
+                                        <div class="d-flex justify-content-end align-items-center mb-3">
+                                            <button type="reset" class="btn btn-dark me-2">Hủy</button>
+                                            <button type="submit" class="btn btn-success">Xác nhận</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card end -->
+            </div>
+        </div>
+        <!-- Row edit end -->
+    </div>
+
+</div>
+<!-- Row end -->

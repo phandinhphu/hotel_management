@@ -2,10 +2,12 @@
 using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Areas.Admin.ViewModels;
 using Hotel_Management.Areas.Admin.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel_Management.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     public class DashboardController : Controller
     {
         private readonly IDashboardServices _dashboardServices;

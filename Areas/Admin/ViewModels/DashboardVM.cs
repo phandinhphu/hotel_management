@@ -47,41 +47,41 @@ namespace Hotel_Management.Areas.Admin.ViewModels
         #region Support Class
         public class ChartDataPoint
         {
-            public string Label { get; set; }
+            public string? Label { get; set; }
             public decimal Value { get; set; } // Giá trị
         }
 
         public class ServiceRevenueItem
         {
-            public string ServiceName { get; set; } // Tên dịch vụ (Taxi, Giặt ủi, v.v.)
+            public string? ServiceName { get; set; } // Tên dịch vụ (Taxi, Giặt ủi, v.v.)
             public decimal Revenue { get; set; } // Doanh thu
         }
 
         public class RoomTypeRevenueItem
         {
-            public string RoomTypeName { get; set; } // Tên loại phòng
+            public string? RoomTypeName { get; set; } // Tên loại phòng
             public decimal Revenue { get; set; } // Doanh thu
         }
 
         public class UserReview
         {
-            public string Content { get; set; } // Nội dung đánh giá
-            public string RoomType { get; set; } // Loại phòng được đánh giá
+            public string? Content { get; set; } // Nội dung đánh giá
+            public string? RoomType { get; set; } // Loại phòng được đánh giá
         }
 
         public class StaffInfo
         {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public string Role { get; set; } // Quyền
-            public string Status { get; set; } // Trạng thái (Online, Offline)
+            public string? Id { get; set; }
+            public string? Name { get; set; }
+            public string? Role { get; set; } // Quyền
+            public string? Status { get; set; } // Trạng thái (Online, Offline)
             public DateTime? LastActiveTime { get; set; } // Thời gian hoạt động cuối cùng
         }
 
         public class PopularRoomType
         {
-            public string RoomNumber { get; set; } // Tên phòng
-            public string ImageUrl { get; set; } // Đường dẫn ảnh
+            public string? RoomNumber { get; set; } // Tên phòng
+            public string? ImageUrl { get; set; } // Đường dẫn ảnh
             public int BookingCount { get; set; } // Số lượt đặt
             public decimal Revenue { get; set; } // Doanh thu
         }

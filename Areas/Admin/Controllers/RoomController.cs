@@ -2,10 +2,12 @@
 using Microsoft.Extensions.Logging;
 using Hotel_Management.Areas.Admin.ViewModels;
 using Hotel_Management.Areas.Admin.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel_Management.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     public class RoomController : Controller
     {
         private readonly ILogger<RoomController> _logger;

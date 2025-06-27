@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Hotel_Management.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     public class PaymentController : Controller
     {
         private readonly ILogger<PaymentController> _logger;

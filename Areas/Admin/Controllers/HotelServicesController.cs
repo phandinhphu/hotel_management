@@ -3,11 +3,13 @@ using Hotel_Management.Areas.Admin.Services;
 using Hotel_Management.Areas.Admin.Services.Interfaces;
 using Hotel_Management.Areas.Admin.ViewModels;
 using Hotel_Management.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Management.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     public class HotelServicesController : Controller
     {
         private readonly IHotelSServices _hotelSServices;
