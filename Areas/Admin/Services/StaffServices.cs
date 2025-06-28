@@ -9,12 +9,17 @@ namespace Hotel_Management.Areas.Admin.Services
     public class StaffServices : IUserServices, IStaffServices
     {
         private readonly HotelManagementContext _context;
+        private readonly IDbContextFactory<HotelManagementContext> _contextFactory;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public StaffServices(HotelManagementContext context, UserManager<ApplicationUser> userManager)
+        public StaffServices(
+            HotelManagementContext context,
+            UserManager<ApplicationUser> userManager,
+            IDbContextFactory<HotelManagementContext> contextFactory)
         {
             _context = context;
             _userManager = userManager;
+            _contextFactory = contextFactory;
         }
 
         public async Task<PaginatedList<ApplicationUser>> getAllAsync(string name = "", int pageIndex = 1, int pageSize = 20)
@@ -47,9 +52,23 @@ namespace Hotel_Management.Areas.Admin.Services
             return user;
         }
 
-        public Task<int> getTotalBookedRoomsByIdAsync(string id)
+        public async Task<int> getTotalBookedRoomsByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Id cannot be null or empty.");
+            }
+            var user = await _context.Users
+                .Include(u => u.BookingStaffs)
+                    .ThenInclude(b => b.BookingsRoomDetails)
+                    .ThenInclude(brd => brd.Room)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User with id '{id}' not found.");
+            }
+
+            return user.BookingStaffs.Sum(b => b.BookingsRoomDetails.Count);
         }
 
         public async Task<bool> ResetPasswordAsync(string userId, string newPassword)

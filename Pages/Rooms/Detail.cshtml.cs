@@ -66,7 +66,6 @@ namespace Hotel_Management.Rooms.Pages
 
             if (Status == "Occupied")
             {
-                // Window alert to inform user that the room is occupied
                 ModelState.AddModelError(string.Empty, "Phòng này hiện đang được sử dụng. Vui lòng chọn phòng khác hoặc quay lại sau.");
                 return Page();
             }

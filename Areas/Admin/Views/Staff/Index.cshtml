@@ -1,5 +1,7 @@
-﻿@using Hotel_Management.Helpers
+﻿@using Hotel_Management.Areas.Admin.Services.Interfaces
+@using Hotel_Management.Helpers
 @using Hotel_Management.Models
+@inject IStaffServices StaffService
 @model PaginatedList<ApplicationUser>
 @{
     ViewData["Title"] = "Danh sách nhân viên";
@@ -15,9 +17,10 @@
 
 @if (TempData["SuccessMessage"] != null)
 {
-	<div class="alert alert-success" role="alert">
-		@TempData["SuccessMessage"]
-	</div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Thành công!</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
 <div class="row">
@@ -61,6 +64,7 @@
                                     <th>Nhân viên</th>
                                     <th>Liên hệ</th>
                                     <th>Email</th>
+									<th>Số lượng đơn đặt phòng</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -78,6 +82,19 @@
                                         </td>
                                         <td>@staff.PhoneNumber</td>
                                         <td>@staff.Email</td>
+                                        <td>
+                                            @{
+                                                var bookingCount = StaffService.getTotalBookedRoomsByIdAsync(staff.Id).Result;
+												@if (bookingCount > 0)
+												{
+													<span class="badge bg-success">@bookingCount</span>
+												}
+												else
+												{
+													<span class="badge bg-secondary">0</span>
+												}
+                                            }
+										</td>
                                         <td>
                                             <div class="actions">
                                                 <a asp-area="Admin" asp-controller="Staff" asp-action="Detail" asp-route-id="@staff.Id" class="viewRow">

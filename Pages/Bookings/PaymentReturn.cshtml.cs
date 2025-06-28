@@ -40,18 +40,6 @@ namespace Hotel_Management.Pages.Bookings
             _context.Bookings.Update(booking);
             await _context.SaveChangesAsync();
 
-            // Cập nhật phòng đặt từ Occupied sang Available
-            foreach (var roomDetail in booking.BookingsRoomDetails)
-            {
-                var room = _context.Rooms.Find(roomDetail.RoomId);
-                if (room != null)
-                {
-                    room.Status = "Available";
-                    _context.Rooms.Update(room);
-                }
-            }
-            _context.SaveChanges();
-
             if (response.VnPayResponseCode == "00")
             {
                 // Payment successful

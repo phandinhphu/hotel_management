@@ -29,7 +29,7 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <div class="dropdown">
+                            <div class="dropdown mb-2">
                                 <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Xin chào, @UserManager.GetUserName(User)
                                 </button>
@@ -37,7 +37,7 @@
                                     @if (isAdmin || isStaff)
                                     {
                                         <li>
-                                            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="dropdown-item">Quản trị</a>
+                                            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="dropdown-item">Quản trị</a>
                                         </li>
                                     }
                                     <li>
