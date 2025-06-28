@@ -97,7 +97,12 @@
                 <div class="room-booking">
                     <h3>Đặt chỗ của bạn</h3>
                     <hr />
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+					@if (TempData["ErrorMessage"] != null)
+					{
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+						</div>
+					}
                     <form method="post" asp-page-handler="AddWishList">
                         <input type="hidden" name="RoomId" value="@Model.room.Id" />
                         <input type="hidden" name="RoomNumber" value="@Model.room.RoomNumber" />
@@ -108,12 +113,12 @@
 
                         <div class="check-date">
                             <label for="date-in">Nhận phòng:</label>
-                            <input type="datetime" class="date-input" id="date-in" name="CheckInDate" required>
+                            <input type="datetime" class="date-input" id="date-in" name="CheckInDate" required autocomplete="off">
                             <i class="icon_calendar"></i>
                         </div>
                         <div class="check-date">
                             <label for="date-out">Trả phòng:</label>
-                            <input type="datetime" class="date-input" id="date-out" name="CheckOutDate" required>
+                            <input type="datetime" class="date-input" id="date-out" name="CheckOutDate" required autocomplete="off">
                             <i class="icon_calendar"></i>
                         </div>
                         <button type="submit">Thêm vào wishlist</button>

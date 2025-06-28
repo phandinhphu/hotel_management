@@ -34,10 +34,13 @@ namespace Hotel_Management.Areas.Admin.Controllers
             _vnpayServices = vnpayServices;
         }
 
+        [BindProperty(SupportsGet = true)]
+        public int PageIndex { get; set; } = 1;
+
         // [GET] /Admin/Booking
         public async Task<IActionResult> Index()
         {
-            var bookings = await _bookingServices.GetBookingsAsync();
+            var bookings = await _bookingServices.GetBookingsAsync("", PageIndex, 20);
 
             return View(bookings);
         }
