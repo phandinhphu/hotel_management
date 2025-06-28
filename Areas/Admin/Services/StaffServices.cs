@@ -9,17 +9,14 @@ namespace Hotel_Management.Areas.Admin.Services
     public class StaffServices : IUserServices, IStaffServices
     {
         private readonly HotelManagementContext _context;
-        private readonly IDbContextFactory<HotelManagementContext> _contextFactory;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public StaffServices(
             HotelManagementContext context,
-            UserManager<ApplicationUser> userManager,
-            IDbContextFactory<HotelManagementContext> contextFactory)
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _contextFactory = contextFactory;
         }
 
         public async Task<PaginatedList<ApplicationUser>> getAllAsync(string name = "", int pageIndex = 1, int pageSize = 20)
@@ -43,7 +40,6 @@ namespace Hotel_Management.Areas.Admin.Services
 
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == id);
-
             if (user == null)
             {
                 throw new InvalidOperationException($"User with id '{id}' not found.");
@@ -58,6 +54,7 @@ namespace Hotel_Management.Areas.Admin.Services
             {
                 throw new ArgumentNullException(nameof(id), "Id cannot be null or empty.");
             }
+
             var user = await _context.Users
                 .Include(u => u.BookingStaffs)
                     .ThenInclude(b => b.BookingsRoomDetails)

@@ -24,7 +24,7 @@ namespace Hotel_Management.Reviews.Pages
         [BindProperty]
         public ReviewVM Review { get; set; } = new ReviewVM();
 
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
             Review = new ReviewVM()
             {
@@ -42,6 +42,7 @@ namespace Hotel_Management.Reviews.Pages
             if (existingReview != null)
             {
                 Review = _mapper.Map<ReviewVM>(existingReview);
+
                 return Page();
             }
 
@@ -55,14 +56,6 @@ namespace Hotel_Management.Reviews.Pages
                 return Page();
             }
 
-            var existingReview = await _reviewsService.GetByUserAsync(Review.UserId);
-
-            if (existingReview != null)
-            {
-                ModelState.AddModelError(string.Empty, "You have already submitted a review.");
-                return Page();
-            }
-
             var review = _mapper.Map<Review>(Review);
 
             var result = await _reviewsService.AddAsync(review);
@@ -72,7 +65,7 @@ namespace Hotel_Management.Reviews.Pages
                 ModelState.AddModelError(string.Empty, "Failed to add review.");
             }
 
-            return Page();
+            return RedirectToPage("/Reviews/Index");
         }
     }
 }

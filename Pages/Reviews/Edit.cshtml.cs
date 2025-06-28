@@ -24,7 +24,7 @@ namespace Hotel_Management.Pages.Reviews
         [BindProperty(SupportsGet = true)]
         public int ReviewId { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {

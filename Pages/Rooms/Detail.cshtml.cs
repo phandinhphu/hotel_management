@@ -23,11 +23,12 @@ namespace Hotel_Management.Rooms.Pages
         public Room room { get; set; } = new Room();
         public List<Roomimage> Roomimage { get; set; } = new List<Roomimage>();
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                room = _roomsService.GetRoomByIdAsync(Id).Result;
+                Console.WriteLine("Fetching room details for ID: " + Id);
+                room = await _roomsService.GetRoomByIdAsync(Id);
                 if (room == null)
                 {
                     ModelState.AddModelError(string.Empty, "Room not found.");
@@ -37,11 +38,14 @@ namespace Hotel_Management.Rooms.Pages
                 {
                     Roomimage = room.Roomimages.ToList();
                 }
+
+                return Page();
             }
             catch (Exception ex)
             {
                 // Handle exceptions (e.g., log the error, show an error message)
                 ModelState.AddModelError(string.Empty, "An error occurred while retrieving the room: " + ex.Message);
+                return Page();
             }
         }
 
@@ -66,42 +70,41 @@ namespace Hotel_Management.Rooms.Pages
 
             if (Status == "Occupied")
             {
-                ModelState.AddModelError(string.Empty, "Phòng này hiện đang được sử dụng. Vui lòng chọn phòng khác hoặc quay lại sau.");
-                return Page();
+                TempData["ErrorMessage"] = "Phòng này hiện đang được sử dụng. Vui lòng chọn phòng khác.";
+                return RedirectToPage("/Rooms/Detail", new { id = RoomId });
             }
 
             if (CheckInDate >= CheckOutDate)
             {
-                ModelState.AddModelError(string.Empty, "Ngày trả phòng phải lớn hơn ngày nhận phòng.");
-                return Page();
+                TempData["ErrorMessage"] = "Ngày nhận phòng phải nhỏ hơn ngày trả phòng.";
+                return RedirectToPage("/Rooms/Detail", new { id = RoomId });
             }
 
             if (CheckInDate < DateOnly.FromDateTime(DateTime.Now))
             {
-                ModelState.AddModelError(string.Empty, "Ngày nhận phòng phải lớn hơn hoặc bằng ngày hiện tại.");
-                return Page();
+                TempData["ErrorMessage"] = "Ngày nhận phòng phải lớn hơn hoặc bằng ngày hiện tại.";
+                return RedirectToPage("/Rooms/Detail", new { id = RoomId });
             }
 
             if (CheckOutDate < DateOnly.FromDateTime(DateTime.Now))
             {
-                ModelState.AddModelError(string.Empty, "Ngày trả phòng phải lớn hơn hoặc bằng ngày hiện tại.");
-                return Page();
+                TempData["ErrorMessage"] = "Ngày trả phòng phải lớn hơn hoặc bằng ngày hiện tại.";
+                return RedirectToPage("/Rooms/Detail", new { id = RoomId });
             }
 
             var room = await _roomsService.GetRoomByIdAsync(RoomId);
 
             if (room == null)
             {
-                ModelState.AddModelError(string.Empty, "Room not found.");
-                return Page();
+                return NotFound("Room not found.");
             }
 
             var wishList = HttpContext.Session.GetObject<List<BookingItem>>("wishlist") ?? new List<BookingItem>();
 
             if (wishList.Count == 5)
             {
-                ModelState.AddModelError(string.Empty, "You can only add up to 5 rooms to your wishlist.");
-                return Page();
+                TempData["ErrorMessage"] = "Bạn chỉ có thể thêm tối đa 5 phòng vào danh sách yêu thích.";
+                return RedirectToPage("/Rooms/Detail", new { id = RoomId });
             }
 
             wishList.Add(new BookingItem
