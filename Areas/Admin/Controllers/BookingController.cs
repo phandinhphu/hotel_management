@@ -37,9 +37,6 @@ namespace Hotel_Management.Areas.Admin.Controllers
         // [GET] /Admin/Booking
         public async Task<IActionResult> Index()
         {
-            // Reset TempData messages
-            TempData.Clear();
-
             var bookings = await _bookingServices.GetBookingsAsync();
 
             return View(bookings);

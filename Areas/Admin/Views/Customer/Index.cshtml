@@ -18,8 +18,9 @@
 
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success" role="alert">
-        @TempData["SuccessMessage"]
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Thành công!</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
