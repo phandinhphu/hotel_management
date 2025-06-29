@@ -1,14 +1,17 @@
 ﻿@page
 @using Hotel_Management.Services.Interfaces
+@using Hotel_Management.Areas.Admin.Services.Interfaces
 @using Hotel_Management.Models
 @model IndexModel
 @inject IHotelservicesService HotelservicesService
+@inject IHotelfacilitiesServices HotelfacilitiesServices
 @inject IRoomsService RoomsService
 @inject IReviewsService ReviewsService
 @{
     ViewData["Title"] = "Home";
 
     var hotelServices = HotelservicesService.GetAllHotelServicesAsync().Result;
+	var hotelFacilities = HotelfacilitiesServices.GetAllAsync().Result;
     var rooms = RoomsService.GetAllRoomsAsync("", 1, 4).Result;
     var reviews = ReviewsService.GetAllAsync(1).Result;
 }
@@ -108,6 +111,41 @@
     </div>
 </section>
 <!-- Services Section End -->
+
+<!-- Facilities Section Begin -->
+<section class="services-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <span>Chúng tôi có gì</span>
+					<h2>Khám phá tiện nghi của chúng tôi</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @if (hotelFacilities != null && hotelFacilities.Any())
+            {
+                foreach (var hotelfacility in hotelFacilities)
+                {
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="service-item">
+							<i class="fa-solid fa-building fa-3x"></i>
+                            <h4>@hotelfacility.FacilityName</h4>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-lg-12">
+					<p>Khách sạn hiện chưa có tiện nghi nào. Có thể chúng tôi sẽ cập nhật trong tương lai.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- Facilities Section End -->
 
 <!-- Home Room Section Begin -->
 <section class="hp-room-section">
