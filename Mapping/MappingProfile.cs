@@ -29,6 +29,10 @@ namespace Hotel_Management.Mapping
             // PasswordVM
             CreateMap<ApplicationUser, PasswordVM>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
+
+            // HotelfacilityVM
+            CreateMap<HotelfacilitiesVM, Hotelfacility>();
+            CreateMap<Hotelfacility, HotelfacilitiesVM>();
         }
     }
 }

@@ -752,6 +752,7 @@ namespace Hotel_Management.Areas.Admin.Services
             catch (DashboardServiceException ex)
             {
                 // Đã có lỗi được xử lý, ném lại để controller xử lý
+                _logger.LogError(ex, "Lỗi khi tải dữ liệu dashboard: {Errors}", string.Join(", ", ex.Errors));
                 throw;
             }
             catch (Exception ex)

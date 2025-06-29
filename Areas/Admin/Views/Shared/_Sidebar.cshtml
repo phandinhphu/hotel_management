@@ -7,7 +7,7 @@
 
     <!-- Sidebar brand starts -->
     <div class="sidebar-brand">
-        <a asp-area="Admin" asp-controller="Dashboard" class="logo">
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="logo">
             <img src="~/images/logo.png" alt="Sona Hotel" />
         </a>
     </div>
@@ -43,7 +43,14 @@
                         <i class="bi bi-gear"></i>
                         <span class="menu-text">Quản lý dịch vụ</span>
                     </a>
+                    </a>
                 </li>
+                <li class="@(currentController == "HotelFacilities" ? "active" : "")">
+                    <a asp-area="Admin" asp-controller="Hotelfacilities" asp-action="Index" class="@(currentController == "HotelFacilities" ? "current-page" : "")">
+                        <i class="bi bi-tools"></i>
+                        <span class="menu-text">Quản lý tiện nghi</span>
+                    </a>
+				</li>
                 <li class="@(currentController == "Booking" ? "active" : "")">
                     <a asp-area="Admin" asp-controller="Booking" asp-action="Index" class="@(currentController == "Booking" ? "current-page" : "")">
                         <i class="bi bi-calendar2-check"></i>

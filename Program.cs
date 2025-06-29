@@ -15,9 +15,19 @@ using Hotel_Management.Providers;
 using Hotel_Management.Hubs;
 using Hotel_Management.Helpers;
 using Hotel_Management.Settings;
+using Hangfire;
+using Hangfire.MySql;
+using System.Transactions;
+using Hotel_Management.Services.Jobs;
+using Hotel_Management.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 var mailSettings = builder.Configuration.GetSection("MailSettings");
+
+// Kích hoạt Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddOptions();
@@ -36,6 +46,9 @@ builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+// Đăng ký các Jobs
+builder.Services.AddScoped<RoomJob>();
+
 // Đăng ký các dịch vụ cho các lớp trong Pages
 builder.Services.AddScoped<IRoomsService, RoomsService>();
 builder.Services.AddScoped<IHotelservicesService, HotelservicesService>();
@@ -48,6 +61,7 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IDashboardServices, DashboardServices>();
 builder.Services.AddScoped<IExcelServices, ExcelServices>();
 builder.Services.AddScoped<IProfileServices, ProfileServices>();
+builder.Services.AddScoped<IHotelfacilitiesServices, HotelfacilitiesServices>();
 
 // Đăng ký dịch vụ Customer và Staff
 builder.Services.AddScoped<CustomerServices>();
@@ -66,17 +80,33 @@ builder.Services.AddScoped<Func<string, IUserServices>>(sp => key =>
     };
 });
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddScoped<IBookingServices, BookingServices>();
 builder.Services.AddScoped<IVNPayServices, VNPayServices>();
 builder.Services.AddScoped<IHotelSServices, HotelSServices>();
 builder.Services.AddScoped<IHotelServices, HotelServices>();
 builder.Services.AddDbContextFactory<HotelManagementContext>(options =>
     options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection") 
+        connectionString
             ?? throw new InvalidOperationException("Connection string 'HotelManagementContext' not found."),
         new MySqlServerVersion(new Version(8, 0, 21)))
-    .EnableSensitiveDataLogging()
 );
+
+// Cấu hình Hangfire dùng MySQL
+builder.Services.AddHangfire(config =>
+    config.UseStorage(new MySqlStorage(
+        connectionString ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found."),
+        new MySqlStorageOptions
+        {
+            QueuePollInterval = TimeSpan.FromSeconds(15), // Thời gian chờ giữa các lần kiểm tra hàng đợi
+            TransactionIsolationLevel = IsolationLevel.ReadCommitted, // Cấp độ cô lập giao dịch
+            PrepareSchemaIfNecessary = true // Tự động tạo schema nếu cần
+        }
+    ))
+);
+
+builder.Services.AddHangfireServer();
 
 // Đăng ký helper
 builder.Services.AddScoped<ImageHelper>();
@@ -193,6 +223,22 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new HangfireAuthorizationFilter() }
+});
+
+// Đăng ký Jobs
+RecurringJob.AddOrUpdate<RoomJob>(
+    "UpdateRoomStatus",
+    job => job.UpdateRoomStatusAsync(CancellationToken.None),
+    Cron.Daily(0, 0), // chạy 00:00 hằng ngày
+    new RecurringJobOptions
+    {
+        TimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time")
+    }
+);
 
 app.MapRazorPages();
 app.MapHub<NotificationHub>("/notificationHub");

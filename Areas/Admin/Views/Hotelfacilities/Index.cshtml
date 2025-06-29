@@ -1,0 +1,125 @@
+﻿@model PaginatedList<Hotelfacility>
+
+@{
+    ViewData["Title"] = "Danh sách tiện nghi khách sạn";
+
+    var stt = 0;
+}
+
+<div class="row">
+    <div class="col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+				<div class="card-title">Danh sách tiện nghi khách sạn</div>
+
+                <a asp-area="Admin" asp-controller="Hotelfacilities" asp-action="Create" class="btn btn-primary ms-1">
+                    <i class="bi bi-plus"></i>
+                    Thêm tiện nghi
+                </a>
+            </div>
+            <div class="card-body">
+                @if (Model.Count == 0)
+                {
+                    <div class="alert alert-info" role="alert">
+						Chưa có tiện nghi nào được thêm vào. Hãy thêm tiện nghi mới để quản lý.
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table v-middle m-0">
+                            <thead>
+                                <tr>
+                                    <th>#STT</th>
+                                    <th>Tên tiện nghi</th>
+                                    <th>Khách sạn</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var hotelfacility in Model)
+                                {
+                                    <tr>
+                                        <td>@(++stt)</td>
+                                        <td>@hotelfacility.FacilityName</td>
+                                        <td>@hotelfacility.Hotel.Name</td>
+                                        <td>
+                                            <div class="actions">
+                                                <a asp-area="Admin" asp-controller="Hotelfacilities" asp-action="Detail" asp-route-id="@hotelfacility.Id" class="viewRow">
+                                                    <i class="bi bi-list text-green"></i>
+                                                </a>
+                                                <a asp-area="Admin" asp-controller="Hotelfacilities" asp-action="Edit" asp-route-id="@hotelfacility.Id" class="viewRow">
+                                                    <i class="bi bi-pencil text-yellow"></i>
+                                                </a>
+                                                <a href="#" class="deleteRow" data-id="@hotelfacility.Id">
+                                                    <i class="bi bi-trash text-red"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+
+                        <!-- Phân trang -->
+                        <nav aria-label="Page Navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item">
+                                    @if (Model.HasPreviousPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex - 1 })"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-left"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = i })">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    @if (Model.HasNextPage)
+                                    {
+                                        <a class="page-link" href="@Url.Action("Index", new { PageIndex = Model.PageIndex + 1 })"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<form asp-area="Admin" asp-controller="Hotelfacilities" asp-action="Delete" method="post" name="delete">
+    <input type="hidden" name="id" />
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".deleteRow");
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function (event) {
+                event.preventDefault();
+                const hotelFacilityId = this.getAttribute("data-id");
+                const form = document.forms["delete"];
+                form.querySelector("input[name='id']").value = hotelFacilityId;
+
+                if (confirm("Bạn có chắc chắn muốn xóa tiện nghi này này?")) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
