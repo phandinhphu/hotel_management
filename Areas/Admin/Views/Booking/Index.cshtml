@@ -27,7 +27,7 @@
     <h2 class="mb-4">Quản lý Đặt phòng</h2>
 
     <table class="table table-bordered table-hover align-middle">
-        <thead class="table-dark">
+        <thead>
             <tr>
                 <th>Khách hàng</th>
                 <th>Ngày đặt</th>
@@ -76,16 +76,16 @@
         <nav>
             <ul class="pagination">
                 <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                    <a class="page-link" asp-route-pageNumber="@(Model.PageIndex - 1)">Trước</a>
+                    <a class="page-link" asp-route-PageIndex="@(Model.PageIndex - 1)">Trước</a>
                 </li>
                 @for (var i = 1; i <= Model.TotalPages; i++)
                 {
                     <li class="page-item @(i == Model.PageIndex ? "active" : "")">
-                        <a class="page-link" asp-route-pageNumber="@i">@i</a>
+                        <a class="page-link" asp-route-PageIndex="@i">@i</a>
                     </li>
                 }
                 <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                    <a class="page-link" asp-route-pageNumber="@(Model.PageIndex + 1)">Sau</a>
+                    <a class="page-link" asp-route-PageIndex="@(Model.PageIndex + 1)">Sau</a>
                 </li>
             </ul>
         </nav>
