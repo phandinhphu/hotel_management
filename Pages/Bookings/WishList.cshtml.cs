@@ -22,7 +22,7 @@ namespace Hotel_Management.Pages.Bookings
             BookingItems = HttpContext.Session.GetObject<List<BookingItem>>("wishlist") ?? new List<BookingItem>();
         }
 
-        public void OnPostAsync()
+        public void OnPost()
         {
             // Save to wishlist in session
             HttpContext.Session.SetObject("wishlist", BookingItems);
