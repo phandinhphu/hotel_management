@@ -3,10 +3,15 @@
 @{
 	ViewData["Title"] = "Room";
 }
+@section Styles {
+	<link rel="stylesheet" href="~/css/client/customs/room.css">
+}
 
 <!-- Rooms Section Begin -->
 <section class="rooms-section spad">
 	<div class="container">
+
+		<!-- Lọc theo status -->
 		<form method="get" asp-page="/Rooms/Index">
 			<label for="status" class="form-label">Trạng thái:</label>
 			<div class="mb-3">
@@ -16,11 +21,11 @@
 					<option value="Occupied">Đang sử dụng</option>
 					<option value="Maintenance">Bảo trì</option>
 				</select>
-				<button type="submit" class="btn btn-primary" style="margin-left: 25px">Lọc</button>
+				<button type="submit" class="btn btn-primary" style="margin-left: 20px">Lọc</button>
 			</div>
 		</form>
+
 		<div class="row">
-			<!-- Lọc theo status -->
 
 			@if (Model.Rooms.Count == 0)
 			{

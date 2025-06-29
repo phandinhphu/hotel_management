@@ -41,7 +41,7 @@ namespace Hotel_Management.Areas.Admin.Controllers
                     minPrice, 
                     maxPrice, 
                     pageIndex, 
-                    20);
+                    8);
 
                 // Store filter values in ViewBag to maintain state
                 ViewBag.CurrentSearchTerm = searchTerm;

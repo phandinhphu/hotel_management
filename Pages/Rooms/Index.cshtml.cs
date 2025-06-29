@@ -23,7 +23,7 @@ namespace Hotel_Management.Rooms.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Rooms = await _roomsService.GetAllRoomsAsync(Status, PageIndex, 20);
+            Rooms = await _roomsService.GetAllRoomsAsync(Status, PageIndex, 9);
 
             return Page();
         }
