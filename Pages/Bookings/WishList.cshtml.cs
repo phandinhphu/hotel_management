@@ -22,12 +22,12 @@ namespace Hotel_Management.Pages.Bookings
             BookingItems = HttpContext.Session.GetObject<List<BookingItem>>("wishlist") ?? new List<BookingItem>();
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             // Save to wishlist in session
             HttpContext.Session.SetObject("wishlist", BookingItems);
 
-            RedirectToPage("/Bookings/Confirmation");
+            return RedirectToPage("/Bookings/Confirmation");
         }
     }
 }
